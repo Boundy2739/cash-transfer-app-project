@@ -1,6 +1,6 @@
 # Cash Transfer Web Application
 
-A secure web-based cash transfer system that allows users to send and receive money digitally.
+A web-based cash transfer system that allows users to send and receive money digitally.
 
 ## Overview
 
