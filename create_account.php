@@ -1,6 +1,7 @@
 <?php
 
 require_once 'pdo.php';
+require_once 'guid_generator.php';
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     header("Location: register.php");
     exit();
@@ -19,7 +20,8 @@ if (
 
 ){
     die("All fields are required.");
-} 
+}
+$uuid = guidv4(); 
 $fname = $_POST['firstname'];
 $lname = $_POST['surname'];
 $phone = $_POST['phonenumber'];
@@ -30,10 +32,11 @@ $dob= $_POST['dob'];
 $postcode = $_POST['postcode'];
 $password = password_hash($_POST['password'],PASSWORD_DEFAULT);
 if(filter_var($email,FILTER_VALIDATE_EMAIL)){
-    $sql = "INSERT INTO accounts (firstname, lastname,phone,email,date_of_birth,address,city,postcode,password) 
-                VALUES (:firstname,:lastname,:phone,:email,:date_of_birth,:address,:city,:postcode,:password)";
+    $sql = "INSERT INTO accounts (id,firstname, lastname,phone,email,date_of_birth,address,city,postcode,password) 
+                VALUES (:id,:firstname,:lastname,:phone,:email,:date_of_birth,:address,:city,:postcode,:password)";
 $stmt = $pdo->prepare($sql);
 $stmt->execute(array(
+    ':id'=> $uuid,
     ':firstname'=>$fname,
     ':lastname'=>$lname,
     ':phone'=>$phone,
