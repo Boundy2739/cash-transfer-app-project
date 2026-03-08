@@ -1,9 +1,13 @@
 <?php
 require_once 'pdo.php';
 session_start();
-if($_SESSION ['authorised'] === TRUE){
-    
+if($_SESSION ['authorised'] !== TRUE){
+    header('Location:index.php');
 }
+$sql = "SELECT * from accounts where owner_id = :owner_id";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([':owner_id'=>$_SESSION['user_id']]);
+$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -16,14 +20,19 @@ if($_SESSION ['authorised'] === TRUE){
 </head>
 <body>
     <div class="container">
-        <section class="account">
-            <p>name</p>
-            <p>balance</p>
-            <a href="">open</a>
-        </section>
+        <?php 
+        foreach($rows as $row){
+            echo '<section class="account">';
+            echo '<p>name</p>';
+            echo'<p>balance'.$row['balance'].'</p>';
+            echo'<a href="myaccount.php?account='.$row['account_id'].'">open</a>';
+            echo'</section>';
+        }
+        
+        ?>
         <section class="add-account">
             <form action="addnewwallet.php" method="post">
-                <input type="submit">
+                <input type="submit" value="add account">
             </form>
         </section>
     </div>

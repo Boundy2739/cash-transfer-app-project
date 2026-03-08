@@ -2,12 +2,14 @@
 require_once 'pdo.php';
 session_start();
 
-if($_SESSION['authorized'] !== TRUE){
+if($_SESSION['authorised'] !== TRUE){
     header('Location: index.php');
     exit;
 
 }
-$sql = "SELECT * from transactions WHERE sender_id = :sender_id or receiver_id = :receiver_id";
+$sql = "SELECT * from transactions 
+inner JOIN accounts
+WHERE sender_id = :sender_id or receiver_id = :receiver_id";
 $stmt = $pdo->prepare($sql);
 $stmt->execute(array(
     ':sender_id'=> $_SESSION['account_id'],

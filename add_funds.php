@@ -3,7 +3,7 @@ require_once 'pdo.php';
 
 
 session_start();
-if($_SESSION['authorized']!==TRUE){
+if($_SESSION['authorised']!==TRUE){
     header('Location: loggedin.php');
     exit;
 }

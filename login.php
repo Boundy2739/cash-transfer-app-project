@@ -18,18 +18,18 @@ if (
 $email = $_POST['email'];
 $password = $_POST['password'];
 
-$sql = "SELECT * from accounts where email = :email";
+$sql = "SELECT * from users where email = :email";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':email'=>$email]);
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
-if(password_verify($password, $row['password'])){
-    $_SESSION['authorized'] = TRUE;
+if(password_verify($password, $row['password_hash'])){
+    $_SESSION['authorised'] = TRUE;
     $_SESSION['account_id'] = $row['id'];
-    header('Location: myaccount.php');
+    header('Location: accountslist.php');
     exit;
 }
 else{
-    header('Location: index.php?error=1');
+    header('Location: index.php');
     exit;
 }
 
