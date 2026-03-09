@@ -7,14 +7,11 @@ if($_SESSION['authorised'] !== TRUE){
     exit;
 
 }
-$sql = "SELECT t.sender_id, t.receiver_id, t.type, t.amount, t.currency, t.transaction_date,u.firstname from transactions t
-inner join users u
-where t.sender_id =:sender_id and u.id = :sender_id or t.receiver_id=:receiver_id and u.id = :receiver_id";
+$sql = "SELECT t.sender_id, t.receiver_id, t.type, t.amount, t.currency, t.transaction_date,s.firstname as sender_name,r.firstname as receiver_name from transactions t
+INNER JOIN users s ON t.sender_id = s.id
+INNER JOIN users r ON t.receiver_id = r.id";
 $stmt = $pdo->prepare($sql);
-$stmt->execute(array(
-    ':sender_id'=> null,
-    ':receiver_id'=> $_SESSION['user_id'],
-));
+$stmt->execute();
 $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
 print_r($rows);
 ?>
@@ -43,10 +40,10 @@ print_r($rows);
             echo htmlentities($row['type']);
             echo'</td>';
             echo '<td>';
-            echo htmlentities($row['firstname']);
+            echo htmlentities($row['sender_name']);
             echo'</td>';
             echo '<td>';
-            echo htmlentities($row['firstname']);
+            echo htmlentities($row['receiver_name']);
             echo'</td>';
             echo '<td>';
             echo htmlentities($row['amount']);
