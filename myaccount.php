@@ -9,6 +9,7 @@ else{
     $_SESSION['login'] = TRUE;
 
 }
+$_SESSION['account_id'] = $_GET['account'];
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -97,3 +97,34 @@ input[type="submit"]:hover {
     text-align: center;
     border-radius: 3px;
 }
+
+.user-accounts{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin-bottom: 25px;
+    background-color: rgb(199, 249, 245);
+    box-shadow: 10px 10px 5px rgb(190, 190, 190);
+    border-radius: 10px;
+    height: 100%;
+}
+
+.open-acc-btn{
+    margin-top: auto;      /* pushes button area to the bottom */
+    display: flex;
+    justify-content: flex-end; /* moves button to the right */
+    margin-bottom: 5%;
+}
+
+.user-accounts a {
+    background-color: #2d89ef;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    width: fit-content;    /* button keeps its natural width */
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-decoration: none;
+}

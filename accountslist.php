@@ -19,22 +19,25 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <title>Document</title>
 </head>
 <body>
-    <div class="container">
+    <section class="user-options">
         <?php 
         foreach($rows as $row){
-            echo '<section class="account">';
+            echo '<section class="user-accounts">';
             echo '<p>name</p>';
             echo'<p>balance'.$row['balance'].'</p>';
+            echo'<div class="open-acc-btn">';
             echo'<a href="myaccount.php?account='.$row['account_id'].'">open</a>';
+            echo'</div>';
             echo'</section>';
         }
         
         ?>
-        <section class="add-account">
-            <form action="addnewwallet.php" method="post">
+        
+    </section>
+    <section class="add-account">
+            <form action="addnewwallets.php" method="post">
                 <input type="submit" value="add account">
             </form>
         </section>
-    </div>
 </body>
 </html>

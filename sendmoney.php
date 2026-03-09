@@ -2,7 +2,7 @@
 require_once 'pdo.php';
 require_once 'check_positive_balance.php';
 session_start();
-if (!isset($_SESSION['authorised']) || $_SESSION['authorized'] !== true) {
+if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     header('Location: login.php');
     exit;
 }

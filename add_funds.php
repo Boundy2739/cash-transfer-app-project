@@ -16,13 +16,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     try{
 
     
-    $sql = "SELECT * from accounts where id =:id";
+    $sql = "SELECT * from accounts where account_id =:id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':id'=>$_SESSION['account_id']]);
     $account = $stmt->fetch(PDO::FETCH_ASSOC);
     print_r($account);
     $account['balance'] = $account['balance'] + $amount;
-    $sql = "UPDATE accounts set balance = :balance WHERE id=:id";
+    $sql = "UPDATE accounts set balance = :balance WHERE account_id=:id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(array(
         ':balance'=>$account['balance'],
@@ -33,11 +33,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $stmt = $pdo->prepare($sql);
     $stmt->execute(array(
         ':sender_id'=> null,
-        ':receiver_id'=> $_SESSION['account_id'],
+        ':receiver_id'=> $_SESSION['user_id'],
         ':type'=> 'Deposit',
         ':amount'=> $amount,
         ':currency'=> 'Euro',
-        ':status'=> 'Successful'
+        ':status'=> 'Successful',
 
 
 
