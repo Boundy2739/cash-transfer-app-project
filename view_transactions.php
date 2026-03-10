@@ -9,9 +9,10 @@ if($_SESSION['authorised'] !== TRUE){
 }
 $sql = "SELECT t.sender_id, t.receiver_id, t.type, t.amount, t.currency, t.transaction_date,s.firstname as sender_name,r.firstname as receiver_name from transactions t
 INNER JOIN users s ON t.sender_id = s.id
-INNER JOIN users r ON t.receiver_id = r.id";
+INNER JOIN users r ON t.receiver_id = r.id
+WHERE t.sender_id = :id or t.receiver_id = :id";
 $stmt = $pdo->prepare($sql);
-$stmt->execute();
+$stmt->execute([':id'=>$_SESSION['user_id']]);
 $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
 print_r($rows);
 ?>
