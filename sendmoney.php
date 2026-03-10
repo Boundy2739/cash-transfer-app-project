@@ -19,7 +19,24 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $stmt->execute([':id'=>$_SESSION['account_id']]);
         $sender = $stmt->fetch(PDO::FETCH_ASSOC);
         $funds = checkFunds($sender['balance'],$amount);
+        
         if($funds === TRUE){
+            
+            $recipientUsername = str_replace(" ","",$_POST['recipient-username']);
+            $sql = "SELECT id from users where username=:username";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':username'=>$recipientUsername]);
+            $recipientID =  $stmt->fetch(PDO::FETCH_ASSOC);
+            print_r($recipientID);
+            if ($recipientID === false) {
+                throw new Exception ("Account does not exist.");
+            }
+            print_r("hi");
+            $sql ="SELECT * from accounts where owner_id=:owner_id and is_default = TRUE";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':owner_id'=>$recipientID['id']]);
+            $recipientAcc = $stmt->fetch(PDO::FETCH_ASSOC);
+
             $sender['balance'] = $sender['balance'] - $amount;
             $sql = "UPDATE accounts set balance = :balance WHERE account_id=:id";
             $stmt = $pdo->prepare($sql);
@@ -27,39 +44,34 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 ':balance'=>$sender['balance'],
                 ':id'=>$_SESSION['account_id'],
             ));
-            $recipientID = $_POST['accnumber'];
-            $sql = "SELECT * from accounts where account_id=:id";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([':id'=>$recipientID]);
-            $recipient =  $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($recipient === false) {
-                echo "Account does not exist.";
-                die("Transaction failed");
-            }
+            
+
+            
             print_r("hi");
-            $recipient['balance'] = $recipient['balance'] + $amount;
+            $recipientAcc['balance'] = $recipientAcc['balance'] + $amount;
             $sql = "UPDATE accounts set balance = :balance WHERE account_id=:id";
             $stmt = $pdo->prepare($sql);
             $stmt->execute(array(
-                ':balance'=>$recipient['balance'],
-                ':id'=>$_POST['accnumber'],
+                ':balance'=>$recipientAcc['balance'],
+                ':id'=>$recipientAcc['account_id'],
             ));
-            print_r($recipient);
-            print_r("testtttt");
+            print_r($recipientAcc);
+            /*print_r("testtttt");
             $sql = "SELECT owner_id from accounts where account_id =:id";
             print_r("testtttt");
             $stmt = $pdo->prepare($sql);
             print_r("testtttt");
-            $stmt->execute([':id'=>$recipientID]);
+            $stmt->execute([':id'=>$recipientID['id']]);
             print_r("testtttt");
             $recipientID = $stmt->fetch(PDO::FETCH_ASSOC);
-            print_r($recipientID);
+            print_r("dahdalk");
+            print_r($recipientID);*/
             $sql = "INSERT into transactions(sender_id,receiver_id,type,amount,currency,status) 
                     VALUES (:sender_id,:receiver_id,:type,:amount,:currency,:status)";
             $stmt = $pdo->prepare($sql);
             $stmt->execute(array(
                 ':sender_id'=> $_SESSION['user_id'],
-                ':receiver_id'=> $recipientID['owner_id'],
+                ':receiver_id'=> $recipientID['id'],
                 ':type'=> 'transfer',
                 ':amount'=> $amount,
                 ':currency'=> 'EUR',
@@ -71,13 +83,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $pdo->commit();
         }
         else{
-            die('Not enough funds!');
+            throw new Exception("Not enough funds!");
         }
         
     }
     catch (Exception $e) {
-        $pdo->rollBack();
-        die("Transaction failed.");
+        if ($pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
+        die("Transaction failed: " . $e->getMessage());
     }
 }
 ?>
@@ -98,8 +112,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         <input type="text" id="firstname" name="firstname">
         <label for="surname">Surname</label>
         <input type="text" id="surname" name="surname">
-        <label for="accnumber">Recipient Account number</label>
-        <input type="text" id="accnumber" name="accnumber" placeholder="insert the account number">
+        <label for="recipient-username">Recipient's username</label>
+        <input type="text" id="recipient-username" name="recipient-username" placeholder="insert the recipient's">
         <label for="amount">Amount</label>
         <input type="number" id="amount" name="amount" min="1" step="0.01" placeholder="Enter amount" required>
         <input type="submit" value="send money">

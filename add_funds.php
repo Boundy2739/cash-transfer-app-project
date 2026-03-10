@@ -12,8 +12,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if($amount === false || $amount < 0){
         die('Invalid amount.');
     }
-    $pdo->beginTransaction();
+   
     try{
+        $pdo->beginTransaction();
 
     
     $sql = "SELECT * from accounts where account_id =:id";
