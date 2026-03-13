@@ -56,16 +56,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 ':id'=>$recipientAcc['account_id'],
             ));
             print_r($recipientAcc);
-            /*print_r("testtttt");
-            $sql = "SELECT owner_id from accounts where account_id =:id";
-            print_r("testtttt");
-            $stmt = $pdo->prepare($sql);
-            print_r("testtttt");
-            $stmt->execute([':id'=>$recipientID['id']]);
-            print_r("testtttt");
-            $recipientID = $stmt->fetch(PDO::FETCH_ASSOC);
-            print_r("dahdalk");
-            print_r($recipientID);*/
             $sql = "INSERT into transactions(sender_id,receiver_id,type,amount,currency,status) 
                     VALUES (:sender_id,:receiver_id,:type,:amount,:currency,:status)";
             $stmt = $pdo->prepare($sql);
