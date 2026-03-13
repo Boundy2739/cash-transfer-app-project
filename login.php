@@ -26,7 +26,7 @@ if(password_verify($password, $row['password_hash'])){
     $_SESSION['authorised'] = TRUE;
     $_SESSION['user_id'] = $row['id'];
     $_SESSION['login'] = TRUE;
-    header('Location: accountslist.php');
+    header('Location: myaccount.php');
     exit;
 }
 else{

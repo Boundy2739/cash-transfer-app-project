@@ -19,6 +19,16 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <title>Document</title>
 </head>
 <body>
+    <header>
+    <nav class="navigation-bar">
+        <a href="myaccount.php">Dashboard</a>
+        <a href="accountslist.php">Accounts</a>
+        <a href="sendmoney.php">Send Money</a></li>
+        <a href="view_transactions.php">Transactions</a>
+        <a href="profile.php">Profile</a>
+        <a href="logout.php">Logout</a>
+    </nav>
+    </header>
     <section class="user-options">
         <?php 
         foreach($rows as $row){
