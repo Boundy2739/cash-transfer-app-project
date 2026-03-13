@@ -30,6 +30,7 @@ if(password_verify($password, $row['password_hash'])){
     exit;
 }
 else{
+    $_SESSION['errorMessage'] = TRUE;
     header('Location: index.php');
     exit;
 }

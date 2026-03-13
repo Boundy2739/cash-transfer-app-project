@@ -36,7 +36,7 @@ $_SESSION['account_id'] = $_GET['account'];
             <li><a href="sendmoney.php">Send money</a></li>
             <li><a href="view_transactions.php">View transactions</a></li>
             <li><a href="sendmoney.php">Add funds</a></li>
-            <li><a href="sendmoney.php">Change password</a></li>
+            <li><a href="currentpassword.php">Change password</a></li>
             <li><a href="sendmoney.php">Freeze account</a></li>
             <li><a href="logout.php">Logout</a></li>
         </ul>
