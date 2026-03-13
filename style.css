@@ -57,7 +57,16 @@ input[type="submit"]:hover {
 }
 .navigation-bar a{
     margin-left:40px;
+    padding: 10px;
+    text-decoration: none;
+    color: black;
 }
+
+.navigation-bar a:hover {
+    background-color: #adcfff;
+    transition-duration: 1s;
+    border-radius: 10px;
+  }
 .user-options {
     width: 320px;
     margin: 30px auto;
