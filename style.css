@@ -48,6 +48,16 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: #1b5fbd;
 }
+.navigation-bar{
+    display: flex;
+    background-color: white;
+    justify-content: center;
+    padding:20px;
+    gap: 10x;
+}
+.navigation-bar a{
+    margin-left:40px;
+}
 .user-options {
     width: 320px;
     margin: 30px auto;
