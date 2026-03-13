@@ -6,6 +6,12 @@ if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     header('Location: login.php');
     exit;
 }
+$sql = "SELECT * from accounts where owner_id = :id";
+$stmt = $pdo->prepare($sql);
+$stmt->execute(array(
+    ":id"=>$_SESSION['user_id']
+));
+$rows = $stmt->fetchall(PDO::FETCH_ASSOC);
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $amount = filter_input(INPUT_POST, 'amount', FILTER_VALIDATE_FLOAT);
     if($amount === false || $amount < 0){
@@ -16,7 +22,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $pdo->beginTransaction();
         $sql = "SELECT * from accounts where account_id =:id";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([':id'=>$_SESSION['account_id']]);
+        $stmt->execute([':id'=>$_POST['chosen-account']]);
         $sender = $stmt->fetch(PDO::FETCH_ASSOC);
         $funds = checkFunds($sender['balance'],$amount);
         
@@ -42,7 +48,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $stmt = $pdo->prepare($sql);
             $stmt->execute(array(
                 ':balance'=>$sender['balance'],
-                ':id'=>$_SESSION['account_id'],
+                ':id'=>$_POST['chosen-account'],
             ));
             
 
@@ -98,10 +104,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 <body>
     <h1>Cash transfer app</h1>
     <form action="" method="POST">
-        <label for="firstname">Name</label>
-        <input type="text" id="firstname" name="firstname">
-        <label for="surname">Surname</label>
-        <input type="text" id="surname" name="surname">
+        <select name="chosen-account" id="chosen-account">
+            <option value="none"></option>
+            <?php
+            foreach($rows as $row){
+                echo "<option value='".htmlspecialchars($row['account_id'])."'>".htmlspecialchars($row['account_name'])."</option>";
+            }
+            
+            ?>
+        </select>
         <label for="recipient-username">Recipient's username</label>
         <input type="text" id="recipient-username" name="recipient-username" placeholder="insert the recipient's">
         <label for="amount">Amount</label>
