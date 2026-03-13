@@ -39,7 +39,7 @@ else{
     <form method="POST" action="">
     <?php if(isset($_SESSION['errorMessage'])){
                 echo "<p  class='wrong-login'>
-                Wrong password!
+                ".$_SESSION['errorMessage']."
               </p>";
               unset($_SESSION['errorMessage']);
             }
