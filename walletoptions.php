@@ -5,18 +5,24 @@ if ($_SESSION['authorised'] !== TRUE) {
     header('Location: myaccount.php');
     exit;
 }
- 
+$sql = "SELECT account_name,balance,is_default from accounts where account_id =:id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':id' => $_GET['account']]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            print_r($result);
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
+
 <body>
-<nav class="navigation-bar">
+    <nav class="navigation-bar">
         <a href="myaccount.php">Dashboard</a>
         <a href="accountslist.php">Accounts</a>
         <a href="sendmoney.php">Send Money</a></li>
@@ -25,25 +31,29 @@ if ($_SESSION['authorised'] !== TRUE) {
         <a href="logout.php">Logout</a>
     </nav>
 
+    <section class="account-header">
+        <?php 
+        echo'<h2 class="account-name">'.$result['account_name'].'</h2>';
+        echo'<div class="account-info">';
+        echo'<span class="balance-label">Current Balance:</span>';
+        echo'<span class="balance-amount">'." £".$result['balance'].'</span></div>';
+        
+        ?>     
+    </section>
+
     <section class="user-options">
         <ul>
             <li><a href="add_funds.php">Add funds</a></li>
             <li><a href="transfer.php">Transfer</a></li>
-            <?php 
-            $sql = "SELECT is_default from accounts where account_id =:id";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([':id'=>$_GET['account']]);
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            print_r($result);
-
-            if($result['is_default'] === 0){
-                echo'<li><a href="setdefaultaccount.php?account='.$_GET['account'].'">Set account as default</a></li>';
-
+            <?php
+            if ($result['is_default'] === 0) {
+                echo '<li><a href="setdefaultaccount.php?account=' . $_GET['account'] . '">Set account as default</a></li>';
             };
             ?>
-            
+
         </ul>
     </section>
-    
+
 </body>
+
 </html>
