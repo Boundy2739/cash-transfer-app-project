@@ -36,8 +36,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo '<p>name</p>';
             echo'<p>balance'.$row['balance'].'</p>';
             echo'<div class="open-acc-btn">';
-            echo'<a href="myaccount.php?account='.$row['account_id'].'">open</a>';
-            echo'<a href="setdefaultaccount.php?account='.$row['account_id'].'">set as default</a>';
+            echo'<a href="walletoptions.php?account='.$row['account_id'].'">view</a>';
             echo'</div>';
             echo'</section>';
         }
