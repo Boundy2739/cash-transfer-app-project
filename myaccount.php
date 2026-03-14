@@ -37,14 +37,7 @@ if ($_SESSION['authorised'] !== TRUE) {
     echo 'Greetings ' . $user['firstname'] . ' !';
     print_r($_SESSION);
     ?>
-    <section class="user-options">
-        <ul>
-            <li><a href="add_funds.php">Add funds</a></li>
-            <li><a href="currentpassword.php">Change password</a></li>
-            <li><a href="sendmoney.php">Freeze account</a></li>
-            <li><a href="logout.php">Logout</a></li>
-        </ul>
-    </section>
+    
 </body>
 
 </html>
