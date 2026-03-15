@@ -4,8 +4,6 @@ session_start();
 if ($_SESSION['authorised'] !== TRUE) {
     header('Location: index.php');
     exit;
-} else {
-    $_SESSION['login'] = TRUE;
 }
 
 ?>
