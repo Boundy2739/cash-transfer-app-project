@@ -1,6 +1,5 @@
 <?php
 require_once 'pdo.php';
-require_once 'check_positive_balance.php';
 session_start();
 if ($_SESSION['authorised'] !== TRUE || empty($_SESSION['current_account'])) {
     header('Location: walletoptions.php');
@@ -31,31 +30,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([':id' => $_POST['chosen-account']]);
         $chosenAcc = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $funds = checkFunds($currentAcc['balance'], $amount);
-        if ($funds === TRUE) {
+        if ($currentAcc['account_id'] === $chosenAcc['account_id']) {
+            throw new Exception("You cant transfer to the same account");
+        }
 
-            $currentAcc['balance'] = $currentAcc['balance'] - $amount;
-
-            $chosenAcc['balance'] = $chosenAcc['balance'] + $amount;
-
-            $sql = "UPDATE accounts SET balance =:balance where account_id =:id";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute(array(
-                ":balance" => $currentAcc['balance'],
-                ":id" => $currentAcc['account_id']
-            ));
-
-            $sql = "UPDATE accounts SET balance =:balance where account_id =:id";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute(array(
-                ":balance" => $chosenAcc['balance'],
-                ":id" => $chosenAcc['account_id']
-            ));
-            $pdo->commit();
-            print_r("Transaction successful");
-        } else {
+        if ($ammount > $currentAcc['balance']) {
             throw new Exception("Not enough funds!");
         }
+
+
+        $currentAcc['balance'] = $currentAcc['balance'] - $amount;
+
+        $chosenAcc['balance'] = $chosenAcc['balance'] + $amount;
+
+        $sql = "UPDATE accounts SET balance =:balance where account_id =:id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(array(
+            ":balance" => $currentAcc['balance'],
+            ":id" => $currentAcc['account_id']
+        ));
+
+        $sql = "UPDATE accounts SET balance =:balance where account_id =:id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(array(
+            ":balance" => $chosenAcc['balance'],
+            ":id" => $chosenAcc['account_id']
+        ));
+        $pdo->commit();
+        print_r("Transaction successful");
     } catch (Exception $e) {
         if ($pdo->inTransaction()) {
             $pdo->rollBack();
@@ -82,9 +84,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <option value="">Choose an account</option>
             <?php
             foreach ($rows as $row) {
-                if($row['account_id'] != $_SESSION['current_account']){
-                echo "<option value='" . htmlspecialchars($row['account_id']) . "'>" . htmlspecialchars($row['account_name']) . "</option>";
-            }}
+                if ($row['account_id'] != $_SESSION['current_account']) {
+                    echo "<option value='" . htmlspecialchars($row['account_id']) . "'>" . htmlspecialchars($row['account_name']) . "</option>";
+                }
+            }
 
             ?>
 
