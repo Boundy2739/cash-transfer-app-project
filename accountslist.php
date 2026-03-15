@@ -8,6 +8,7 @@ $sql = "SELECT * from accounts where owner_id = :owner_id";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':owner_id'=>$_SESSION['user_id']]);
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+unset($_SESSION['current_account']);
 ?>
 
 <!DOCTYPE html>

@@ -5,6 +5,7 @@ if ($_SESSION['authorised'] !== TRUE) {
     header('Location: myaccount.php');
     exit;
 }
+$_SESSION['current_account'] = $_GET['account'];
 $sql = "SELECT account_name,balance,is_default from accounts where account_id =:id";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([':id' => $_GET['account']]);
@@ -28,7 +29,6 @@ $sql = "SELECT account_name,balance,is_default from accounts where account_id =:
         <a href="sendmoney.php">Send Money</a></li>
         <a href="view_transactions.php">Transactions</a>
         <a href="profile.php">Profile</a>
-        <a href="logout.php">Logout</a>
     </nav>
 
     <section class="account-header">
@@ -47,7 +47,7 @@ $sql = "SELECT account_name,balance,is_default from accounts where account_id =:
             <li><a href="transfer.php">Transfer</a></li>
             <?php
             if ($result['is_default'] === 0) {
-                echo '<li><a href="setdefaultaccount.php?account=' . $_GET['account'] . '">Set account as default</a></li>';
+                echo '<li><a href="setdefaultaccount.php?account=' . $_SESSION['current_account'] . '">Set account as default</a></li>';
             };
             ?>
 

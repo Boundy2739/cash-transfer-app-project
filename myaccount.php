@@ -26,7 +26,6 @@ if ($_SESSION['authorised'] !== TRUE) {
         <a href="sendmoney.php">Send Money</a></li>
         <a href="view_transactions.php">Transactions</a>
         <a href="profile.php">Profile</a>
-        <a href="logout.php">Logout</a>
     </nav>
 
     <?php
