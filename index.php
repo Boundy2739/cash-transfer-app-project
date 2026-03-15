@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-if(isset($_SESSION['login']) && $_SESSION['login'] === TRUE){
+if(isset($_SESSION['autorised']) && $_SESSION['authorised'] === TRUE){
     header('Location: accountslist.php');
 }
 ?>
