@@ -5,6 +5,17 @@ if ($_SESSION['authorised'] !== TRUE) {
     header('Location: myaccount.php');
     exit;
 }
+$sql = "SELECT account_id from accounts WHERE account_id=:account_id AND owner_id=:owner_id";
+$stmt = $pdo->prepare($sql);
+$stmt->execute(array(
+    ':owner_id'=>$_SESSION['user_id'],
+    ':account_id'=>$_GET['account']
+));
+$result = $stmt->fetch(PDO::FETCH_ASSOC);
+if(!$result){
+    header('Location: myaccount.php');
+    exit;
+}
 $_SESSION['current_account'] = $_GET['account'];
 $sql = "SELECT account_name,balance,is_default from accounts where account_id =:id";
             $stmt = $pdo->prepare($sql);
