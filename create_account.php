@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require_once 'pdo.php';
 require_once 'guid_generator.php';
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
@@ -22,22 +22,46 @@ if (
 
 ){
     print_r($_POST);
-    die("All fields are required.");
+    $_SESSION['errorMessage'] = 'All fields are required';
+    header("Location: register.php");
+    exit;
 }
 $uuid = guidv4(); 
 $fname = $_POST['firstname'];
 $lname = $_POST['surname'];
 $phone = $_POST['phonenumber'];
 $email = $_POST['email'];
-$address = $_POST['address1'];
-$address2 = $_POST['address2'];
+$street = $_POST['address1'];
+$houseNumber = $_POST['address2'];
 $city = $_POST['city'];
 $dob= $_POST['dob'];
-$postcode = $_POST['postcode'];
+$date = DateTime::createFromFormat('Y-m-d', $dob);
+$postcode = preg_replace('/[^a-zA-Z0-9\s]/', '',$_POST['postcode']);
+$postcode = preg_replace('/\s+/', ' ', trim($postcode));
+if(!preg_match('/^(?=.*\d)(?=.*[@#\-_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!\?]{8,20}$/',$_POST['pwd'])){
+ $_SESSION['errorMessage'] = 'Invalid password';
+ header('Location: register.php');
+ exit;
+}
+
 $password = password_hash($_POST['pwd'],PASSWORD_DEFAULT);
 $mname = $_POST['middlename'];
 $username = $_POST['username'];
-if(filter_var($email,FILTER_VALIDATE_EMAIL)){
+if(filter_var($email,FILTER_VALIDATE_EMAIL) &&
+   preg_match('/^[0-9+\s()-]+$/', $houseNumber) &&
+   preg_match('/^[0-9+\s()-]+$/', $phone) &&
+   preg_match('/^[a-zA-Z]+$/', $fname) &&
+   preg_match('/^[a-zA-Z]+$/', $mname) &&
+   preg_match('/^[a-zA-Z]+$/', $lname) &&
+   preg_match('/^[a-zA-Z\s]+$/', $city) &&
+   $date && $date->format('Y-m-d') === $dob &&
+   preg_match('/^[a-zA-Z\s]+$/', $street) &&
+   preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,20}$/',$username)
+   
+
+
+
+){
     $sql = "INSERT INTO users (id,firstname,middlename,lastname,username,phone,email,password_hash,date_of_birth,address_street_name,address_house_number,city,postcode) 
                 VALUES (:id,:firstname,:middlename,:lastname,:username,:phone,:email,:password_hash,:date_of_birth,:address_street_name,:address_house_number,:city,:postcode)";
     $stmt = $pdo->prepare($sql);
@@ -57,12 +81,16 @@ if(filter_var($email,FILTER_VALIDATE_EMAIL)){
         ':password_hash'=>$password,
 
 
-    ));
-
+    ));}
+else{
+    $_SESSION['errorMessage'] = 'Invalid format';
+    header('Location: register.php');
+    exit;
+}
 header('Location: acccreationsuccess.html');
         exit;
 
-}
+
 
 ?>
 
