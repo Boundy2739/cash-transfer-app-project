@@ -14,7 +14,9 @@ session_start();
 <body>
     <h1>Create account</h1>
     <form action="create_account.php" method="POST">
-        <?php if (isset($_SESSION['errorMessage'])) {
+        <?php 
+        /*Shows error message to the user*/
+        if (isset($_SESSION['errorMessage'])) {
             echo "<p  class='wrong-login'>
                 ".$_SESSION['errorMessage']."
               </p>";

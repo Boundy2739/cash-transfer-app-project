@@ -5,6 +5,8 @@ if ($_SESSION['authorised'] !== TRUE) {
     header('Location: myaccount.php');
     exit;
 }
+/*Selects the wallet where both the wallet id and owner id match respectively the ID in the URL and the id of the logged user
+this is to prevent the user from accessing someone elses wallet by changing the URL*/
 $sql = "SELECT account_id from accounts WHERE account_id=:account_id AND owner_id=:owner_id";
 $stmt = $pdo->prepare($sql);
 $stmt->execute(array(
@@ -16,7 +18,9 @@ if(!$result){
     header('Location: myaccount.php');
     exit;
 }
-$_SESSION['current_account'] = $_GET['account'];
+$_SESSION['current_account'] = $_GET['account']; /*Stores the wallet ID from the URL in the session which will be used for other transactions later */
+
+/*Selects the infos of the wallet that will be displayed on the page */
 $sql = "SELECT account_name,balance,is_default from accounts where account_id =:id";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([':id' => $_GET['account']]);
@@ -44,6 +48,7 @@ $sql = "SELECT account_name,balance,is_default from accounts where account_id =:
 
     <section class="account-header">
         <?php 
+        /*Displays the name of the wallet and the current balance on screen */
         echo'<h2 class="account-name">'.$result['account_name'].'</h2>';
         echo'<div class="account-info">';
         echo'<span class="balance-label">Current Balance:</span>';
@@ -57,6 +62,7 @@ $sql = "SELECT account_name,balance,is_default from accounts where account_id =:
             <li><a href="add_funds.php">Add funds</a></li>
             <li><a href="transfer.php">Transfer</a></li>
             <?php
+            /*Will display the option to set the wallet as default if it is not set yet */
             if ($result['is_default'] === 0) {
                 echo '<li><a href="setdefaultaccount.php?account=' . $_SESSION['current_account'] . '">Set account as default</a></li>';
             };

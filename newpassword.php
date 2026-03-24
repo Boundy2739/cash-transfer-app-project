@@ -7,13 +7,16 @@ if($_SESSION['authorised']!==TRUE){
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    /*Checks if the user is trying to submit an empty form */
     if(empty($_POST['new-pwd']) || empty($_POST['confirm-pwd'])){
         $_SESSION['errorMessage'] = "All field are required!";
     }
+    /*Checks if the passwords given mathch */
     elseif($_POST['new-pwd'] != $_POST['confirm-pwd']){
         $_SESSION['errorMessage'] = "Passwords dont match!";
     
     }
+    /*If the password is correct the update will occur*/
     else{
         $newpwd = password_hash($_POST['new-pwd'],PASSWORD_DEFAULT);
         $sql = "UPDATE users SET password_hash=:password_hash where id =:id";
@@ -41,7 +44,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </head>
 <body>
     <form action="" method="POST">
-    <?php if(isset($_SESSION['errorMessage'])){
+    <?php 
+    /*Shows error message to the user*/
+    if(isset($_SESSION['errorMessage'])){
                 echo "<p  class='wrong-login'>
                 ".$_SESSION['errorMessage']."
               </p>";

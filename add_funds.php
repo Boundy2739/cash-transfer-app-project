@@ -1,51 +1,50 @@
-<?php 
+<?php
 require_once 'pdo.php';
 
 
 session_start();
-if($_SESSION['authorised']!==TRUE){
+if ($_SESSION['authorised'] !== TRUE) {
     header('Location: loggedin.php');
     exit;
 }
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $amount = filter_input(INPUT_POST, 'amount', FILTER_VALIDATE_FLOAT);
-    if($amount === false || $amount < 0){
+    if ($amount === false || $amount < 0) {
         die('Invalid amount.');
     }
-   
-    try{
+
+    try {
         $pdo->beginTransaction();
 
-    
-    $sql = "SELECT * from accounts where account_id =:id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([':id'=>$_SESSION['account_id']]);
-    $account = $stmt->fetch(PDO::FETCH_ASSOC);
-    print_r($account);
-    $account['balance'] = $account['balance'] + $amount;
-    $sql = "UPDATE accounts set balance = :balance WHERE account_id=:id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(array(
-        ':balance'=>$account['balance'],
-        ':id'=>$_SESSION['account_id'],
-    ));
-    $sql = "INSERT into transactions(sender_id,receiver_id,type,amount,currency,status) 
+
+        $sql = "SELECT * from accounts where account_id =:id FOR UPDATE"; /*Selects the row that contains the correct wallet and locks it to prevent race conditions */
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':id' => $_SESSION['account_id']]);
+        $account = $stmt->fetch(PDO::FETCH_ASSOC);
+        print_r($account);
+        $account['balance'] = $account['balance'] + $amount;
+        $sql = "UPDATE accounts set balance = :balance WHERE account_id=:id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(array(
+            ':balance' => $account['balance'],
+            ':id' => $_SESSION['account_id'],
+        ));
+        $sql = "INSERT into transactions(sender_id,receiver_id,type,amount,currency,status) 
     VALUES (:sender_id,:receiver_id,:type,:amount,:currency,:status)";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(array(
-        ':sender_id'=> null,
-        ':receiver_id'=> $_SESSION['user_id'],
-        ':type'=> 'Deposit',
-        ':amount'=> $amount,
-        ':currency'=> 'Euro',
-        ':status'=> 'Successful',
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(array(
+            ':sender_id' => null,
+            ':receiver_id' => $_SESSION['user_id'],
+            ':type' => 'Deposit',
+            ':amount' => $amount,
+            ':currency' => 'Euro',
+            ':status' => 'Successful',
 
 
 
-    ));
-    $pdo->commit();
-    }
-    catch (Exception $e) {
+        ));
+        $pdo->commit();
+    } catch (Exception $e) {
         $pdo->rollBack();
         die("Transaction failed.");
     }
@@ -53,12 +52,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add funds</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <h1>Add funds</h1>
     <form action="" method="post">
@@ -67,4 +68,5 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         <input type="submit" value="add funds">
     </form>
 </body>
+
 </html>

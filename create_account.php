@@ -39,24 +39,24 @@ $date = DateTime::createFromFormat('Y-m-d', $dob);
 $postcode = preg_replace('/[^a-zA-Z0-9\s]/', '',$_POST['postcode']);
 $postcode = preg_replace('/\s+/', ' ', trim($postcode));
 if(!preg_match('/^(?=.*\d)(?=.*[@#\-_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!\?]{8,20}$/',$_POST['pwd'])){
- $_SESSION['errorMessage'] = 'Invalid password';
+ $_SESSION['errorMessage'] = 'Invalid password'; /*This ensures that the password meets the requirements*/
  header('Location: register.php');
  exit;
 }
 
-$password = password_hash($_POST['pwd'],PASSWORD_DEFAULT);
+$password = password_hash($_POST['pwd'],PASSWORD_DEFAULT);/*Creates an hash of the password and store it*/
 $mname = $_POST['middlename'];
 $username = $_POST['username'];
-if(filter_var($email,FILTER_VALIDATE_EMAIL) &&
+if(filter_var($email,FILTER_VALIDATE_EMAIL) && /*Checks if the user submitted an email*/
    preg_match('/^[0-9+\s()-]+$/', $houseNumber) &&
-   preg_match('/^[0-9+\s()-]+$/', $phone) &&
+   preg_match('/^[0-9+\s()-]+$/', $phone) && /*Check if phonenumber and house address number do not contain letters */
    preg_match('/^[a-zA-Z]+$/', $fname) &&
    preg_match('/^[a-zA-Z]+$/', $mname) &&
-   preg_match('/^[a-zA-Z]+$/', $lname) &&
-   preg_match('/^[a-zA-Z\s]+$/', $city) &&
-   $date && $date->format('Y-m-d') === $dob &&
+   preg_match('/^[a-zA-Z]+$/', $lname) && /*Checks that person's name and surname do not contain numbers*/
+   preg_match('/^[a-zA-Z\s]+$/', $city) && 
+   $date && $date->format('Y-m-d') === $dob && /*Checks that the data submitted is in the correct format */
    preg_match('/^[a-zA-Z\s]+$/', $street) &&
-   preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,20}$/',$username)
+   preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,20}$/',$username)/*Checks if the username submitted meets the lenght and special char requiremnts */
    
 
 

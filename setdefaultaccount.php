@@ -4,6 +4,7 @@ session_start();
 try{
 print_r("hi");
 $pdo->beginTransaction();
+/*This selects the current defualt wallet owned by the user and set it to not default*/
 $sql = "UPDATE accounts SET is_default =:is_default where is_default = 1 AND owner_id =:id";
 $stmt = $pdo->prepare($sql);
 print_r("hi");
@@ -12,6 +13,7 @@ $stmt->execute(array(
     ':id'=>$_SESSION['user_id']
 ));
 print_r("hi");
+/*This will update the wallet choosen by the user and set it as the new default */
 $sql = "UPDATE accounts SET is_default =:is_default where account_id = :id";
 $stmt = $pdo->prepare($sql);
 print_r("hi");

@@ -27,6 +27,7 @@ if ($_SESSION['authorised'] !== TRUE) {
     </nav>
 
     <?php
+    /*This will echo an heading that greets the user*/
     $sql = "SELECT firstname from users where id = :id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':id' => $_SESSION['user_id']]);

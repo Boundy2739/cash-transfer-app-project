@@ -7,7 +7,7 @@ if($_SESSION['authorised'] !== TRUE){
     header('Location: accountlist.php');
     exit;
 }
-$accountId = guidv4();
+$accountId = guidv4(); /*Creates an unique identifier for the wallet */
 $sql = "INSERT into accounts (account_id,owner_id,balance,currency,status) VALUES (:account_id,:owner_id,:balance,:currency,:status)";
 $stmt = $pdo->prepare($sql);
 $stmt->execute(array(
