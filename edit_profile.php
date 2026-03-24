@@ -103,30 +103,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <h1>Edit your profile</h1>
     <form action="" method="POST">
-        <section>
+        <section class="user-names-section">
             <label for="firstname">First Name</label>
             <input type="text" id="firstname" name="firstname">
             <label for="middlename">Middle name</label>
             <input type="text" id="middlename" name="middlename">
             <label for="surname">Surname</label>
             <input type="text" id="surname" name="surname">
-            <label for="dob">Date of birth</label>
-            <input type="date" id="dob" name="dob">
         </section>
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username">
-
-        <section>
+        <section class="user-phonenumber-section">
             <label for="phonenumber">Phone number</label>
             <input type="tel" id="phonenumber" name="phonenumber">
         </section>
-        <section>
+        <section class="user-email-section">
             <label for="email">Email</label>
             <input type="email" id="email" name="email">
         </section>
 
 
-        <section>
+        <section class="user-address-section">
             <label for="address1">Address line 1</label>
             <input type="text" id="address1" name="address1" placeholder="Address line 1">
             <label for="address2">House number</label>
