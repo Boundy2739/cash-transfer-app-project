@@ -180,3 +180,56 @@ input[type="submit"]:hover {
     box-sizing: border-box;
     text-decoration: none;
 }
+/* user profile edit form*/
+.names-input{
+    display: none;
+}
+
+.names-input.active{
+    display: block;
+}
+
+.phone-input{
+    display: none;
+}
+
+.phone-input.active{
+    display: block;
+}
+
+.email-input{
+    display: none;
+}
+
+.email-input.active{
+    display: block;
+}
+
+.address-input{
+    display: none;
+}
+
+.address-input.active{
+    display: block;
+}
+.profile-item{
+    background-color: #e6e6e6;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius:10px ;
+}
+.edit-btn{
+    margin-top: 10px;
+}
+
+.profile-item label {
+    display: block;
+    margin-top: 10px;
+    font-size: 16px;
+    color: black;
+}
+
+.profile-item p {
+    font-size: 14px;
+    color: #555;
+}

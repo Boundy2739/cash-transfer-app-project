@@ -5,6 +5,10 @@ if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== TRUE) {
     header('Location: myaccount.php');
     exit;
 }
+$sql = "SELECT * from users where id=:id";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([':id' => $_SESSION['user_id']]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fname = trim($_POST['firstname'] ?? '');
     $mname = trim($_POST['middlename'] ?? '');
@@ -13,8 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $number = filter_input(INPUT_POST, $_POST['phonenumber'], FILTER_VALIDATE_INT);
     $street = $_POST['address1'];
     $houseNumber = filter_input(INPUT_POST, $_POST['address2'], FILTER_VALIDATE_INT);
-    $dob = $_POST['dob'];
-    $date = DateTime::createFromFormat('Y-m-d', $dob);
     $city = preg_replace('/[^a-zA-Z\s]/', '', $_POST['city'] ?? '');
     $city = preg_replace('/\s+/', ' ', trim($city));
     $postcode = preg_replace('/[^a-zA-Z0-9\s]/', '', $_POST['postcode']);
@@ -65,10 +67,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $params[':address2'] = $houseNumber;
     }
 
-    if (!empty($dob) && $date && $date->format('Y-m-d') === $dob) {
-        $fields[] = "date_of_birth = :dob";
-        $params[':dob'] = $dob;
-    }
 
     if (!empty($city)) {
         $fields[] = "city = :city";
@@ -103,36 +101,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <h1>Edit your profile</h1>
     <form action="" method="POST">
-        <section class="user-names-section">
+        <section class="profile-item">
             <label for="firstname">First Name</label>
-            <input type="text" id="firstname" name="firstname">
+            <?php echo '<p>' . $user['firstname'] . '</p>' ?>
+            <input type="text" id="firstname" name="firstname" class="names-input">
             <label for="middlename">Middle name</label>
-            <input type="text" id="middlename" name="middlename">
+            <?php echo '<p>' . $user['middlename'] . '</p>' ?>
+            <input type="text" id="middlename" name="middlename" class="names-input">
             <label for="surname">Surname</label>
-            <input type="text" id="surname" name="surname">
+            <?php echo '<p>' . $user['lastname'] . '</p>' ?>
+            <input type="text" id="surname" name="surname" class="names-input">
+            <button class="edit-btn" type="button" onclick="enableEdit('names-input')">Edit</button>
         </section>
-        <section class="user-phonenumber-section">
+        <section class="profile-item">
             <label for="phonenumber">Phone number</label>
-            <input type="tel" id="phonenumber" name="phonenumber">
+            <?php echo '<p>' . $user['phone'] . '</p>' ?>
+            <input type="tel" id="phonenumber" name="phonenumber" class="phone-input">
+            <button class="edit-btn" type="button" onclick="enableEdit('phone-input')">Edit</button>
         </section>
-        <section class="user-email-section">
+        <section class="profile-item">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email">
+            <?php echo '<p>' . $user['email'] . '</p>' ?>
+            <input type="email" id="email" name="email" class="email-input">
+            <button class="edit-btn" type="button" onclick="enableEdit('email-input')">Edit</button>
         </section>
 
 
-        <section class="user-address-section">
+        <section class="profile-item">
             <label for="address1">Address line 1</label>
-            <input type="text" id="address1" name="address1" placeholder="Address line 1">
+            <?php echo '<p>' . $user['address_street_name'] . '</p>' ?>
+            <input type="text" id="address1" name="address1" placeholder="Address line 1" class="address-input">
             <label for="address2">House number</label>
-            <input type="number" id="address2" name="address2" placeholder="Address line 2">
+            <?php echo '<p>' . $user['address_house_number'] . '</p>' ?>
+            <input type="number" id="address2" name="address2" placeholder="Address line 2" class="address-input">
             <label for="city">City</label>
-            <input type="text" id="city" name="city">
+            <?php echo '<p>' . $user['city'] . '</p>' ?>
+            <input type="text" id="city" name="city" class="address-input">
             <label for="postcode">Postcode</label>
-            <input type="text" id="postcode" name="postcode">
+            <?php echo '<p>' . $user['postcode'] . '</p>' ?>
+            <input type="text" id="postcode" name="postcode" class="address-input">
+            <button class="edit-btn" type="button" onclick="enableEdit('address-input')">Edit</button>
         </section>
         <input type="submit" value="apply changes">
     </form>
+    <script>
+       function enableEdit(field){
+        const elements = document.getElementsByClassName(field);
+
+        for (let i = 0; i < elements.length; i++) {
+        elements[i].classList.add('active');
+    }
+       }
+
+    </script>
 </body>
 
 </html>
