@@ -111,19 +111,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="surname">Surname</label>
             <?php echo '<p>' . $user['lastname'] . '</p>' ?>
             <input type="text" id="surname" name="surname" class="names-input">
-            <button class="edit-btn" type="button" onclick="enableEdit('names-input')">Edit</button>
+            <button id="edit-names" type="button" onclick="enableEdit('names-input','submit-names','edit-names','cancel-btn-names')">Edit</button>
+            <button id="cancel-btn-names" type="button" onclick="disableEdit('names-input active','submit-names','edit-names','cancel-btn-names')">Cancel</button>
+            <input type="submit" value="apply changes" id="submit-names">
         </section>
         <section class="profile-item">
             <label for="phonenumber">Phone number</label>
             <?php echo '<p>' . $user['phone'] . '</p>' ?>
             <input type="tel" id="phonenumber" name="phonenumber" class="phone-input">
-            <button class="edit-btn" type="button" onclick="enableEdit('phone-input')">Edit</button>
+            <button id="edit-phone" type="button" onclick="enableEdit('phone-input','submit-phone','edit-phone','cancel-btn-phone')">Edit</button>
+            <button id="cancel-btn-phone" type="button" onclick="disableEdit('phone-input active','submit-phone','edit-phone','cancel-btn-phone')">Cancel</button>
+            <input type="submit" value="apply changes" id="submit-phone">
         </section>
         <section class="profile-item">
             <label for="email">Email</label>
             <?php echo '<p>' . $user['email'] . '</p>' ?>
             <input type="email" id="email" name="email" class="email-input">
-            <button class="edit-btn" type="button" onclick="enableEdit('email-input')">Edit</button>
+            <button id="edit-email" type="button" onclick="enableEdit('email-input','submit-email','edit-email','cancel-btn-email')">Edit</button>
+            <button id="cancel-btn-email" type="button" onclick="disableEdit('email-input active','submit-email','edit-email','cancel-btn-email')">Cancel</button>
+            <input type="submit" value="apply changes" id="submit-email">
         </section>
 
 
@@ -140,19 +146,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="postcode">Postcode</label>
             <?php echo '<p>' . $user['postcode'] . '</p>' ?>
             <input type="text" id="postcode" name="postcode" class="address-input">
-            <button class="edit-btn" type="button" onclick="enableEdit('address-input')">Edit</button>
+            <button id="edit-address" type="button" onclick="enableEdit('address-input','submit-address','edit-address','cancel-btn-address')">Edit</button>
+            <button id="cancel-btn-address" type="button" onclick="disableEdit('address-input active','submit-address','edit-address','cancel-btn-address')">Cancel</button>
+            <input type="submit" value="apply changes" id="submit-address">
         </section>
-        <input type="submit" value="apply changes">
     </form>
     <script>
-       function enableEdit(field){
-        const elements = document.getElementsByClassName(field);
+        function enableEdit(field, submitBtn, editBtn, cancelBtn) {
+            const elements = document.getElementsByClassName(field);
 
-        for (let i = 0; i < elements.length; i++) {
-        elements[i].classList.add('active');
-    }
-       }
+            for (let i = 0; i < elements.length; i++) {
+                elements[i].classList.add('active');
+            }
+            document.getElementById(submitBtn).style.display = "inline-block";
+            document.getElementById(cancelBtn).style.display = "inline-block";
+            document.getElementById(editBtn).style.display = "none";
+        }
 
+        function disableEdit(field, submitBtn, editBtn, cancelBtn) {
+            const elements = document.getElementsByClassName(field);
+
+            for (let i = 0; i < elements.length; i++) {
+                elements[i].classList.remove('active');
+            }
+            document.getElementById(submitBtn).style.display = "none";
+            document.getElementById(cancelBtn).style.display = "none";
+            document.getElementById(editBtn).style.display = "inline-block";
+        }
     </script>
 </body>
 

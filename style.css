@@ -233,3 +233,33 @@ input[type="submit"]:hover {
     font-size: 14px;
     color: #555;
 }
+
+#submit-names{
+    display: none;
+}
+#submit-email{
+    display: none;
+}
+
+#submit-address{
+    display: none;
+}
+
+#submit-phone{
+    display: none;
+}
+
+#cancel-btn-names{
+    display: none;
+}
+#cancel-btn-email{
+    display: none;
+}
+
+#cancel-btn-address{
+    display: none;
+}
+
+#cancel-btn-phone{
+    display: none;
+}
