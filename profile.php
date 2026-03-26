@@ -29,8 +29,7 @@ if ($_SESSION['authorised'] !== TRUE) {
 
     <section class="user-options">
         <ul>
-            <li><a href="view_profile.php">View profile</a></li>
-            <li><a href="edit_profile.php">Edit profile</a></li>
+            <li><a href="edit_profile.php">View profile</a></li>
             <li><a href="currentpassword.php">Change password</a></li>
             <li><a href="freezeaccount.php">Freeze account</a></li>
             <li><a href="logout.php">Logout</a></li>

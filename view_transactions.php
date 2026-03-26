@@ -14,7 +14,6 @@ WHERE t.sender_id = :id or t.receiver_id = :id";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':id'=>$_SESSION['user_id']]);
 $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
-print_r($rows);
 ?>
 <!DOCTYPE html>
 <html lang="en">

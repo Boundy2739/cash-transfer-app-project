@@ -32,10 +32,28 @@ if ($_SESSION['authorised'] !== TRUE) {
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':id' => $_SESSION['user_id']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    echo 'Greetings ' . $user['firstname'] . ' !';
-    print_r($_SESSION);
+    echo '<h1>Greetings ' . $user['firstname'] . ' ! </h1>';
     ?>
-    
+    <section>
+        <h2>Account summary</h2>
+        <div>
+            <p>Number of wallets: </p>
+            <p>Total balance: </p>
+            <p>Status: </p>
+        </div>
+    </section>
+    <section>
+        <h2>Recent activity</h2>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Actvity</th>
+                <th>Amount</th>
+                <th>Status</th>
+            </tr>
+        </table>
+    </section>
+
 </body>
 
 </html>

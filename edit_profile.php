@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <h1>Edit your profile</h1>
-    <form action="" method="POST">
+    <form action="" method="POST" onsubmit="return confirmChanges()">
         <section class="profile-item">
             <label for="firstname">First Name</label>
             <?php echo '<p>' . $user['firstname'] . '</p>' ?>
@@ -172,6 +172,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             document.getElementById(submitBtn).style.display = "none";
             document.getElementById(cancelBtn).style.display = "none";
             document.getElementById(editBtn).style.display = "inline-block";
+        }
+
+        function confirmChanges() {
+            return confirm("Are you sure you want to apply these changes?");
         }
     </script>
 </body>
