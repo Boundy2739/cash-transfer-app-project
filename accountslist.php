@@ -34,8 +34,8 @@ unset($_SESSION['current_account']);
         <?php 
         foreach($rows as $row){
             echo '<section class="user-accounts">';
-            echo '<p>name</p>';
-            echo'<p>balance'.$row['balance'].'</p>';
+            echo '<p>'.$row['account_name'].'</p>';
+            echo'<p>balance: £'.$row['balance'].'</p>';
             echo'<div class="open-acc-btn">';
             echo'<a href="walletoptions.php?account='.$row['account_id'].'">view</a>';
             echo'</div>';

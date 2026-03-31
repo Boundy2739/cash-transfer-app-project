@@ -104,28 +104,33 @@ input[type="submit"]:hover {
     align-items: center;
     gap:40px
 }
-
-.account-name {
-    font-size: 22px;
-    font-weight: 600;
-    margin: 0;
+/* dashboard page*/
+.summary-section{
+    background-color: white;
+    padding:20px;
+    
 }
 
-.account-info {
-    text-align: right;
+.activity-table{
+
 }
 
-.balance-label {
-    display: block;
-    font-size: 14px;
-    color: #666;
+.headers-row th{
+    background-color: #a2a2a2;
+    padding:10px;
+    width:fit-content;
+    
+}
+.activity-row{
+    border-bottom: 10px solid;
+    border-color:#333;
+
+}
+.activity-row td{
+    padding:20px;
+    width:fit-content;
 }
 
-.balance-amount {
-    font-size: 24px;
-    font-weight: bold;
-    color: #2e7d32;
-}
 .register-btn{
     border-width: 1px;
     margin-top: 15px;
@@ -150,12 +155,13 @@ input[type="submit"]:hover {
     border-radius: 3px;
 }
 
+/*wallets page section*/
 .user-accounts{
     display: flex;
     flex-direction: column;
     padding: 10px;
     margin-bottom: 25px;
-    background-color: rgb(199, 249, 245);
+    background-color: #e6e6e6;
     box-shadow: 10px 10px 5px rgb(190, 190, 190);
     border-radius: 10px;
     height: 100%;
@@ -179,6 +185,28 @@ input[type="submit"]:hover {
     border-radius: 4px;
     box-sizing: border-box;
     text-decoration: none;
+}
+
+.account-name {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.account-info {
+    text-align: right;
+}
+
+.balance-label {
+    display: block;
+    font-size: 14px;
+    color: #666;
+}
+
+.balance-amount {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2e7d32;
 }
 /* user profile edit form*/
 .names-input{

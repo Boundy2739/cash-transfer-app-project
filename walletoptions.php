@@ -61,6 +61,7 @@ $sql = "SELECT account_name,balance,is_default from accounts where account_id =:
         <ul>
             <li><a href="add_funds.php">Add funds</a></li>
             <li><a href="transfer.php">Transfer</a></li>
+            <li><a href="changewalletname.php">Change wallet's name</a></li>
             <?php
             /*Will display the option to set the wallet as default if it is not set yet */
             if ($result['is_default'] === 0) {

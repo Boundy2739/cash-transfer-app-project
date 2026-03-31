@@ -34,22 +34,28 @@ if ($_SESSION['authorised'] !== TRUE) {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     echo '<h1>Greetings ' . $user['firstname'] . ' ! </h1>';
     ?>
-    <section>
+    <section class="summary-section">
         <h2>Account summary</h2>
         <div>
-            <p>Number of wallets: </p>
-            <p>Total balance: </p>
-            <p>Status: </p>
+            <p>Number of wallets: 1 </p>
+            <p>Total balance: £999999</p>
+            <p>Status: active </p>
         </div>
     </section>
-    <section>
+    <section class="activity-section">
         <h2>Recent activity</h2>
-        <table>
-            <tr>
+        <table class="activity-table">
+            <tr class="headers-row">
                 <th>Date</th>
                 <th>Actvity</th>
                 <th>Amount</th>
                 <th>Status</th>
+            </tr>
+            <tr class="activity-row">
+                <td>20-03-2026</td>
+                <td>Money sent to Abdoulaye</td>
+                <td>+£500</td>
+                <td>Complete</td>
             </tr>
         </table>
     </section>

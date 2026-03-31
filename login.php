@@ -19,6 +19,8 @@ $email = $_POST['email'];
 $password = $_POST['password'];
 
 $sql = "SELECT * from users where email = :email";
+
+// TODO IMPORTANT VALIDATE EMAIL FIRST
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':email'=>$email]);
 $row = $stmt->fetch(PDO::FETCH_ASSOC);

@@ -4,7 +4,7 @@ require_once 'check_positive_balance.php';
 session_start();
 /*Ensures that the user is logged before accessing this page*/
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
-    header('Location: login.php');
+    header('Location: https://chatgpt.com/');
     exit;
 }
 /*Selects all the wallets where the owner's id matches the logged user id*/
