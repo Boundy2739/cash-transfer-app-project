@@ -5,18 +5,28 @@ if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== TRUE) {
     header('Location: myaccount.php');
     exit;
 }
-$sql = "SELECT * from users where id=:id";
+$sql = "SELECT firstname,middlename,lastname,email,phone,address_street_name,address_house_number,city,postcode from users where id=:id";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':id' => $_SESSION['user_id']]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
+if (!$user) {
+    header('Location: myaccount.php');
+    exit;
+}
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (
+        !isset($_POST['csrf_token'], $_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])
+    ) {
+        header('Location: myaccount.php');
+        exit;
+    }
     $fname = trim($_POST['firstname'] ?? '');
     $mname = trim($_POST['middlename'] ?? '');
     $lname = trim($_POST['lastname'] ?? '');
-    $email = filter_input(INPUT_POST, $_POST['email'], FILTER_VALIDATE_EMAIL);
-    $number = filter_input(INPUT_POST, $_POST['phonenumber'], FILTER_VALIDATE_INT);
+    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+    $number = filter_input(INPUT_POST, 'phonenumber', FILTER_VALIDATE_INT);
     $street = $_POST['address1'];
-    $houseNumber = filter_input(INPUT_POST, $_POST['address2'], FILTER_VALIDATE_INT);
+    $houseNumber = filter_input(INPUT_POST, 'address2', FILTER_VALIDATE_INT);
     $city = preg_replace('/[^a-zA-Z\s]/', '', $_POST['city'] ?? '');
     $city = preg_replace('/\s+/', ' ', trim($city));
     $postcode = preg_replace('/[^a-zA-Z0-9\s]/', '', $_POST['postcode']);
@@ -42,9 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $params[':middlename'] = $mname;
     }
 
-    if (!empty($_POST['surname']) && preg_match('/^[a-zA-Z]+$/', $lname)) {
-        $fields[] = "lastname = :surname";
-        $params[':surname'] = $lname;
+    if (!empty($_POST['lastname']) && preg_match('/^[a-zA-Z]+$/', $lname)) {
+        $fields[] = "lastname = :lastname";
+        $params[':lastname'] = $lname;
     }
 
     if (!empty($email)) {
@@ -101,6 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <h1>Edit your profile</h1>
     <form action="" method="POST" onsubmit="return confirmChanges()">
+        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
         <section class="profile-item">
             <label for="firstname">First Name</label>
             <?php echo '<p>' . $user['firstname'] . '</p>' ?>
@@ -110,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="text" id="middlename" name="middlename" class="names-input">
             <label for="surname">Surname</label>
             <?php echo '<p>' . $user['lastname'] . '</p>' ?>
-            <input type="text" id="surname" name="surname" class="names-input">
+            <input type="text" id="lastname" name=";astname" class="names-input">
             <button id="edit-names" type="button" onclick="enableEdit('names-input','submit-names','edit-names','cancel-btn-names')">Edit</button>
             <button id="cancel-btn-names" type="button" onclick="disableEdit('names-input active','submit-names','edit-names','cancel-btn-names')">Cancel</button>
             <input type="submit" value="apply changes" id="submit-names">
@@ -152,6 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </section>
     </form>
     <script>
+        /*Display input fields for editing user peronal details*/
         function enableEdit(field, submitBtn, editBtn, cancelBtn) {
             const elements = document.getElementsByClassName(field);
 
@@ -162,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             document.getElementById(cancelBtn).style.display = "inline-block";
             document.getElementById(editBtn).style.display = "none";
         }
-
+        /*Hides input fields */
         function disableEdit(field, submitBtn, editBtn, cancelBtn) {
             const elements = document.getElementsByClassName(field);
 

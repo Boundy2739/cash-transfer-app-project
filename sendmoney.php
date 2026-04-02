@@ -27,9 +27,9 @@ if (
     try {
         $pdo->beginTransaction();
         /*Selects the wallet that matches the wallet_id given by the user*/
-        $sql = "SELECT * from accounts where account_id =:id AND owner_id = :owner_id FOR UPDATE";
+        $sql = "SELECT account_id, balance from accounts where account_id =:id AND owner_id = :owner_id FOR UPDATE";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute(array(':id' => $_POST['chosen-account'], 'owner_id' => $_SESSION['user_id']));
+        $stmt->execute(array(':id' => $_POST['chosen-account'], ':owner_id' => $_SESSION['user_id']));
         $sender = $stmt->fetch(PDO::FETCH_ASSOC);
         print_r($sender);
         var_dump($sender['balance'], $amount);
