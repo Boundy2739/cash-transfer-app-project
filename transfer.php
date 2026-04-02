@@ -11,7 +11,7 @@ $sql = "SELECT * from accounts where owner_id =:id";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':id' => $_SESSION['user_id']]);
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['csrf_token'], $_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
     try {
         /*Checks if the amount submitted is valid */
         $pdo->beginTransaction();
@@ -20,16 +20,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception('Invalid amount.');
         }
 
-        /*selects the row where the wallet id matches the id of the wallet the user is currently viewing*/
-        $sql = "SELECT * from accounts where account_id =:id FOR UPDATE";
+        /*selects the row where the wallet id matches the id of the wallet the user has currently open*/
+        $sql = "SELECT * from accounts where account_id =:id and owner_id =:owner_id FOR UPDATE";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([':id' => $_SESSION['current_account']]);
+        $stmt->execute(array(':id' => $_SESSION['current_account'],':owner_id'=>$_SESSION['user_id']));
         $currentAcc = $stmt->fetch(PDO::FETCH_ASSOC);
 
         /*selects the row where the wallet id matches the id of the wallet the user chose from the drop down list*/
-        $sql = "SELECT * from accounts where account_id =:id FOR UPDATE";
+        $sql = "SELECT * from accounts where account_id =:id and owner_id =:owner_id FOR UPDATE";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([':id' => $_POST['chosen-account']]);
+        $stmt->execute(array(':id' => $_POST['chosen-account'],':owner_id'=>$_SESSION['user_id']));
         $chosenAcc = $stmt->fetch(PDO::FETCH_ASSOC);
 
         /*Prevent the user from transfering money to the same wallet they have currently opened*/
@@ -60,14 +60,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ":id" => $chosenAcc['account_id']
         ));
         $pdo->commit();
-        print_r("Transaction successful");
-    } catch (Exception $e) {
+    } 
+    catch (Exception $e) {
         if ($pdo->inTransaction()) {
             $pdo->rollBack();
         }
         die("Transaction failed: " . $e->getMessage());
     }
-};
+}
+else{
+    header('Location: index.php');
+    exit;
+}
 ?>
 
 
@@ -104,6 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ?>
 
         </select>
+        <input type="hidden" name="csrf_token" <?php echo 'value=' . htmlspecialchars($_SESSION['csrf_token']) . '' ?>>
         <label for="amount">Amount</label>
         <input type="number" id="amount" name="amount" min="1" step="0.01" placeholder="Enter amount" required>
         <input type="submit" value="transfer money">
