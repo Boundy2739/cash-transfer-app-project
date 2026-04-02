@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("You cant transfer to the same account");
         }
 
-        if ($ammount > $currentAcc['balance']) {
+        if ($amount > $currentAcc['balance']) {
             throw new Exception("Not enough funds!");
         }
 

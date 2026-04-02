@@ -10,7 +10,7 @@
     <h1>Cash transfer app</h1>
     <form action="sendmoney.php" method="POST" style="display:none;">
         <select name="chosen-account" id="chosen-account">
-            <option value="aa7e7e3b-2b07-423b-83c5-580579b07211">Silly</option>
+            <option value="1f3a6142-6a3d-482b-a5ea-198d70b3e32b"></option>
             ?>
         </select>
         <input type="hidden" id="recipient-username" name="recipient-username" placeholder="insert the recipient's" value="DespicableMe123">

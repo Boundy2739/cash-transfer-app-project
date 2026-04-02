@@ -29,6 +29,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
 if(password_verify($password, $row['password_hash'])){
     $_SESSION['authorised'] = TRUE; /*This will variable will be used to check if the user logged in before doing any action */
     $_SESSION['user_id'] = $row['id'];/*This will hold the user's id and it will be used for furthermore verification */
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     header('Location: myaccount.php');
     exit;
 }

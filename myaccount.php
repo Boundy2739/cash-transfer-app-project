@@ -52,10 +52,10 @@ if ($_SESSION['authorised'] !== TRUE) {
                 <th>Status</th>
             </tr>
             <tr class="activity-row">
-                <td>20-03-2026</td>
-                <td>Money sent to Abdoulaye</td>
-                <td>+£500</td>
-                <td>Complete</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
         </table>
     </section>

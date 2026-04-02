@@ -3,8 +3,8 @@ require_once 'pdo.php';
 require_once 'check_positive_balance.php';
 session_start();
 /*Ensures that the user is logged before accessing this page*/
-if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
-    header('Location: https://chatgpt.com/');
+if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true){
+    header('Location: https://index.php/');
     exit;
 }
 /*Selects all the wallets where the owner's id matches the logged user id*/
@@ -14,7 +14,9 @@ $stmt->execute(array(
     ":id"=>$_SESSION['user_id']
 ));
 $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
+if($_SERVER['REQUEST_METHOD'] === 'POST' &&
+isset($_POST['csrf_token'], $_SESSION['csrf_token']) &&
+hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])){
     /*Checks if the user has submitted a float value and the amount submitted is not less than 0*/
     $amount = filter_input(INPUT_POST, 'amount', FILTER_VALIDATE_FLOAT);
     if($amount === false || $amount < 0){
@@ -28,9 +30,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':id'=>$_POST['chosen-account']]);
         $sender = $stmt->fetch(PDO::FETCH_ASSOC);
-        $funds = checkFunds($sender['balance'],$amount);
+        print_r($sender);
+        var_dump($sender['balance'], $amount);
+        if($sender['balance']<$amount){
+            throw new Exception('Not enough founds');
+        };
         
-        if($funds === TRUE){
             /*Removes white spaces in the recipient's username submitted by the user*/
             $recipientUsername = str_replace(" ","",$_POST['recipient-username']);
             /*Selects the recipient's id from the row that matches the username given by the user*/
@@ -87,10 +92,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
             ));
             $pdo->commit();
-        }
-        else{
-            throw new Exception("Not enough funds!");
-        }
+        
         
     }
     catch (Exception $e) {
@@ -122,9 +124,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             foreach($rows as $row){
                 echo "<option value='".htmlspecialchars($row['account_id'])."'>".htmlspecialchars($row['account_name'])."</option>";
             }
-            
             ?>
         </select>
+        <input type="hidden" name="csrf_token" <?php echo'value='.htmlspecialchars($_SESSION['csrf_token']).''?>>
         <label for="recipient-username">Recipient's username</label>
         <input type="text" id="recipient-username" name="recipient-username" placeholder="insert the recipient's">
         <label for="amount">Amount</label>
