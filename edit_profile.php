@@ -109,6 +109,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
+    <nav class="navigation-bar">
+        <a href="myaccount.php">Dashboard</a>
+        <a href="accountslist.php">Accounts</a>
+        <a href="sendmoney.php">Send Money</a>
+        <a href="view_transactions.php">Transactions</a>
+        <a href="profile.php">Profile</a>
+    </nav>
     <h1>Edit your profile</h1>
     <form action="" method="POST" onsubmit="return confirmChanges()">
         <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
