@@ -13,12 +13,20 @@ if (
 
 
 ){
-    die("All fields are required.");
+    $_SESSION['errorMessage'] = 'All fields required!';
+    header('Location: index.php');
+    exit;
 }
-$email = $_POST['email'];
-$password = $_POST['password'];
 
-$sql = "SELECT * from users where email = :email";
+$email = trim($_POST['email']);
+$password = $_POST['password'];
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+    $_SESSION['errorMessage'] = 'Wrong email or password!';
+    header('Location: index.php');
+    exit;
+}
+
+$sql = "SELECT id,email,password_hash from users where email = :email";
 
 // TODO IMPORTANT VALIDATE EMAIL FIRST
 $stmt = $pdo->prepare($sql);
@@ -26,7 +34,7 @@ $stmt->execute([':email'=>$email]);
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
 /*verifies that the password given the matches the hash*/
-if(password_verify($password, $row['password_hash'])){
+if($row && password_verify($password, $row['password_hash'])){
     $_SESSION['authorised'] = TRUE; /*This will variable will be used to check if the user logged in before doing any action */
     $_SESSION['user_id'] = $row['id'];/*This will hold the user's id and it will be used for furthermore verification */
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
@@ -34,7 +42,7 @@ if(password_verify($password, $row['password_hash'])){
     exit;
 }
 else{
-    $_SESSION['errorMessage'] = TRUE;
+    $_SESSION['errorMessage'] = 'Wrong email or password!';
     header('Location: index.php');
     exit;
 }

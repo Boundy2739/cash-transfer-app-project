@@ -22,8 +22,7 @@ if(isset($_SESSION['authorised']) && $_SESSION['authorised'] === TRUE){
     <div>
         <form action="login.php" method="post">
             <?php if(isset($_SESSION['errorMessage'])){
-                echo "<p  class='wrong-login'>
-                Wrong email or password!
+                echo "<p  class='wrong-login'>".$_SESSION['errorMessage']."
               </p>";
               unset($_SESSION['errorMessage']);
             }
