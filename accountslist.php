@@ -1,10 +1,11 @@
 <?php
 require_once 'pdo.php';
 session_start();
-if($_SESSION ['authorised'] !== TRUE){
+if(!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true){
     header('Location:index.php');
+    exit;
 }
-$sql = "SELECT * from accounts where owner_id = :owner_id";
+$sql = "SELECT owner_id from accounts where owner_id = :owner_id";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':owner_id'=>$_SESSION['user_id']]);
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);

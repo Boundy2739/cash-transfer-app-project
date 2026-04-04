@@ -1,26 +1,38 @@
 <?php
 session_start();
 require_once 'pdo.php';
-if ($_SESSION['authorised'] !== TRUE) {
+if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     header('Location: accountslist.php');
     exit;
 }
-if (!empty($_POST['old-pwd'])) {
-    /*Selects the row with the password hash of the logged user */
-    $sql = "SELECT password_hash from users where id =:id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([":id" => $_SESSION['user_id']]);
-    $password = $stmt->fetch(PDO::FETCH_ASSOC);
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    if( !isset($_POST['csrf_token'], $_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])){
 
-    /*Verifies that the password submitted matches the current password before changing */
-    if (password_verify($_POST['old-pwd'], $password['password_hash'])) {
-        header('Location: newpassword.php');
-        exit;
-    } else {
-        $_SESSION['errorMessage'] = TRUE;
-        print_r($_SESSION);
     }
+    {
+        $_SESSION['errorMessage'] = 'Invalid request.';
+        header('Location: add_funds.php');
+        exit;
+    }
+    if (!empty($_POST['old-pwd'])) {
+        /*Selects the row with the password hash of the logged user */
+        $sql = "SELECT password_hash from users where id =:id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([":id" => $_SESSION['user_id']]);
+        $password = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        /*Verifies that the password submitted matches the current password before changing */
+        if (password_verify($_POST['old-pwd'], $password['password_hash'])) {
+            header('Location: newpassword.php');
+            exit;
+        } else {
+            $_SESSION['errorMessage'] = TRUE;
+            print_r($_SESSION);
+        }
+    }
+
 }
+
 
 
 ?>

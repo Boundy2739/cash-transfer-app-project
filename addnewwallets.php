@@ -3,7 +3,7 @@ require 'pdo.php';
 session_start();
 require_once 'guid_generator.php';
 
-if($_SESSION['authorised'] !== TRUE){
+if(!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true){
     header('Location: accountlist.php');
     exit;
 }
