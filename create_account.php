@@ -57,7 +57,7 @@ if (
     preg_match('/^[a-zA-Z\s]+$/', $city) &&
     $date && $date->format('Y-m-d') === $dob && /*Checks that the data submitted is in the correct format */
     preg_match('/^[a-zA-Z\s]+$/', $street) &&
-    preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9_]{8,20}$/', $username)/*Checks if the username submitted meets the lenght and special char requiremnts */
+    preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,20}$/', $username)/*Checks if the username submitted meets the lenght requiremnts */
 
 
 

@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once 'pdo.php';
-if (($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
+if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     header('Location: accountslist.php');
     exit;
 }
@@ -14,32 +14,35 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         exit;
     }
     /*Checks if the user is trying to submit an empty form */
-    if (empty($_POST['new-pwd']) || empty($_POST['confirm-pwd'])) {
+    if (!empty($_POST['new-pwd']) && !empty($_POST['confirm-pwd'])) {
+        if(!preg_match('/^(?=.*\d)(?=.*[@#\-_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!\?]{8,20}$/',$_POST['new-pwd'])){
+            $_SESSION['errorMessage'] = "Password doesn't meet requirements";
+            header('Location: newpassword.php');
+            exit;
+        }
+        /*Checks if the passwords given mathch */ elseif ($_POST['new-pwd'] != $_POST['confirm-pwd']) {
+            $_SESSION['errorMessage'] = "Passwords don't match!";
+            header('Location: newpassword.php');
+            exit;
+        }
+        /*If the password is correct the update will occur*/ else {
+            $newpwd = password_hash($_POST['new-pwd'], PASSWORD_DEFAULT);
+            $sql = "UPDATE users SET password_hash=:password_hash where id =:id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(array(
+                ":id" => $_SESSION['user_id'],
+                ":password_hash" => $newpwd
+            ));
+            header('Location: passwordchangesuccess.php');
+            exit;
+        }
+    }
+    else{
         $_SESSION['errorMessage'] = "All fields are required!";
         header('Location: newpassword.php');
         exit;
     }
-    if(!preg_match('/^(?=.*\d)(?=.*[@#\-_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!\?]{8,20}$/',$_POST['new-pwd'])){
-        $_SESSION['errorMessage'] = "Password doesn't meet requirements";
-        header('Location: newpassword.php');
-        exit;
-    }
-    /*Checks if the passwords given mathch */ elseif ($_POST['new-pwd'] != $_POST['confirm-pwd']) {
-        $_SESSION['errorMessage'] = "Passwords don't match!";
-        header('Location: newpassword.php');
-        exit;
-    }
-    /*If the password is correct the update will occur*/ else {
-        $newpwd = password_hash($_POST['new-pwd'], PASSWORD_DEFAULT);
-        $sql = "UPDATE users SET password_hash=:password_hash where id =:id";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(array(
-            ":id" => $_SESSION['user_id'],
-            ":password_hash" => $newpwd
-        ));
-        header('Location: passwordchangesuccess.php');
-        exit;
-    }
+    
 }
 
 ?>

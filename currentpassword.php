@@ -2,16 +2,13 @@
 session_start();
 require_once 'pdo.php';
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
-    header('Location: accountslist.php');
+    header('Location: index.php');
     exit;
 }
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if( !isset($_POST['csrf_token'], $_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])){
-
-    }
-    {
         $_SESSION['errorMessage'] = 'Invalid request.';
-        header('Location: add_funds.php');
+        header('Location: currentpassword.php');
         exit;
     }
     if (!empty($_POST['old-pwd'])) {
@@ -26,8 +23,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             header('Location: newpassword.php');
             exit;
         } else {
-            $_SESSION['errorMessage'] = TRUE;
-            print_r($_SESSION);
+            $_SESSION['errorMessage'] = 'Wrong password';
         }
     }
 
@@ -58,6 +54,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             unset($_SESSION['errorMessage']);
         }
         ?>
+        <input type="hidden" name="csrf_token" <?php echo 'value=' . htmlspecialchars($_SESSION['csrf_token']) . '' ?>>
         <label for="old-pwd">Password: </label>
         <input type="password" id="old-pwd" name="old-pwd" placeholder="Insert the current password">
         <input type="submit" value="confirm">
