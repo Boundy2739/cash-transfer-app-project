@@ -291,3 +291,35 @@ input[type="submit"]:hover {
 #cancel-btn-phone{
     display: none;
 }
+/*transactions page*/
+.transactions-container{
+    background-color: white;
+    width: 600px;
+    margin:auto;
+    padding:20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.transaction-record{
+    display:flex;
+    background-color: rgb(245, 238, 238);
+    margin:auto;
+    padding:20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    width: 65%;
+    margin-bottom: 20px;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.transaction-record p{
+   margin-top: 8px;
+   margin-bottom: 8px;
+}
+
+#amount-received-sent{
+    margin-top: auto;
+    margin-bottom: auto;
+}
