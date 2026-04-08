@@ -1,6 +1,7 @@
 <?php
 
 require_once "pdo.php";
+require_once "rate-limiter/ratelimiter.php";
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
@@ -42,6 +43,7 @@ if($row && password_verify($password, $row['password_hash'])){
     exit;
 }
 else{
+    rate_limiter($_SERVER['REMOTE_ADDR'],5,3600,$pdo);
     $_SESSION['errorMessage'] = 'Wrong email or password!';
     header('Location: index.php');
     exit;

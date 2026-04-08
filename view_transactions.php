@@ -2,7 +2,7 @@
 require_once 'pdo.php';
 session_start();
 
-if ($_SESSION['authorised'] !== TRUE) {
+if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== TRUE) {
     header('Location: index.php');
     exit;
 }
@@ -13,7 +13,6 @@ WHERE t.sender_id = :id or t.receiver_id = :id";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':id' => $_SESSION['user_id']]);
 $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
-print_r($rows);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,10 +48,10 @@ print_r($rows);
             echo '</div>';
             echo '<div id="amount-received-sent">';
             if ($row['sender_id'] == $_SESSION['user_id']) {
-                echo '<p>-' . htmlentities($row['amount']) . '</p>';
+                echo '<p class="sent">-£' . htmlentities($row['amount']) . '</p>';
             }
             elseif ($row['receiver_id'] == $_SESSION['user_id']) {
-                echo '<p>+' . htmlentities($row['amount']) . '</p>';
+                echo '<p class="received">+£' . htmlentities($row['amount']) . '</p>';
             }
             echo '</div>';
             echo '</section>';
@@ -69,37 +68,3 @@ print_r($rows);
 
 
 
-<table border="1">
-    <tr>
-        <th>Type</th>
-        <th>From</th>
-        <th>To</th>
-        <th>Amount</th>
-        <th>Currency</th>
-        <th>Date</th>
-    </tr>
-    <?php
-    foreach ($rows as $row) {
-        echo '<tr>';
-        echo '<td>';
-        echo htmlentities($row['type']);
-        echo '</td>';
-        echo '<td>';
-        echo htmlentities($row['sender_name']);
-        echo '</td>';
-        echo '<td>';
-        echo htmlentities($row['receiver_name']);
-        echo '</td>';
-        echo '<td>';
-        echo htmlentities($row['amount']);
-        echo '</td>';
-        echo '<td>';
-        echo htmlentities($row['currency']);
-        echo '</td>';
-        echo '<td>';
-        echo htmlentities($row['transaction_date']);
-        echo '</td></tr>';
-    }
-
-    ?>
-</table>
