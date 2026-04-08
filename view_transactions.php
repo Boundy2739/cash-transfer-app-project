@@ -6,10 +6,12 @@ if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== TRUE) {
     header('Location: index.php');
     exit;
 }
-$sql = "SELECT t.sender_id, t.receiver_id, t.type, t.amount, t.currency, t.transaction_date,s.firstname as sender_name,r.firstname as receiver_name from transactions t
-INNER JOIN users s ON t.sender_id = s.id
-INNER JOIN users r ON t.receiver_id = r.id
-WHERE t.sender_id = :id or t.receiver_id = :id";
+$sql = "SELECT t.sender_id, t.receiver_id, t.type, t.amount, t.currency, t.transaction_date,s.firstname as sender_name,
+        r.firstname as receiver_name 
+        from transactions t
+        INNER JOIN users s ON t.sender_id = s.id
+        INNER JOIN users r ON t.receiver_id = r.id
+        WHERE t.sender_id = :id or t.receiver_id = :id";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':id' => $_SESSION['user_id']]);
 $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
@@ -49,8 +51,7 @@ $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
             echo '<div id="amount-received-sent">';
             if ($row['sender_id'] == $_SESSION['user_id']) {
                 echo '<p class="sent">-£' . htmlentities($row['amount']) . '</p>';
-            }
-            elseif ($row['receiver_id'] == $_SESSION['user_id']) {
+            } elseif ($row['receiver_id'] == $_SESSION['user_id']) {
                 echo '<p class="received">+£' . htmlentities($row['amount']) . '</p>';
             }
             echo '</div>';
@@ -58,13 +59,8 @@ $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
         }
 
         ?>
-        
+
     </section>
 </body>
 
 </html>
-
-
-
-
-

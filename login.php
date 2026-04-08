@@ -8,6 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     header("Location: index.php");
     exit();
 }
+$is_locked = is_locked($_SERVER['REMOTE_ADDR'],$pdo);
 if (
     empty($_POST["email"]) ||
     empty($_POST["password"])
@@ -43,7 +44,7 @@ if($row && password_verify($password, $row['password_hash'])){
     exit;
 }
 else{
-    rate_limiter($_SERVER['REMOTE_ADDR'],5,3600,$pdo);
+    rate_limiter($_SERVER['REMOTE_ADDR'],5,$pdo);
     $_SESSION['errorMessage'] = 'Wrong email or password!';
     header('Location: index.php');
     exit;
