@@ -1,6 +1,6 @@
 <?php
-require_once 'pdo.php';
-require_once "config/config.php";
+require_once '../pdo/pdo.php';
+require_once "../config/config.php";
 if ($_SESSION['authorised'] !== TRUE) {
     header('Location: myaccount.php');
     exit;

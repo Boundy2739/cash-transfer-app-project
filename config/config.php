@@ -33,7 +33,7 @@ if (isset($_SESSION['ip'], $_SESSION['user_agent'])) {
 
         session_unset();
         session_destroy();
-        header('Location: index.php');
+        header('Location: ../index.php');
         exit;
     }
 }
@@ -41,7 +41,7 @@ $idleTimer = 90;
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $idleTimer) {
     session_unset();
     session_destroy();
-    header('Location: index.php');
+    header('Location: ../index.php');
     exit;
 }
 

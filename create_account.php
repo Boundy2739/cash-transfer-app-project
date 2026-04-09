@@ -1,5 +1,6 @@
 <?php
 require_once "config/config.php";
+require_once "helpers/index.php";
 require_once 'pdo.php';
 require_once 'guid_generator.php';
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
@@ -27,6 +28,7 @@ if (
     exit;
 }
 $uuid = guidv4();
+$_SESSION['firstname'] = $_POST['firstname'];
 $fname = $_POST['firstname'];
 $lname = $_POST['surname'];
 $phone = $_POST['phonenumber'];
@@ -44,9 +46,16 @@ if (!preg_match('/^(?=.*\d)(?=.*[@#\-_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Z
     exit;
 }
 
+
 $password = password_hash($_POST['pwd'], PASSWORD_DEFAULT);/*Creates an hash of the password and store it*/
 $mname = $_POST['middlename'];
 $username = $_POST['username'];
+$isValidEmail = filter_var($email, FILTER_VALIDATE_EMAIL);
+
+if(!$isValidEmail) {
+    userError('Invalid email');
+    redirect("register.php");
+}
 if (
     filter_var($email, FILTER_VALIDATE_EMAIL) && /*Checks if the user submitted an email*/
     preg_match('/^[0-9a-zA-Z\s-]+$/', $houseNumber) &&

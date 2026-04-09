@@ -1,6 +1,8 @@
 <?php
-require_once 'pdo.php';
-require_once "config/config.php";
+require_once '../pdo/pdo.php';
+require_once "../config/config.php";
+include '../templates/navbar.php';
+include '../templates/head.php';
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     header('Location:index.php');
     exit;
@@ -16,24 +18,8 @@ unset($_SESSION['current_account']);
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Document</title>
-</head>
 
 <body>
-    <header>
-        <nav class="navigation-bar">
-            <a href="myaccount.php">Dashboard</a>
-            <a href="accountslist.php">Accounts</a>
-            <a href="sendmoney.php">Send Money</a></li>
-            <a href="view_transactions.php">Transactions</a>
-            <a href="profile.php">Profile</a>
-            <a href="logout.php">Logout</a>
-        </nav>
-    </header>
     <section class="user-options">
         <?php
         foreach ($rows as $row) {

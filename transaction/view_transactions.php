@@ -1,6 +1,6 @@
 <?php
-require_once 'pdo.php';
-require_once "config/config.php";
+require_once '../pdo/pdo.php';
+require_once "../config/config.php";
 
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== TRUE) {
     header('Location: index.php');
@@ -23,18 +23,12 @@ $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <title>Document</title>
 </head>
 
 <body>
-    <nav class="navigation-bar">
-        <a href="myaccount.php">Dashboard</a>
-        <a href="accountslist.php">Accounts</a>
-        <a href="sendmoney.php">Send Money</a>
-        <a href="view_transactions.php">Transactions</a>
-        <a href="profile.php">Profile</a>
-    </nav>
+    <?php echo navBar(); ?>
     <h1>Viewing transactions</h1>
     <section class="transactions-container">
         <?php

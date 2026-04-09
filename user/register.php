@@ -1,5 +1,5 @@
 <?php 
-require_once "config/config.php";
+require_once "../config/config.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +24,7 @@ require_once "config/config.php";
         }
         ?>
         <label for="firstname">Name</label>
-        <input type="text" id="firstname" name="firstname">
+        <input type="text" id="firstname" name="firstname" value="<?php echo htmlentities($_SESSION['firstname']); ?>">
         <label for="middlename">Middle name</label>
         <input type="text" id="middlename" name="middlename">
         <label for="surname">Surname</label>

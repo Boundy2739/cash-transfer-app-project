@@ -1,6 +1,6 @@
 <?php
-require_once 'pdo.php';
-require_once "config/config.php";
+require_once '../pdo/pdo.php';
+require_once "../config/config.php";
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     header('Location: myaccount.php');
     exit;
@@ -15,12 +15,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
     $amount = filter_input(INPUT_POST, 'amount', FILTER_VALIDATE_FLOAT);
-    if ($amount === false || $amount <=0) {
+    if ($amount === false || $amount <= 0) {
         $_SESSION['errorMessage'] = 'Invalid amount.';
         header('Location: add_funds.php');
         exit;
     }
-    
+
     try {
         $pdo->beginTransaction();
 
@@ -66,17 +66,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add funds</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
-    <nav class="navigation-bar">
-        <a href="myaccount.php">Dashboard</a>
-        <a href="accountslist.php">Wallets</a>
-        <a href="sendmoney.php">Send Money</a>
-        <a href="view_transactions.php">Transactions</a>
-        <a href="profile.php">Profile</a>
-    </nav>
+    <?php echo navBar(); ?>
     <h1>Add funds</h1>
     <form action="" method="post">
         <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">

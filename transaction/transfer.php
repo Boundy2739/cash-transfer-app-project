@@ -1,6 +1,6 @@
 <?php
-require_once 'pdo.php';
-require_once "config/config.php";
+require_once '../pdo/pdo.php';
+require_once "../config/config.php";
 if ($_SESSION['authorised'] !== TRUE || empty($_SESSION['current_account'])) {
     header('Location: walletoptions.php');
     exit;
@@ -23,13 +23,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['csrf_token'], $_SESSI
         /*selects the row where the wallet id matches the id of the wallet the user has currently open*/
         $sql = "SELECT * from accounts where account_id =:id and owner_id =:owner_id FOR UPDATE";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute(array(':id' => $_SESSION['current_account'],':owner_id'=>$_SESSION['user_id']));
+        $stmt->execute(array(':id' => $_SESSION['current_account'], ':owner_id' => $_SESSION['user_id']));
         $currentAcc = $stmt->fetch(PDO::FETCH_ASSOC);
 
         /*selects the row where the wallet id matches the id of the wallet the user chose from the drop down list*/
         $sql = "SELECT * from accounts where account_id =:id and owner_id =:owner_id FOR UPDATE";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute(array(':id' => $_POST['chosen-account'],':owner_id'=>$_SESSION['user_id']));
+        $stmt->execute(array(':id' => $_POST['chosen-account'], ':owner_id' => $_SESSION['user_id']));
         $chosenAcc = $stmt->fetch(PDO::FETCH_ASSOC);
 
         /*Prevent the user from transfering money to the same wallet they have currently opened*/
@@ -60,15 +60,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['csrf_token'], $_SESSI
             ":id" => $chosenAcc['account_id']
         ));
         $pdo->commit();
-    } 
-    catch (Exception $e) {
+    } catch (Exception $e) {
         if ($pdo->inTransaction()) {
             $pdo->rollBack();
         }
         die("Transaction failed: " . $e->getMessage());
     }
-}
-else{
+} else {
     header('Location: index.php');
     exit;
 }
@@ -85,13 +83,7 @@ else{
 </head>
 
 <body>
-    <nav class="navigation-bar">
-        <a href="myaccount.php">Dashboard</a>
-        <a href="accountslist.php">Accounts</a>
-        <a href="sendmoney.php">Send Money</a>
-        <a href="view_transactions.php">Transactions</a>
-        <a href="profile.php">Profile</a>
-    </nav>
+    <?php echo navBar(); ?>
     <form action="" method="POST">
         <label for="chosen-account">Choose an account</label>
         <select name="chosen-account" id="chosen-account">

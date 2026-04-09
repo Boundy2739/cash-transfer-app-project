@@ -1,6 +1,6 @@
 <?php
-require_once 'pdo.php';
-require_once "config/config.php";
+require_once '../pdo/pdo.php';
+require_once "../config/config.php";
 /*Ensures that the user is logged before accessing this page*/
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     header('Location: index.php');
@@ -53,7 +53,7 @@ if (
         if ($recipientID === false) {
             throw new Exception("Account does not exist.");
         }
-        
+
         /*This selects the default wallet of the recipient */
         $sql = "SELECT * from accounts where owner_id=:owner_id and is_default = TRUE FOR UPDATE";
         $stmt = $pdo->prepare($sql);
@@ -71,7 +71,7 @@ if (
 
 
 
-        
+
         /*This updates the recipient's default wallet balance*/
         $recipientAcc['balance'] = $recipientAcc['balance'] + $amount;
         $sql = "UPDATE accounts set balance = :balance WHERE account_id=:id";
@@ -112,18 +112,12 @@ if (
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <title>Title</title>
 </head>
 
 <body>
-    <nav class="navigation-bar">
-        <a href="myaccount.php">Dashboard</a>
-        <a href="accountslist.php">Accounts</a>
-        <a href="sendmoney.php">Send Money</a></li>
-        <a href="view_transactions.php">Transactions</a>
-        <a href="profile.php">Profile</a>
-    </nav>
+    <?php echo navBar(); ?>
     <h1>Send money</h1>
     <form action="" method="POST">
         <label for="chosen'account">Choose wallet:</label>

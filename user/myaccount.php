@@ -1,6 +1,8 @@
 <?php
-require_once 'pdo.php';
-require_once "config/config.php";
+require_once '../pdo/pdo.php';
+require_once "../config/config.php";
+include '../templates/navbar.php';
+include '../templates/head.php';
 if ($_SESSION['authorised'] !== TRUE) {
     header('Location: index.php');
     exit;
@@ -10,23 +12,10 @@ $_SESSION['last_activity'] = time();
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Title</title>
-</head>
 
 <body>
-    <nav class="navigation-bar">
-        <a href="myaccount.php">Dashboard</a>
-        <a href="accountslist.php">Accounts</a>
-        <a href="sendmoney.php">Send Money</a></li>
-        <a href="view_transactions.php">Transactions</a>
-        <a href="profile.php">Profile</a>
-    </nav>
-
     <?php
+    
     /*This will echo an heading that greets the user*/
     $sql = "SELECT firstname from users where id = :id";
     $stmt = $pdo->prepare($sql);

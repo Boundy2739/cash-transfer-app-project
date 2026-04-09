@@ -1,6 +1,6 @@
 <?php
-require_once "config/config.php";
-require_once 'pdo.php';
+require_once '../pdo/pdo.php';
+require_once "../config/config.php";
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     header('Location: accountslist.php');
     exit;
@@ -60,13 +60,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 </head>
 
 <body>
-    <nav class="navigation-bar">
-        <a href="myaccount.php">Dashboard</a>
-        <a href="accountslist.php">Accounts</a>
-        <a href="sendmoney.php">Send Money</a>
-        <a href="view_transactions.php">Transactions</a>
-        <a href="profile.php">Profile</a>
-    </nav>
+    <?php echo navBar(); ?>
     <form action="" method="POST">
         <?php
         /*Shows error message to the user*/
