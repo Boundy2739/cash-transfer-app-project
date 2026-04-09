@@ -16,9 +16,7 @@ session_start();
 if (!isset($_SESSION['last_regeneration'])) {
     session_regenerate_id(true);
     $_SESSION['last_regeneration'] = time();
-} 
-
-else {
+} else {
     $timer = 1 * 30;
     if (time() - $_SESSION['last_regeneration'] >= $timer) {
         session_regenerate_id(true);
@@ -28,15 +26,26 @@ else {
 
 /*Destroys session if someone tries to access from different device or with a different ip address */
 if (isset($_SESSION['ip'], $_SESSION['user_agent'])) {
-    if ($_SESSION['ip'] !== $_SERVER['REMOTE_ADDR'] ||
-        $_SESSION['user_agent'] !== $_SERVER['HTTP_USER_AGENT']) {
-        
+    if (
+        $_SESSION['ip'] !== $_SERVER['REMOTE_ADDR'] ||
+        $_SESSION['user_agent'] !== $_SERVER['HTTP_USER_AGENT']
+    ) {
+
         session_unset();
         session_destroy();
         header('Location: index.php');
         exit;
     }
 }
+$idleTimer = 900;
+
+if (isset($_SESSION['last_activity']) && time() - $_SESSION['last_activty'] > $idleTimer) {
+    session_unset();
+    session_destroy();
+    header('Location: index.php');
+    exit;
+}
+
 
 print_r(session_get_cookie_params());
 print_r(session_id());
