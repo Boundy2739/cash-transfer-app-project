@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once "config/config.php";
 require_once 'pdo.php';
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     header('Location: accountslist.php');

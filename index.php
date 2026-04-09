@@ -1,7 +1,7 @@
 <?php
+require_once "config/config.php";
 
-session_start();
-print_r($_SESSION);
+
 if(isset($_SESSION['authorised']) && $_SESSION['authorised'] === TRUE){
     header('Location: myaccount.php');
     exit;

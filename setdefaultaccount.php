@@ -1,6 +1,6 @@
 <?php
 require_once "pdo.php";
-session_start();
+require_once "config/config.php";
 try{
 print_r("hi");
 $pdo->beginTransaction();

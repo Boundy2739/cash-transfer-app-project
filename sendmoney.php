@@ -1,6 +1,6 @@
 <?php
 require_once 'pdo.php';
-session_start();
+require_once "config/config.php";
 /*Ensures that the user is logged before accessing this page*/
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     header('Location: index.php');
@@ -127,6 +127,7 @@ if (
     </nav>
     <h1>Send money</h1>
     <form action="" method="POST">
+        <label for="chosen'account">Choose wallet:</label>
         <select name="chosen-account" id="chosen-account">
             <option value="none"></option>
             <?php

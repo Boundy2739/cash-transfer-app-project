@@ -1,6 +1,6 @@
 <?php
 require_once 'pdo.php';
-session_start();
+require_once "config/config.php";
 if ($_SESSION['authorised'] !== TRUE || empty($_SESSION['current_account'])) {
     header('Location: walletoptions.php');
     exit;

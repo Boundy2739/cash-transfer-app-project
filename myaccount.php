@@ -1,11 +1,10 @@
 <?php
 require_once 'pdo.php';
-session_start();
+require_once "config/config.php";
 if ($_SESSION['authorised'] !== TRUE) {
     header('Location: index.php');
     exit;
 }
-print_r($_SERVER);
 ?>
 <!DOCTYPE html>
 <html lang="en">

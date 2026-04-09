@@ -1,6 +1,6 @@
 <?php
 require 'pdo.php';
-session_start();
+require_once "config/config.php";
 require_once 'guid_generator.php';
 
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {

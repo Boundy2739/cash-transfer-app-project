@@ -1,5 +1,5 @@
 <?php 
-session_start();
+require_once "config/config.php";
 print_r($_SESSION);
 $_SESSION = [];
 print_r($_SESSION);

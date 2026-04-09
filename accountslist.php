@@ -1,6 +1,6 @@
 <?php
 require_once 'pdo.php';
-session_start();
+require_once "config/config.php";
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     header('Location:index.php');
     exit;
