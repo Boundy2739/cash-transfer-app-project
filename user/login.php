@@ -1,7 +1,7 @@
 <?php
 
-require_once "pdo.php";
-require_once "rate-limiter/ratelimiter.php";
+require_once "../pdo/pdo.php";
+require_once "../rate-limiter/ratelimiter.php";
 require_once "config/config.php";
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {

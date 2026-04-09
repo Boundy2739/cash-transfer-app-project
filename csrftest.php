@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Cash transfer app</h1>
-    <form action="sendmoney.php" method="POST" style="display:none;">
+    <form action="/transaction/sendmoney.php" method="POST" style="display:none;">
         <select name="chosen-account" id="chosen-account">
             <option value="1f3a6142-6a3d-482b-a5ea-198d70b3e32b"></option>
             ?>

@@ -37,7 +37,7 @@ if (isset($_SESSION['ip'], $_SESSION['user_agent'])) {
         exit;
     }
 }
-$idleTimer = 900;
+$idleTimer = 90;
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $idleTimer) {
     session_unset();
     session_destroy();
