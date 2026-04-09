@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <nav class="navigation-bar">
         <a href="myaccount.php">Dashboard</a>
-        <a href="accountslist.php">Accounts</a>
+        <a href="accountslist.php">Wallets</a>
         <a href="sendmoney.php">Send Money</a>
         <a href="view_transactions.php">Transactions</a>
         <a href="profile.php">Profile</a>
