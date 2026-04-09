@@ -5,6 +5,7 @@ if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== TRUE) {
     header('Location: myaccount.php');
     exit;
 }
+$_SESSION['last_activity'] = time();
 $sql = "SELECT firstname,middlename,lastname,email,phone,address_street_name,address_house_number,city,postcode from users where id=:id";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':id' => $_SESSION['user_id']]);

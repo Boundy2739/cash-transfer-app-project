@@ -5,6 +5,7 @@ if ($_SESSION['authorised'] !== TRUE) {
     header('Location: index.php');
     exit;
 }
+$_SESSION['last_activity'] = time();
 ?>
 <!DOCTYPE html>
 <html lang="en">

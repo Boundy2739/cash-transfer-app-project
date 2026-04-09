@@ -5,7 +5,7 @@ if ($_SESSION['authorised'] !== TRUE || empty($_SESSION['current_account'])) {
     header('Location: walletoptions.php');
     exit;
 }
-print_r($_SESSION);
+$_SESSION['last_activity'] = time();
 /*This selects all the rows where the wallet's owner id mathces the id of the logged in user */
 $sql = "SELECT * from accounts where owner_id =:id";
 $stmt = $pdo->prepare($sql);

@@ -5,6 +5,7 @@ if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     header('Location:index.php');
     exit;
 }
+$_SESSION['last_activity'] = time();
 $sql = "SELECT owner_id,account_name,balance,account_id from accounts where owner_id = :owner_id";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':owner_id' => $_SESSION['user_id']]);

@@ -6,6 +6,7 @@ if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== TRUE) {
     header('Location: index.php');
     exit;
 }
+$_SESSION['last_activity'] = time();
 $sql = "SELECT t.sender_id, t.receiver_id, t.type, t.amount, t.currency, t.transaction_date,s.firstname as sender_name,
         r.firstname as receiver_name 
         from transactions t

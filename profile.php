@@ -5,7 +5,7 @@ if ($_SESSION['authorised'] !== TRUE) {
     header('Location: myaccount.php');
     exit;
 }
-
+$_SESSION['last_activity'] = time();
 ?>
 
 

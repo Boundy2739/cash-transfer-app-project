@@ -17,7 +17,7 @@ if (!isset($_SESSION['last_regeneration'])) {
     session_regenerate_id(true);
     $_SESSION['last_regeneration'] = time();
 } else {
-    $timer = 1 * 30;
+    $timer = 60 * 30;
     if (time() - $_SESSION['last_regeneration'] >= $timer) {
         session_regenerate_id(true);
         $_SESSION['last_regeneration'] = time();
@@ -38,8 +38,7 @@ if (isset($_SESSION['ip'], $_SESSION['user_agent'])) {
     }
 }
 $idleTimer = 900;
-
-if (isset($_SESSION['last_activity']) && time() - $_SESSION['last_activty'] > $idleTimer) {
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $idleTimer) {
     session_unset();
     session_destroy();
     header('Location: index.php');

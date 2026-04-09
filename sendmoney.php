@@ -6,6 +6,7 @@ if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     header('Location: index.php');
     exit;
 }
+$_SESSION['last_activity'] = time();
 /*Selects all the wallets where the owner's id matches the logged user id*/
 $sql = "SELECT * from accounts where owner_id = :id";
 $stmt = $pdo->prepare($sql);
@@ -21,7 +22,7 @@ if (
     /*Checks if the user has submitted a float value and the amount submitted is not less than 0*/
     $amount = filter_input(INPUT_POST, 'amount', FILTER_VALIDATE_FLOAT);
     if ($amount === false || $amount < 0) {
-        die('Invalid amount.');
+        throw new Exception('Invalid amount.');
     }
 
     try {
@@ -31,8 +32,6 @@ if (
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array(':id' => $_POST['chosen-account'], ':owner_id' => $_SESSION['user_id']));
         $sender = $stmt->fetch(PDO::FETCH_ASSOC);
-        print_r($sender);
-        var_dump($sender['balance'], $amount);
         if (!$sender) {
             throw new Exception("Wallet doesn't exist");
         }
@@ -54,7 +53,7 @@ if (
         if ($recipientID === false) {
             throw new Exception("Account does not exist.");
         }
-        print_r("hi");
+        
         /*This selects the default wallet of the recipient */
         $sql = "SELECT * from accounts where owner_id=:owner_id and is_default = TRUE FOR UPDATE";
         $stmt = $pdo->prepare($sql);
@@ -72,7 +71,7 @@ if (
 
 
 
-        print_r("hi");
+        
         /*This updates the recipient's default wallet balance*/
         $recipientAcc['balance'] = $recipientAcc['balance'] + $amount;
         $sql = "UPDATE accounts set balance = :balance WHERE account_id=:id";

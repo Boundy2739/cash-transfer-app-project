@@ -8,6 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     header("Location: index.php");
     exit();
 }
+
 $is_locked = is_locked($_SERVER['REMOTE_ADDR'], $pdo);
 if ($is_locked === true) {
     $_SESSION['errorMessage'] = 'Too many attempts, retry later';
