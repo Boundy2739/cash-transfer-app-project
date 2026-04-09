@@ -1,8 +1,5 @@
 <?php
-require_once '../pdo/pdo.php';
-require_once "../config/config.php";
-include '../templates/navbar.php';
-include '../templates/head.php';
+require_once "../includes/init.php";
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     header('Location:index.php');
     exit;

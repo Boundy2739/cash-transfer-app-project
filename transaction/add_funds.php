@@ -1,6 +1,5 @@
 <?php
-require_once '../pdo/pdo.php';
-require_once "../config/config.php";
+require_once "../includes/init.php";
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     header('Location: myaccount.php');
     exit;
@@ -70,7 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-    <?php echo navBar(); ?>
     <h1>Add funds</h1>
     <form action="" method="post">
         <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">

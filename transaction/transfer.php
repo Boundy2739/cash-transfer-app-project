@@ -1,6 +1,5 @@
 <?php
-require_once '../pdo/pdo.php';
-require_once "../config/config.php";
+require_once "../includes/init.php";
 if ($_SESSION['authorised'] !== TRUE || empty($_SESSION['current_account'])) {
     header('Location: walletoptions.php');
     exit;
@@ -83,7 +82,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['csrf_token'], $_SESSI
 </head>
 
 <body>
-    <?php echo navBar(); ?>
     <form action="" method="POST">
         <label for="chosen-account">Choose an account</label>
         <select name="chosen-account" id="chosen-account">

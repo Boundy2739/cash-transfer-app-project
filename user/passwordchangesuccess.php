@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <?php echo navBar(); ?>
+    <?php ?>
     <p>Password changed</p>
     <a href="profile.php">back</a>
 </body>

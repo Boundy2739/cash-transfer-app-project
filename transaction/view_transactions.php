@@ -1,6 +1,5 @@
 <?php
-require_once '../pdo/pdo.php';
-require_once "../config/config.php";
+require_once "../includes/init.php";
 
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== TRUE) {
     header('Location: index.php');
@@ -28,7 +27,6 @@ $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
 </head>
 
 <body>
-    <?php echo navBar(); ?>
     <h1>Viewing transactions</h1>
     <section class="transactions-container">
         <?php

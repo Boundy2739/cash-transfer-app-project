@@ -54,8 +54,6 @@ function is_locked($key, $pdo)
     $lockTime = strtotime($result['lock_time']);
 
     if ($currentTime - $lockTime < 60) {
-        $_SESSION['time'] = $currentTime;
-        $_SESSION['time2'] = $lockTime;
         //ip still locked
         return TRUE;
     }

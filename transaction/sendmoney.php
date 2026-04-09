@@ -1,6 +1,5 @@
 <?php
-require_once '../pdo/pdo.php';
-require_once "../config/config.php";
+require_once "../includes/init.php";
 /*Ensures that the user is logged before accessing this page*/
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     header('Location: index.php');
@@ -117,7 +116,6 @@ if (
 </head>
 
 <body>
-    <?php echo navBar(); ?>
     <h1>Send money</h1>
     <form action="" method="POST">
         <label for="chosen'account">Choose wallet:</label>
