@@ -46,5 +46,4 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) >
 }
 
 
-print_r(session_get_cookie_params());
-print_r(session_id());
+
