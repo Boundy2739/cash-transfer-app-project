@@ -6,6 +6,7 @@ if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     exit;
 }
 $_SESSION['last_activity'] = time();
+echo '<script src="../javaScript/app.js"></script>';
 /*Selects all the wallets where the owner's id matches the logged user id*/
 $sql = "SELECT * from accounts where owner_id = :id";
 $stmt = $pdo->prepare($sql);
@@ -79,7 +80,6 @@ if (
             ':balance' => $recipientAcc['balance'],
             ':id' => $recipientAcc['account_id'],
         ));
-        print_r($recipientAcc);
         $sql = "INSERT into transactions(sender_id,receiver_id,type,amount,currency,status) 
                     VALUES (:sender_id,:receiver_id,:type,:amount,:currency,:status)";
         $stmt = $pdo->prepare($sql);
@@ -95,6 +95,17 @@ if (
 
         ));
         $pdo->commit();
+        echo '<script src="../javaScript/app.js"></script>';
+        echo '<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            showPopup(
+                "success",
+                ' . json_encode($amount) . ',
+                ' . json_encode($recipientUsername) . ',
+                ' . json_encode($recipientUsername) . '
+            );
+        });
+        </script>';
     } catch (Exception $e) {
         if ($pdo->inTransaction()) {
             $pdo->rollBack();
@@ -136,6 +147,20 @@ if (
         <input type="number" id="amount" name="amount" min="1" step="0.01" placeholder="Enter amount" required>
         <input type="submit" value="send money">
     </form>
+
+    <div class="overlay hidden" id="transaction-popup">
+        <div class="popup-card">
+
+            <h2 id="popup-title"></h2>
+
+            <p id="popup-message">
+                
+            </p>
+
+            <button onclick="closePopup()">OK</button>
+        </div>
+    </div>
+    
 </body>
 
 </html>
