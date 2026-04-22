@@ -5,13 +5,9 @@ if ($_SESSION['authorised'] !== TRUE) {
     exit;
 }
 $_SESSION['last_activity'] = time();
+require_once "../templates/head.php";
 ?>
-<!DOCTYPE html>
-<html lang="en">
-
-
-<body>
-    <?php
+<?php
     
     /*This will echo an heading that greets the user*/
     $sql = "SELECT firstname from users where id = :id";

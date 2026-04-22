@@ -15,18 +15,9 @@ $sql = "SELECT t.sender_id, t.receiver_id, t.type, t.amount, t.currency, t.trans
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':id' => $_SESSION['user_id']]);
 $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
+require_once "../templates/head.php";
 ?>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/style.css">
-    <title>Document</title>
-</head>
-
-<body>
     <h1>Viewing transactions</h1>
     <section class="transactions-container">
         <?php

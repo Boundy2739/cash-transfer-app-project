@@ -5,8 +5,8 @@ if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     exit;
 }
 $_SESSION['last_activity'] = time();
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    if( !isset($_POST['csrf_token'], $_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])){
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!isset($_POST['csrf_token'], $_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
 
         $_SESSION['errorMessage'] = 'Invalid request.';
         header('Location: newpassword.php');
@@ -14,7 +14,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     }
     /*Checks if the user is trying to submit an empty form */
     if (!empty($_POST['new-pwd']) && !empty($_POST['confirm-pwd'])) {
-        if(!preg_match('/^(?=.*\d)(?=.*[@#\-_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!\?]{8,20}$/',$_POST['new-pwd'])){
+        if (!preg_match('/^(?=.*\d)(?=.*[@#\-_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!\?]{8,20}$/', $_POST['new-pwd'])) {
             $_SESSION['errorMessage'] = "Password doesn't meet requirements";
             header('Location: newpassword.php');
             exit;
@@ -35,30 +35,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             header('Location: passwordchangesuccess.php');
             exit;
         }
-    }
-    else{
+    } else {
         $_SESSION['errorMessage'] = "All fields are required!";
         header('Location: newpassword.php');
         exit;
     }
-    
 }
-
+require_once "../templates/head.php";
 ?>
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Document</title>
-</head>
-
-<body>
+    <h1>Change password</h1>
     <form action="" method="POST">
         <?php
         /*Shows error message to the user*/

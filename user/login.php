@@ -47,7 +47,7 @@ if ($row && password_verify($password, $row['password_hash'])) {
     $_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
     $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
     reset_attempts($_SERVER['REMOTE_ADDR'], $pdo);
-    header('Location: myaccount.php');
+    header('Location: dashboard.php');
     exit;
 } else {
     rate_limiter($_SERVER['REMOTE_ADDR'], 5, $pdo);

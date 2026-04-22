@@ -23,7 +23,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         if (password_verify($_POST['old-pwd'], $password['password_hash'])) {
             header('Location: newpassword.php');
             exit;
-        } else {
+        }  {
             $_SESSION['errorMessage'] = 'Wrong password';
         }
     }
@@ -31,22 +31,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 }
 
 
-
+require_once "../templates/head.php";
 ?>
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
+    <h1>Change password</h1>
     <form method="POST" action="">
         <?php if (isset($_SESSION['errorMessage'])) {
             echo "<p  class='wrong-login'>

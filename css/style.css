@@ -105,31 +105,79 @@ input[type="submit"]:hover {
     gap:40px
 }
 /* dashboard page*/
-.summary-section{
-    background-color: white;
-    padding:20px;
-    
+.summary-section,
+.activity-section {
+    width: 600px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
-.activity-table{
 
+
+.summary-section h2,
+.activity-section h2 {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 20px;
+    padding-left: 10px;
 }
 
-.headers-row th{
-    background-color: #a2a2a2;
-    padding:10px;
-    width:fit-content;
-    
-}
-.activity-row{
-    border-bottom: 10px solid;
-    border-color:#333;
 
+
+.summary-section div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
-.activity-row td{
-    padding:20px;
-    width:fit-content;
+
+.summary-section p {
+    margin: 0;
+    padding: 10px;
+    background: #f4f6f9;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #444;
+    display: flex;
+    justify-content: space-between;
 }
+
+
+
+.activity-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+
+.headers-row th {
+    background-color: #2d89ef;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+
+.activity-row td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+
+.activity-row:hover {
+    background-color: #f4f6f9;
+    transition: 0.2s ease;
+}
+
+
+.activity-row td:empty::after {
+    color: #aaa;
+}
+
+
 
 .register-btn{
     border-width: 1px;
@@ -405,3 +453,5 @@ input[type="submit"]:hover {
 .popup-card button:hover {
     background-color: #1b5fbd;
 }
+
+
