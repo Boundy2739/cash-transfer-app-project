@@ -27,7 +27,8 @@ label {
     color: #555;
 }
 
-input, select {
+input,
+select {
     width: 100%;
     padding: 8px;
     margin-top: 5px;
@@ -43,20 +44,50 @@ input[type="submit"] {
     border: none;
     cursor: pointer;
     font-weight: bold;
+    
+}
+
+#new-wallet-btn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 input[type="submit"]:hover {
     background-color: #1b5fbd;
 }
-.navigation-bar{
+
+.wallet-name-form {
+    display: block;
+    width: 320px;
+    margin: 30px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+   
+}
+.wallet-name-form button{
+    margin-top: 10px;
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+.navigation-bar {
     display: flex;
     background-color: white;
     justify-content: center;
-    padding:20px;
+    padding: 20px;
     gap: 10x;
 }
-.navigation-bar a{
-    margin-left:40px;
+
+.navigation-bar a {
+    margin-left: 40px;
     padding: 10px;
     text-decoration: none;
     color: black;
@@ -66,7 +97,8 @@ input[type="submit"]:hover {
     background-color: #adcfff;
     transition-duration: 1s;
     border-radius: 10px;
-  }
+}
+
 .user-options {
     width: 320px;
     margin: 30px auto;
@@ -74,36 +106,53 @@ input[type="submit"]:hover {
     background: white;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    
-    
-    
+
+
+
 }
-.user-options ul{
-    padding:0px;
+
+.wallets-list {
+    overflow: auto;
+    width: 320px;
+    margin: 30px auto;
+    max-height: 500px;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-.user-options li{
+
+.user-options ul {
+    padding: 0px;
+}
+
+.user-options li {
     list-style-type: none;
     background-color: #e7f1ff;
-    padding:10px;
-    margin:10px;
+    padding: 10px;
+    margin: 10px;
     border-radius: 10px;
+    text-decoration: none;
 }
-.options{
-    
+
+.options {
+
     color: black;
     text-decoration: none;
 }
+
 .account-header {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 12px;
     margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     display: flex;
     justify-content: center;
     align-items: center;
-    gap:40px
+    gap: 40px
 }
+
 /* dashboard page*/
 .summary-section,
 .activity-section {
@@ -112,7 +161,7 @@ input[type="submit"]:hover {
     background: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
 
@@ -179,7 +228,7 @@ input[type="submit"]:hover {
 
 
 
-.register-btn{
+.register-btn {
     border-width: 1px;
     margin-top: 15px;
     border-style: solid;
@@ -187,24 +236,26 @@ input[type="submit"]:hover {
     cursor: pointer;
     font-weight: bold;
     border-radius: 4px;
-    padding:12px;
+    padding: 12px;
     text-align: center;
 }
-.register-btn a{
+
+.register-btn a {
     color: #2d89ef;
     text-decoration: none;
-    
+
 }
-.wrong-login{
-    font-weight:bold;
+
+.wrong-login {
+    font-weight: bold;
     background-color: rgba(255, 0, 0, 0.514);
-    padding:5px;
+    padding: 5px;
     text-align: center;
     border-radius: 3px;
 }
 
 /*wallets page section*/
-.user-accounts{
+.user-accounts {
     display: flex;
     flex-direction: column;
     padding: 10px;
@@ -214,10 +265,12 @@ input[type="submit"]:hover {
     border-radius: 10px;
 }
 
-.open-acc-btn{
-    margin-top: auto;      /* pushes button area to the bottom */
+.open-acc-btn {
+    margin-top: auto;
+    /* pushes button area to the bottom */
     display: flex;
-    justify-content: flex-end; /* moves button to the right */
+    justify-content: flex-end;
+    /* moves button to the right */
     margin-bottom: 5%;
 }
 
@@ -226,13 +279,26 @@ input[type="submit"]:hover {
     color: white;
     cursor: pointer;
     font-weight: bold;
-    width: fit-content;  
+    width: fit-content;
     padding: 8px 16px;
-    border: 1px solid #ccc;
+   
     border-radius: 4px;
     box-sizing: border-box;
     text-decoration: none;
 }
+.cancel-buttons{
+    background-color: red;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    width: fit-content;
+    padding: 8px 16px;
+   
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
 
 .account-name {
     font-size: 22px;
@@ -255,45 +321,48 @@ input[type="submit"]:hover {
     font-weight: bold;
     color: #2e7d32;
 }
+
 /* user profile edit form*/
-.names-input{
+.names-input {
     display: none;
 }
 
-.names-input.active{
+.names-input.active {
     display: block;
 }
 
-.phone-input{
+.phone-input {
     display: none;
 }
 
-.phone-input.active{
+.phone-input.active {
     display: block;
 }
 
-.email-input{
+.email-input {
     display: none;
 }
 
-.email-input.active{
+.email-input.active {
     display: block;
 }
 
-.address-input{
+.address-input {
     display: none;
 }
 
-.address-input.active{
+.address-input.active {
     display: block;
 }
-.profile-item{
+
+.profile-item {
     background-color: #e6e6e6;
     padding: 20px;
     margin-bottom: 30px;
-    border-radius:10px ;
+    border-radius: 10px;
 }
-.edit-btn{
+
+.edit-btn {
     margin-top: 10px;
 }
 
@@ -309,52 +378,55 @@ input[type="submit"]:hover {
     color: #555;
 }
 
-#submit-names{
-    display: none;
-}
-#submit-email{
+#submit-names {
     display: none;
 }
 
-#submit-address{
+#submit-email {
     display: none;
 }
 
-#submit-phone{
+#submit-address {
     display: none;
 }
 
-#cancel-btn-names{
-    display: none;
-}
-#cancel-btn-email{
+#submit-phone {
     display: none;
 }
 
-#cancel-btn-address{
+#cancel-btn-names {
     display: none;
 }
 
-#cancel-btn-phone{
+#cancel-btn-email {
     display: none;
 }
+
+#cancel-btn-address {
+    display: none;
+}
+
+#cancel-btn-phone {
+    display: none;
+}
+
 /*transactions page*/
-.transactions-container{
+.transactions-container {
     background-color: white;
     width: 600px;
-    margin:auto;
-    padding:20px;
+    margin: auto;
+    padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     max-height: 450px;
     overflow: auto;
 }
 
-.transaction-record{
-    display:flex;
+.transaction-record {
+    display: flex;
     background-color: rgb(245, 238, 238);
-    margin:auto;
-    padding:20px;
+    margin: auto;
+    padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     width: 65%;
@@ -363,32 +435,34 @@ input[type="submit"]:hover {
     justify-content: space-between;
     transition-duration: 0.3s;
 }
-.transaction-record:hover{
-background-color: #e7f1ff;;
-transition-duration: 0.3s;
+
+.transaction-record:hover {
+    background-color: #e7f1ff;
+    transition-duration: 0.3s;
 }
 
 
-#transaction-details{
+#transaction-details {
     display: none;
-    position:relative;
-    margin: auto;
-    bottom:100px;
-    background-color: rgb(245, 238, 238);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #e7f1ff;
     width: 30rem;
-    padding:20px;
+    padding: 20px;
     border-radius: 10px;
     z-index: 1;
-    
+
 }
 
 
-.transaction-record p{
-   margin-top: 8px;
-   margin-bottom: 8px;
+.transaction-record p {
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
-#amount-received-sent{
+#amount-received-sent {
     margin-top: auto;
     margin-bottom: auto;
 }
@@ -402,7 +476,7 @@ transition-duration: 0.3s;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0, 0, 0, 0.4);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -418,14 +492,21 @@ transition-duration: 0.3s;
     width: 320px;
     padding: 25px;
     border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
     text-align: center;
     animation: popIn 0.25s ease-out;
 }
 
 @keyframes popIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .popup-icon {
@@ -473,5 +554,3 @@ transition-duration: 0.3s;
 .popup-card button:hover {
     background-color: #1b5fbd;
 }
-
-

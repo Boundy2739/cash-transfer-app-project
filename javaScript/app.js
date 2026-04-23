@@ -1,10 +1,8 @@
 
 function showPopup(type, amount,receiverFname,receiverLname) {
-    console.log("app.js loaded");
     const popup = document.getElementById("transaction-popup");
     const title = document.getElementById("popup-title");
     const message = document.getElementById("popup-message");
-
     popup.classList.remove("hidden");
 
     if(type === 'success'){
@@ -23,14 +21,18 @@ function closePopup() {
 
 function showTransactionDetails(data){
     console.log("clicked");
+    console.log(data)
     document.getElementById("transaction-details").style.display = "block";
-    const status = document.getElementById("transaction-status");
-    console.log(data);
-    console.log();
+    document.getElementById("transaction-status").innerText = "Successful";
+    document.getElementById("transaction-amount").innerText = data.amount;
+    document.getElementById("transaction-from").innerText = data.sender_firstname;
+    document.getElementById("transaction-to").innerText = data.receiver_firstname;
+    popup.classList.remove("hidden");
 
 }
 function closeTransactionDetails(){
     console.log("clicked");
     document.getElementById("transaction-details").style.display = "none";
+    popup.classList.remove("hidden");
 
 }

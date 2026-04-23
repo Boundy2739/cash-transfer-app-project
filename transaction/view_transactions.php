@@ -67,19 +67,16 @@ require_once "../templates/head.php";
     ?>
 
 </section>
-
-<section id="transaction-details">
-    <div id="transaction-details">
+    
+    <div id="transaction-details" >
         <p>Status: <span id="transaction-status"></span></p>
         <p>Amount: £<span id="transaction-amount"></span></p>
         <p>From: <span id="transaction-from"></span></p>
         <p>To: <span id="transaction-to"></span></p>
-        <p>Wallet used: <span id="transaction-wallet"></span></p>
+       
 
         <button onclick="closeTransactionDetails()" class="buttons">Close</button>
     </div>
-
-</section>
 <script src="../javaScript/app.js"></script>
 </body>
 
