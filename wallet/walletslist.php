@@ -33,17 +33,18 @@ unset($_SESSION['current_account']);
 
     </section>
     <button id="new-wallet-btn" class="buttons">Add new wallet</button>
-    <section class="add-account">
+    <div class="modal-container" id="modal_container">
         
             <form action="addnewwallets.php" method="post" class="wallet-name-form">
                 <input type="hidden" name="csrf_token" <?php echo 'value=' . htmlspecialchars($_SESSION['csrf_token']) . '' ?>>
                 <label>Wallet name:</label>
                 <input type="text" name="wallet-name" placeholder="Insert wallet name" required>
                 <button type="submit" class="buttons">Add wallet</button>
-                <button id="new-wallet-btn" class="cancel-buttons">Cancel</button>
+                <button id="close-modal" class="cancel-buttons">Cancel</button>
             </form>
-       
-    </section>
+        
+    </div>
+    <script src="../javaScript/app.js"></script>
 </body>
 
 </html>
