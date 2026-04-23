@@ -17,7 +17,7 @@ unset($_SESSION['current_account']);
 
 
 <body>
-    <section class="user-options">
+    <section class="wallets-list">
         <?php
         foreach ($rows as $row) {
             echo '<section class="user-accounts">';
@@ -32,10 +32,14 @@ unset($_SESSION['current_account']);
         ?>
 
     </section>
+    <button id="new-wallet-btn" class="buttons">Add new wallet</button>
     <section class="add-account">
-        <form action="addnewwallets.php" method="post">
+        <form action="addnewwallets.php" method="post" class="wallet-name-form">
             <input type="hidden" name="csrf_token" <?php echo 'value=' . htmlspecialchars($_SESSION['csrf_token']) . '' ?>>
-            <input type="submit" value="add account">
+            <label>Wallet name:</label>
+            <input type="text" name="wallet-name" placeholder="Insert wallet name" required>
+            <button type="submit" class="buttons">Add wallet</button>
+            <button id="new-wallet-btn" class="cancel-buttons">Cancel</button>
         </form>
     </section>
 </body>
