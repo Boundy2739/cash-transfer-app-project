@@ -111,7 +111,7 @@ require_once "../templates/head.php";
             <input type="text" id="middlename" name="middlename" class="names-input">
             <label for="surname">Surname</label>
             <?php echo '<p>' . $user['lastname'] . '</p>' ?>
-            <input type="text" id="lastname" name=";astname" class="names-input">
+            <input type="text" id="lastname" name="lastname" class="names-input">
             <button id="edit-names" type="button" onclick="enableEdit('names-input','submit-names','edit-names','cancel-btn-names')">Edit</button>
             <button id="cancel-btn-names" type="button" onclick="disableEdit('names-input active','submit-names','edit-names','cancel-btn-names')">Cancel</button>
             <input type="submit" value="apply changes" id="submit-names">
@@ -148,7 +148,7 @@ require_once "../templates/head.php";
             <?php echo '<p>' . $user['postcode'] . '</p>' ?>
             <input type="text" id="postcode" name="postcode" class="address-input">
             <button id="edit-address" type="button" onclick="enableEdit('address-input','submit-address','edit-address','cancel-btn-address')">Edit</button>
-            <button id="cancel-btn-address" type="button" onclick="disableEdit('address-input active','submit-address','edit-address','cancel-btn-address')">Cancel</button>
+            <button id="cancel-btn-address" type="button" onclick="disableEdit('address-input active','submit-address active','edit-address active','cancel-btn-address active')">Cancel</button>
             <input type="submit" value="apply changes" id="submit-address">
         </section>
     </form>
@@ -170,6 +170,8 @@ require_once "../templates/head.php";
 
             for (let i = 0; i < elements.length; i++) {
                 elements[i].classList.remove('active');
+                console.log(1);
+                
             }
             document.getElementById(submitBtn).style.display = "none";
             document.getElementById(cancelBtn).style.display = "none";

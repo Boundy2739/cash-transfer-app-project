@@ -80,12 +80,12 @@ if (
             ':balance' => $recipientAcc['balance'],
             ':id' => $recipientAcc['account_id'],
         ));
-        $sql = "INSERT into transactions(sender_id,receiver_id,type,amount,currency,status) 
-                    VALUES (:sender_id,:receiver_id,:type,:amount,:currency,:status)";
+        $sql = "INSERT into transactions(sender_wallet_id,receiver_wallet_id,type,amount,currency,status) 
+                    VALUES (:sender_wallet_id,:receiver_wallet_id,:type,:amount,:currency,:status)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array(
-            ':sender_id' => $_SESSION['user_id'],
-            ':receiver_id' => $recipientID['id'],
+            ':sender_wallet_id' => $sender['account_id'],
+            ':receiver_wallet_id' => $recipientAcc['account_id'],
             ':type' => 'transfer',
             ':amount' => $amount,
             ':currency' => 'EUR',

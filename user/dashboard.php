@@ -5,7 +5,7 @@ if ($_SESSION['authorised'] !== TRUE) {
     exit;
 }
 $_SESSION['last_activity'] = time();
-require_once "../templates/head.php";
+
 ?>
 <?php
     

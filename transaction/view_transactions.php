@@ -6,45 +6,66 @@ if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== TRUE) {
     exit;
 }
 $_SESSION['last_activity'] = time();
-$sql = "SELECT t.sender_id, t.receiver_id, t.type, t.amount, t.currency, t.transaction_date,s.firstname as sender_name,
-        r.firstname as receiver_name 
-        from transactions t
-        INNER JOIN users s ON t.sender_id = s.id
-        INNER JOIN users r ON t.receiver_id = r.id
-        WHERE t.sender_id = :id or t.receiver_id = :id";
-$stmt = $pdo->prepare($sql);
-$stmt->execute([':id' => $_SESSION['user_id']]);
+$stmt = $pdo->prepare("SELECT account_id from accounts WHERE owner_id =:id ");
+$stmt->execute([":id" => $_SESSION['user_id']]);
+$wallets = $stmt->fetchall(PDO::FETCH_ASSOC);
+$walletIds = array_column($wallets, 'account_id');
+$placeholders = implode(',', array_fill(0, count($walletIds), '?'));
+
+
+$stmt = $pdo->prepare("SELECT 
+t.*,
+u1.firstname AS sender_firstname,
+u1.lastname AS sender_lastname,
+u2.firstname AS receiver_firstname,
+u2.lastname AS receiver_lastname
+FROM transactions t
+
+JOIN accounts w1 ON t.sender_wallet_id = w1.account_id
+JOIN users u1 ON w1.owner_id = u1.id
+
+JOIN accounts w2 ON t.receiver_wallet_id = w2.account_id
+JOIN users u2 ON w2.owner_id = u2.id
+
+WHERE t.sender_wallet_id IN ($placeholders)
+OR t.receiver_wallet_id IN ($placeholders)
+
+ORDER BY t.transaction_date DESC;");
+$stmt->execute(array_merge($walletIds, $walletIds));
+
 $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
+
+
 require_once "../templates/head.php";
 ?>
 
-    <h1>Viewing transactions</h1>
-    <section class="transactions-container">
-        <?php
-        foreach ($rows as $row) {
-            echo '<section class="transaction-record"><div>';
-            if ($row['sender_id'] == $_SESSION['user_id']) {
-                echo '<p>' . htmlentities($row['receiver_name']) . '</p>';
-            } elseif ($row['receiver_id'] == $_SESSION['user_id']) {
-                echo '<p>' . htmlentities($row['sender_name']) . '</p>';
-            };
+<h1>Viewing transactions</h1>
+<section class="transactions-container">
+    <?php
+    foreach ($rows as $row) {
+        echo '<section class="transaction-record"><div>';
+        if (in_Array($row['sender_wallet_id'], $walletIds)) {
+            echo '<p>' . htmlentities($row['receiver_firstname']) . '</p>';
+        } elseif (in_Array($row['receiver_wallet_id'], $walletIds)) {
+            echo '<p>' . htmlentities($row['sender_firstname']) . '</p>';
+        };
 
-            echo '<p>' . htmlentities($row['transaction_date']) . '</p>';
-            echo '<p>' . htmlentities($row['type']) . '</p>';
-            echo '</div>';
-            echo '<div id="amount-received-sent">';
-            if ($row['sender_id'] == $_SESSION['user_id']) {
-                echo '<p class="sent">-£' . htmlentities($row['amount']) . '</p>';
-            } elseif ($row['receiver_id'] == $_SESSION['user_id']) {
-                echo '<p class="received">+£' . htmlentities($row['amount']) . '</p>';
-            }
-            echo '</div>';
-            echo '</section>';
+        echo '<p>' . htmlentities($row['transaction_date']) . '</p>';
+        echo '<p>' . htmlentities($row['type']) . '</p>';
+        echo '</div>';
+        echo '<div id="amount-received-sent">';
+        if (in_Array($row['sender_wallet_id'], $walletIds)) {
+            echo '<p class="sent">-£' . htmlentities($row['amount']) . '</p>';
+        } elseif (in_Array($row['receiver_wallet_id'], $walletIds)) {
+            echo '<p class="received">+£' . htmlentities($row['amount']) . '</p>';
         }
+        echo '</div>';
+        echo '</section>';
+    }
 
-        ?>
+    ?>
 
-    </section>
+</section>
 </body>
 
 </html>

@@ -52,6 +52,6 @@ if ($row && password_verify($password, $row['password_hash'])) {
 } else {
     rate_limiter($_SERVER['REMOTE_ADDR'], 5, $pdo);
     $_SESSION['errorMessage'] = 'Wrong email or password!';
-    header('Location: index.php');
+    header('Location: ../index.php');
     exit;
 }
