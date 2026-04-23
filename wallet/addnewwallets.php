@@ -13,12 +13,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])
     ) {
         $_SESSION['errorMessage'] = 'Invalid request.';
-        header('Location: accountslist.php');
+        header('Location: walletslist.php');
         exit;
     }
     
+    $sql = "SELECT COUNT(*) from accounts where owner_id =:id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":id"=>$_SESSION['user_id']]);
+    $numOfWallets = $stmt->fetchColumn(PDO::FETCH_ASSOC);
+
+    if($numOfWallets >= 8 ){
+        $_SESSION['errorMessage'] = 'You can have up to 8 wallets.';
+        header('Location: walletslist.php');
+        exit;
+    }
+
     $accountId = guidv4(); /*Creates an unique identifier for the wallet */
-    $sql = "INSERT into accounts (account_id,owner_id,balance,currency,status) VALUES (:account_id,:owner_id,:balance,:currency,:status)";
+    $sql = "INSERT into wallets (account_id,owner_id,balance,currency,status) VALUES (:account_id,:owner_id,:balance,:currency,:status)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(array(
         ':account_id' => $accountId,
