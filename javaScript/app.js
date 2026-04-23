@@ -20,3 +20,9 @@ function showPopup(type, amount,receiverFname,receiverLname) {
 function closePopup() {
     document.getElementById("transaction-popup").classList.add("hidden");
 }
+
+function showTransactionDetails(){
+    console.log("clicked");
+    document.getElementById("transaction-details").style.display = "block";
+
+}

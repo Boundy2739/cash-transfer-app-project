@@ -43,7 +43,7 @@ require_once "../templates/head.php";
 <section class="transactions-container">
     <?php
     foreach ($rows as $row) {
-        echo '<section class="transaction-record"><div>';
+        echo '<section class="transaction-record" onclick="showTransactionDetails()"><div>';
         if (in_Array($row['sender_wallet_id'], $walletIds)) {
             echo '<p>' . htmlentities($row['receiver_firstname']) . '</p>';
         } elseif (in_Array($row['receiver_wallet_id'], $walletIds)) {
@@ -66,6 +66,18 @@ require_once "../templates/head.php";
     ?>
 
 </section>
-</body>
 
+<section id="transaction-details">
+    <div>
+        <p>Status: successful</p>
+        <p>Amount:</p>
+        <p>From: </p>
+        <p>To: </p>
+        <p>Wallet used: </p>
+        <p>Transaction reference: </p>
+    </div>
+
+</section>
+<script src="../javaScript/app.js"></script>
+</body>
 </html>

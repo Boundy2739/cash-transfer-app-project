@@ -361,7 +361,27 @@ input[type="submit"]:hover {
     margin-bottom: 20px;
     flex-direction: row;
     justify-content: space-between;
+    transition-duration: 0.3s;
 }
+.transaction-record:hover{
+background-color: #e7f1ff;;
+transition-duration: 0.3s;
+}
+
+
+#transaction-details{
+    display: none;
+    position:relative;
+    margin: auto;
+    bottom:100px;
+    background-color: rgb(245, 238, 238);
+    width: 30rem;
+    padding:20px;
+    border-radius: 10px;
+    z-index: 1;
+    
+}
+
 
 .transaction-record p{
    margin-top: 8px;
