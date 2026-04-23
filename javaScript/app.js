@@ -21,8 +21,16 @@ function closePopup() {
     document.getElementById("transaction-popup").classList.add("hidden");
 }
 
-function showTransactionDetails(){
+function showTransactionDetails(data){
     console.log("clicked");
     document.getElementById("transaction-details").style.display = "block";
+    const status = document.getElementById("transaction-status");
+    console.log(data);
+    console.log();
+
+}
+function closeTransactionDetails(){
+    console.log("clicked");
+    document.getElementById("transaction-details").style.display = "none";
 
 }

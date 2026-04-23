@@ -88,7 +88,7 @@ input[type="submit"]:hover {
     margin:10px;
     border-radius: 10px;
 }
-.user-options a{
+.options{
     
     color: black;
     text-decoration: none;
@@ -221,12 +221,12 @@ input[type="submit"]:hover {
     margin-bottom: 5%;
 }
 
-.user-accounts a {
+.buttons {
     background-color: #2d89ef;
     color: white;
     cursor: pointer;
     font-weight: bold;
-    width: fit-content;    /* button keeps its natural width */
+    width: fit-content;  
     padding: 8px 16px;
     border: 1px solid #ccc;
     border-radius: 4px;

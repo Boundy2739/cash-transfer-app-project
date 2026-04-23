@@ -43,8 +43,9 @@ require_once "../templates/head.php";
 <section class="transactions-container">
     <?php
     foreach ($rows as $row) {
-        echo '<section class="transaction-record" onclick="showTransactionDetails()"><div>';
-        if (in_Array($row['sender_wallet_id'], $walletIds)) {
+        echo '<section class="transaction-record" onclick=\'showTransactionDetails(' . json_encode($row) . ')\'><div>';
+        
+            if (in_Array($row['sender_wallet_id'], $walletIds)) {
             echo '<p>' . htmlentities($row['receiver_firstname']) . '</p>';
         } elseif (in_Array($row['receiver_wallet_id'], $walletIds)) {
             echo '<p>' . htmlentities($row['sender_firstname']) . '</p>';
@@ -68,16 +69,18 @@ require_once "../templates/head.php";
 </section>
 
 <section id="transaction-details">
-    <div>
-        <p>Status: successful</p>
-        <p>Amount:</p>
-        <p>From: </p>
-        <p>To: </p>
-        <p>Wallet used: </p>
-        <p>Transaction reference: </p>
+    <div id="transaction-details">
+        <p>Status: <span id="transaction-status"></span></p>
+        <p>Amount: £<span id="transaction-amount"></span></p>
+        <p>From: <span id="transaction-from"></span></p>
+        <p>To: <span id="transaction-to"></span></p>
+        <p>Wallet used: <span id="transaction-wallet"></span></p>
+
+        <button onclick="closeTransactionDetails()" class="buttons">Close</button>
     </div>
 
 </section>
 <script src="../javaScript/app.js"></script>
 </body>
+
 </html>

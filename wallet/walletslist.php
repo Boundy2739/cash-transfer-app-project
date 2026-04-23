@@ -24,7 +24,7 @@ unset($_SESSION['current_account']);
             echo '<p>' . $row['account_name'] . '</p>';
             echo '<p>balance: £' . $row['balance'] . '</p>';
             echo '<div class="open-acc-btn">';
-            echo '<a href="walletoptions.php?account=' . $row['account_id'] . '">view</a>';
+            echo '<a href="walletoptions.php?account=' . $row['account_id'] . '" class="buttons">view</a>';
             echo '</div>';
             echo '</section>';
         }

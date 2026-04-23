@@ -25,31 +25,13 @@ $sql = "SELECT account_name,balance,is_default from accounts where account_id =:
             $stmt = $pdo->prepare($sql);
             $stmt->execute([':id' => $_GET['account']]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            print_r($result);
+            
 ?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Document</title>
-</head>
-
-<body>
-    <nav class="navigation-bar">
-        <a href="myaccount.php">Dashboard</a>
-        <a href="accountslist.php">Accounts</a>
-        <a href="sendmoney.php">Send Money</a></li>
-        <a href="view_transactions.php">Transactions</a>
-        <a href="profile.php">Profile</a>
-    </nav>
 
     <section class="account-header">
         <?php 
         /*Displays the name of the wallet and the current balance on screen */
-        echo'<h2 class="account-name">'.$result['account_name'].'</h2>';
+        echo'<h1 class="account-name">'.$result['account_name'].'</h1>';
         echo'<div class="account-info">';
         echo'<span class="balance-label">Current Balance:</span>';
         echo'<span class="balance-amount">'." £".$result['balance'].'</span></div>';
@@ -59,9 +41,9 @@ $sql = "SELECT account_name,balance,is_default from accounts where account_id =:
 
     <section class="user-options">
         <ul>
-            <li><a href="add_funds.php">Add funds</a></li>
-            <li><a href="transfer.php">Transfer</a></li>
-            <li><a href="changewalletname.php">Change wallet's name</a></li>
+            <li><a href="add_funds.php" class="options">Add funds</a></li>
+            <li><a href="transfer.php" class="options">Transfer</a></li>
+            <li><a href="changewalletname.php" class="options">Change wallet's name</a></li>
             <?php
             /*Will display the option to set the wallet as default if it is not set yet */
             if ($result['is_default'] === 0) {
