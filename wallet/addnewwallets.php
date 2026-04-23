@@ -23,13 +23,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $numOfWallets = $stmt->fetchColumn(PDO::FETCH_ASSOC);
 
     if($numOfWallets >= 8 ){
-        $_SESSION['errorMessage'] = 'You can have up to 8 wallets.';
+        $_SESSION['errorMessage'] = 'You can have only up to 8 wallets.';
         header('Location: walletslist.php');
         exit;
     }
+    $isDefault = ($walletCount === 0) ? 1 : 0;
 
     $accountId = guidv4(); /*Creates an unique identifier for the wallet */
-    $sql = "INSERT into wallets (account_id,owner_id,balance,currency,status) VALUES (:account_id,:owner_id,:balance,:currency,:status)";
+    $sql = "INSERT into wallets (account_id,owner_id,balance,currency,status,is_default) VALUES (:account_id,:owner_id,:balance,:currency,:status,:is_default)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(array(
         ':account_id' => $accountId,
@@ -37,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':balance' => 0.00,
         ':currency' => 'EUR',
         ':status' => 'active',
+        ':is_default' => $isDefault
     ));
     header('Location: accountslist.php');
     exit;
