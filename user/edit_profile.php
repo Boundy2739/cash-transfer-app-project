@@ -42,21 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
    to the $fields array along with their corresponding parameters.
    The query is then constructed using prepared statements and executed 
    to update only the modified user details.*/
-    if (!empty($_POST['firstname']) && preg_match('/^[a-zA-Z]+$/', $fname)) {
-        $fields[] = "firstname = :firstname";
-        $params[':firstname'] = $fname;
-    }
-
-    if (!empty($_POST['middlename']) && preg_match('/^[a-zA-Z]+$/', $mname)) {
-        $fields[] = "middlename = :middlename";
-        $params[':middlename'] = $mname;
-    }
-
-    if (!empty($_POST['lastname']) && preg_match('/^[a-zA-Z]+$/', $lname)) {
-        $fields[] = "lastname = :lastname";
-        $params[':lastname'] = $lname;
-    }
-
     if (!empty($email)) {
         $fields[] = "email = :email";
         $params[':email'] = $email;
@@ -105,21 +90,16 @@ require_once "../templates/head.php";
         <section class="profile-item">
             <label for="firstname">First Name</label>
             <?php echo '<p>' . $user['firstname'] . '</p>' ?>
-            <input type="text" id="firstname" name="firstname" class="names-input">
             <label for="middlename">Middle name</label>
             <?php echo '<p>' . $user['middlename'] . '</p>' ?>
-            <input type="text" id="middlename" name="middlename" class="names-input">
             <label for="surname">Surname</label>
             <?php echo '<p>' . $user['lastname'] . '</p>' ?>
-            <input type="text" id="lastname" name="lastname" class="names-input">
-            <button id="edit-names" type="button" onclick="enableEdit('names-input','submit-names','edit-names','cancel-btn-names')">Edit</button>
-            <button id="cancel-btn-names" type="button" onclick="disableEdit('names-input active','submit-names','edit-names','cancel-btn-names')">Cancel</button>
-            <input type="submit" value="apply changes" id="submit-names">
+            
         </section>
         <section class="profile-item">
             <label for="phonenumber">Phone number</label>
             <?php echo '<p>' . $user['phone'] . '</p>' ?>
-            <input type="tel" id="phonenumber" name="phonenumber" class="phone-input">
+            <input type="tel" id="phonenumber" name="phonenumber" class="phone-input" value="<?php echo htmlentities(restoreFormData($_SESSION['form_data']['phonenumber']))?>">
             <button id="edit-phone" type="button" onclick="enableEdit('phone-input','submit-phone','edit-phone','cancel-btn-phone')">Edit</button>
             <button id="cancel-btn-phone" type="button" onclick="disableEdit('phone-input active','submit-phone','edit-phone','cancel-btn-phone')">Cancel</button>
             <input type="submit" value="apply changes" id="submit-phone">
@@ -127,7 +107,7 @@ require_once "../templates/head.php";
         <section class="profile-item">
             <label for="email">Email</label>
             <?php echo '<p>' . $user['email'] . '</p>' ?>
-            <input type="email" id="email" name="email" class="email-input">
+            <input type="email" id="email" name="email" class="email-input" value="<?php echo htmlentities(restoreFormData($_SESSION['form_data']['email']))?>">
             <button id="edit-email" type="button" onclick="enableEdit('email-input','submit-email','edit-email','cancel-btn-email')">Edit</button>
             <button id="cancel-btn-email" type="button" onclick="disableEdit('email-input active','submit-email','edit-email','cancel-btn-email')">Cancel</button>
             <input type="submit" value="apply changes" id="submit-email">
@@ -137,16 +117,16 @@ require_once "../templates/head.php";
         <section class="profile-item">
             <label for="address1">Address line 1</label>
             <?php echo '<p>' . $user['address_street_name'] . '</p>' ?>
-            <input type="text" id="address1" name="address1" placeholder="Address line 1" class="address-input">
+            <input type="text" id="address1" name="address1" placeholder="Address line 1" class="address-input" value="<?php echo htmlentities(restoreFormData($_SESSION['form_data']['address1']))?>">
             <label for="address2">House number</label>
             <?php echo '<p>' . $user['address_house_number'] . '</p>' ?>
-            <input type="number" id="address2" name="address2" placeholder="Address line 2" class="address-input">
+            <input type="number" id="address2" name="address2" placeholder="Address line 2" class="address-input" value="<?php echo htmlentities(restoreFormData($_SESSION['form_data']['address2']))?>">
             <label for="city">City</label>
             <?php echo '<p>' . $user['city'] . '</p>' ?>
-            <input type="text" id="city" name="city" class="address-input">
+            <input type="text" id="city" name="city" class="address-input" value="<?php echo htmlentities(restoreFormData($_SESSION['form_data']['city']))?>">
             <label for="postcode">Postcode</label>
             <?php echo '<p>' . $user['postcode'] . '</p>' ?>
-            <input type="text" id="postcode" name="postcode" class="address-input">
+            <input type="text" id="postcode" name="postcode" class="address-input" value="<?php echo htmlentities(restoreFormData($_SESSION['form_data']['postcode']))?>">
             <button id="edit-address" type="button" onclick="enableEdit('address-input','submit-address','edit-address','cancel-btn-address')">Edit</button>
             <button id="cancel-btn-address" type="button" onclick="disableEdit('address-input active','submit-address active','edit-address active','cancel-btn-address active')">Cancel</button>
             <input type="submit" value="apply changes" id="submit-address">

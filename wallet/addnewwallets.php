@@ -1,6 +1,6 @@
 <?php
 require_once "../includes/init.php";
-require_once '../guid_generator.php';
+
 
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     header('Location: accountslist.php');
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':account_name'=> $_POST['wallet-name'],
         ':owner_id' => $_SESSION['user_id'],
         ':balance' => 0.00,
-        ':currency' => 'EUR',
+        ':currency' => 'GBP',
         ':status' => 'active',
         ':is_default' => $isDefault
     ));

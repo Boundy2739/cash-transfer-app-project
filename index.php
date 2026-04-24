@@ -32,7 +32,7 @@ if(isset($_SESSION['authorised']) && $_SESSION['authorised'] === TRUE){
             <label for="password">Password</label>
             <input type="password" name="password" id="password" required>
             <input type="submit" value="login">
-            <div class="register-btn"><a href="register.php" >Sign up</a></div>
+            <div class="register-btn"><a href="user/register.php" >Sign up</a></div>
             
         </form>
         

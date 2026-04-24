@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $sql = "SELECT balance from accounts where account_id =:id and owner_id=:owner_id FOR UPDATE"; /*Selects the row that contains the correct wallet and locks it to prevent race conditions */
         $stmt = $pdo->prepare($sql);
-        $stmt->execute(array(':id' => $_SESSION['chosen_account'], ':owner_id' => $_SESSION['user_id']));
+        $stmt->execute(array(':id' => $_SESSION['current_account'], ':owner_id' => $_SESSION['user_id']));
         $account = $stmt->fetch(PDO::FETCH_ASSOC);
         print_r($account);
         $account['balance'] = $account['balance'] + $amount;
@@ -34,15 +34,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array(
             ':balance' => $account['balance'],
-            ':id' => $_SESSION['chosen_account'],
+            ':id' => $_SESSION['current_account'],
             ':owner_id' => $_SESSION['user_id']
         ));
-        $sql = "INSERT into transactions(sender_id,receiver_id,type,amount,currency,status) 
+        $sql = "INSERT into transactions(sender_wallet_id,receiver_wallet_id,type,amount,currency,status) 
     VALUES (:sender_id,:receiver_id,:type,:amount,:currency,:status)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array(
-            ':sender_id' => $_SESSION['user_id'],
-            ':receiver_id' => $_SESSION['user_id'],
+            ':sender_id' => $_SESSION['current_account'],
+            ':receiver_id' => $_SESSION['current_account'],
             ':type' => 'Deposit',
             ':amount' => $amount,
             ':currency' => 'Euro',

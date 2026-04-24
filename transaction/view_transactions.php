@@ -55,7 +55,7 @@ require_once "../templates/head.php";
         echo '<p>' . htmlentities($row['type']) . '</p>';
         echo '</div>';
         echo '<div id="amount-received-sent">';
-        if (in_Array($row['sender_wallet_id'], $walletIds)) {
+        if (in_Array($row['sender_wallet_id'], $walletIds) && $row['type'] !== 'Deposit') {
             echo '<p class="sent">-£' . htmlentities($row['amount']) . '</p>';
         } elseif (in_Array($row['receiver_wallet_id'], $walletIds)) {
             echo '<p class="received">+£' . htmlentities($row['amount']) . '</p>';
