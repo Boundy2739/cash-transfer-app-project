@@ -1,5 +1,6 @@
 <?php 
 require_once "../config/config.php";
+require_once "../helpers/index.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,27 +25,27 @@ require_once "../config/config.php";
         }
         ?>
         <label for="firstname">Name</label>
-        <input type="text" id="firstname" name="firstname" value="<?php echo htmlentities($_SESSION['firstname']); ?>">
+        <input type="text" id="firstname" name="firstname" value="<?php echo htmlentities(restoreFormData($_SESSION['form_data']['firstname']))?>">
         <label for="middlename">Middle name</label>
-        <input type="text" id="middlename" name="middlename">
+        <input type="text" id="middlename" name="middlename" value="<?php echo htmlentities(restoreFormData($_SESSION['form_data']['middlename']))?>">
         <label for="surname">Surname</label>
-        <input type="text" id="surname" name="surname">
+        <input type="text" id="surname" name="surname" value="<?php echo htmlentities(restoreFormData($_SESSION['form_data']['surname']))?>">
         <label for="username">Username</label>
-        <input type="text" id="username" name="username">
+        <input type="text" id="username" name="username" value="<?php echo htmlentities(restoreFormData($_SESSION['form_data']['username']))?>">
         <label for="phonenumber">Phone number</label>
-        <input type="tel" id="phonenumber" name="phonenumber">
+        <input type="tel" id="phonenumber" name="phonenumber" value="<?php echo htmlentities(restoreFormData($_SESSION['form_data']['phonenumber']))?>">
         <label for="email">Email</label>
-        <input type="email" id="email" name="email">
+        <input type="email" id="email" name="email" value="<?php echo htmlentities(restoreFormData($_SESSION['form_data']['email']))?>">
         <label for="dob">Date of birth</label>
-        <input type="date" id="dob" name="dob">
+        <input type="date" id="dob" name="dob" value="<?php echo htmlentities(restoreFormData($_SESSION['form_data']['dob']))?>">
         <label for="address1">Address line 1</label>
-        <input type="text" id="address1" name="address1" placeholder="Address line 1">
+        <input type="text" id="address1" name="address1" placeholder="Address line 1" value="<?php echo htmlentities(restoreFormData($_SESSION['form_data']['address1']))?>">
         <label for="address2">Address line 2</label>
-        <input type="number" id="address2" name="address2" placeholder="Address line 2">
+        <input type="number" id="address2" name="address2" placeholder="Address line 2" value="<?php echo htmlentities(restoreFormData($_SESSION['form_data']['address2']))?>">
         <label for="city">City</label>
         <input type="text" id="city" name="city">
         <label for="postcode">Postcode</label>
-        <input type="text" id="postcode" name="postcode">
+        <input type="text" id="postcode" name="postcode" value="<?php echo htmlentities(restoreFormData($_SESSION['form_data']['firstname']))?>">
         <label for="pwd">Password</label>
         <input type="password" id="pwd" name="pwd" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
         <label for="confirmpwd">Confirm password</label>
