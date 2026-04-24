@@ -1,73 +1,82 @@
 <?php
 require_once "../includes/init.php";
+require_once "failedtransaction.php";
 if ($_SESSION['authorised'] !== TRUE || empty($_SESSION['current_account'])) {
     header('Location: walletoptions.php');
     exit;
 }
 $_SESSION['last_activity'] = time();
+$isTransactionStarted = false;
 /*This selects all the rows where the wallet's owner id mathces the id of the logged in user */
 $sql = "SELECT * from accounts where owner_id =:id";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':id' => $_SESSION['user_id']]);
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['csrf_token'], $_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
-    try {
-        /*Checks if the amount submitted is valid */
-        $pdo->beginTransaction();
-        $amount = filter_input(INPUT_POST, 'amount', FILTER_VALIDATE_FLOAT);
-        if ($amount === false || $amount < 0) {
-            throw new Exception('Invalid amount.');
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (csrfCheck()) {
+        try {
+            /*Checks if the amount submitted is valid */
+            $pdo->beginTransaction();
+            $amount = filter_input(INPUT_POST, 'amount', FILTER_VALIDATE_FLOAT);
+            if ($amount === false || $amount < 0) {
+                throw new Exception('Invalid amount.');
+            }
+
+            /*selects the row where the wallet id matches the id of the wallet the user has currently open*/
+            $sql = "SELECT * from accounts where account_id =:id and owner_id =:owner_id FOR UPDATE";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(array(':id' => $_SESSION['current_account'], ':owner_id' => $_SESSION['user_id']));
+            $currentAcc = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            /*selects the row where the wallet id matches the id of the wallet the user chose from the drop down list*/
+            $sql = "SELECT * from accounts where account_id =:id and owner_id =:owner_id FOR UPDATE";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(array(':id' => $_POST['chosen-account'], ':owner_id' => $_SESSION['user_id']));
+            $chosenAcc = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+            /*Prevent the user from transfering money to the same wallet they have currently opened*/
+            if ($currentAcc['account_id'] === $chosenAcc['account_id']) {
+                throw new Exception("You cant transfer to the same account");
+            }
+
+
+            $isTransactionStarted = true;
+            if ($amount > $currentAcc['balance']) {
+                throw new Exception("Not enough funds!");
+            }
+            $amount = filter_input(INPUT_POST, 'amount', FILTER_VALIDATE_FLOAT);
+            if ($amount === false || $amount < 0) {
+                throw new Exception('Invalid amount.');
+            }
+
+            $currentAcc['balance'] = $currentAcc['balance'] - $amount;
+
+            $chosenAcc['balance'] = $chosenAcc['balance'] + $amount;
+            /*Updates the balance of the wallet the user has currently open*/
+            $sql = "UPDATE accounts SET balance =:balance where account_id =:id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(array(
+                ":balance" => $currentAcc['balance'],
+                ":id" => $currentAcc['account_id']
+            ));
+            /*Updates the balance of the wallet the user choose to transfer money to */
+            $sql = "UPDATE accounts SET balance =:balance where account_id =:id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(array(
+                ":balance" => $chosenAcc['balance'],
+                ":id" => $chosenAcc['account_id']
+            ));
+            $pdo->commit();
+        } catch (Exception $e) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            if ($isTransactionStarted) {
+                failedTransaction($pdo, $currentAcc['account_id'], $chosenAcc['account_id'], $e->getMessage(), $amount, 'transfer');
+            }
         }
-
-        /*selects the row where the wallet id matches the id of the wallet the user has currently open*/
-        $sql = "SELECT * from accounts where account_id =:id and owner_id =:owner_id FOR UPDATE";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(array(':id' => $_SESSION['current_account'], ':owner_id' => $_SESSION['user_id']));
-        $currentAcc = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        /*selects the row where the wallet id matches the id of the wallet the user chose from the drop down list*/
-        $sql = "SELECT * from accounts where account_id =:id and owner_id =:owner_id FOR UPDATE";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(array(':id' => $_POST['chosen-account'], ':owner_id' => $_SESSION['user_id']));
-        $chosenAcc = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        /*Prevent the user from transfering money to the same wallet they have currently opened*/
-        if ($currentAcc['account_id'] === $chosenAcc['account_id']) {
-            throw new Exception("You cant transfer to the same account");
-        }
-
-        if ($amount > $currentAcc['balance']) {
-            throw new Exception("Not enough funds!");
-        }
-
-
-        $currentAcc['balance'] = $currentAcc['balance'] - $amount;
-
-        $chosenAcc['balance'] = $chosenAcc['balance'] + $amount;
-        /*Updates the balance of the wallet the user has currently open*/
-        $sql = "UPDATE accounts SET balance =:balance where account_id =:id";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(array(
-            ":balance" => $currentAcc['balance'],
-            ":id" => $currentAcc['account_id']
-        ));
-        /*Updates the balance of the wallet the user choose to transfer money to */
-        $sql = "UPDATE accounts SET balance =:balance where account_id =:id";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(array(
-            ":balance" => $chosenAcc['balance'],
-            ":id" => $chosenAcc['account_id']
-        ));
-        $pdo->commit();
-    } catch (Exception $e) {
-        if ($pdo->inTransaction()) {
-            $pdo->rollBack();
-        }
-        die("Transaction failed: " . $e->getMessage());
     }
-} else {
-    header('Location: index.php');
-    exit;
 }
 ?>
 

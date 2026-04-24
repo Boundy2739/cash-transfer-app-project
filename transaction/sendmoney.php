@@ -1,12 +1,14 @@
 <?php
 require_once "../includes/init.php";
+require_once "failedtransaction.php";
 /*Ensures that the user is logged before accessing this page*/
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
-    header('Location: index.php');
+    header('Location: ../index.php');
     exit;
 }
 $_SESSION['last_activity'] = time();
-
+$recipientAcc['account_id'] = null;
+$isTransactionStarted = false;
 /*Selects all the wallets where the owner's id matches the logged user id*/
 $sql = "SELECT * from accounts where owner_id = :id";
 $stmt = $pdo->prepare($sql);
@@ -19,11 +21,7 @@ if (
     isset($_POST['csrf_token'], $_SESSION['csrf_token']) &&
     hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])
 ) {
-    /*Checks if the user has submitted a float value and the amount submitted is not less than 0*/
-    $amount = filter_input(INPUT_POST, 'amount', FILTER_VALIDATE_FLOAT);
-    if ($amount === false || $amount < 0) {
-        throw new Exception('Invalid amount.');
-    }
+
 
     try {
         $pdo->beginTransaction();
@@ -35,11 +33,8 @@ if (
         if (!$sender) {
             throw new Exception("Wallet doesn't exist");
         }
-        if ($sender['balance'] < $amount) {
-            throw new Exception('Not enough founds');
-        };
 
-
+        $isTransactionStarted = true;
         /*Removes white spaces in the recipient's username submitted by the user*/
         $recipientUsername = str_replace(" ", "", $_POST['recipient-username']);
         /*Selects the recipient's id from the row that matches the username given by the user*/
@@ -47,18 +42,29 @@ if (
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':username' => $recipientUsername]);
         $recipientID =  $stmt->fetch(PDO::FETCH_ASSOC);
-        
+
 
         /*stops transaction if no matching usernames where found */
         if ($recipientID === false) {
-            throw new Exception("Account does not exist.");
+            throw new Exception("Non existent recipient.");
         }
-
+        
+        
         /*This selects the default wallet of the recipient */
         $sql = "SELECT * from accounts where owner_id=:owner_id and is_default = TRUE FOR UPDATE";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':owner_id' => $recipientID['id']]);
         $recipientAcc = $stmt->fetch(PDO::FETCH_ASSOC);
+        /*Checks if the user has submitted a float value and the amount submitted is not less than 0*/
+        $amount = filter_input(INPUT_POST, 'amount', FILTER_VALIDATE_FLOAT);
+        if ($amount === false || $amount < 0) {
+            throw new Exception('Invalid amount.');
+        }
+
+        if ($sender['balance'] < $amount) {
+            throw new Exception('Not enough founds');
+        };
+
 
         /*This updates the sender's wallet balance*/
         $sender['balance'] = $sender['balance'] - $amount;
@@ -95,7 +101,7 @@ if (
 
         ));
         $pdo->commit();
-        
+
         echo '<script>
         document.addEventListener("DOMContentLoaded", function() {
             showPopup(
@@ -110,7 +116,11 @@ if (
         if ($pdo->inTransaction()) {
             $pdo->rollBack();
         }
-        die("Transaction failed: " . $e->getMessage());
+        if($isTransactionStarted){
+            failedTransaction($pdo, $sender['account_id'], $recipientAcc['account_id'], $e->getMessage(), $amount, 'transfer');
+        }
+        
+        
     }
 }
 ?>
@@ -154,13 +164,13 @@ if (
             <h2 id="popup-title"></h2>
 
             <p id="popup-message">
-                
+
             </p>
 
             <button onclick="closePopup()">OK</button>
         </div>
     </div>
-   <script src="../javaScript/app.js"></script>
+    <script src="../javaScript/app.js"></script>
 </body>
 
 </html>

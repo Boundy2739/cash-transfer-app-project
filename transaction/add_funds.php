@@ -1,10 +1,12 @@
 <?php
 require_once "../includes/init.php";
+require_once "failedtransaction.php";
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     header('Location: myaccount.php');
     exit;
 }
 $_SESSION['last_activity'] = time();
+$isTransactionStarted = false;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (
         !isset($_POST['csrf_token'], $_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])
@@ -13,12 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: add_funds.php');
         exit;
     }
-    $amount = filter_input(INPUT_POST, 'amount', FILTER_VALIDATE_FLOAT);
-    if ($amount === false || $amount <= 0) {
-        $_SESSION['errorMessage'] = 'Invalid amount.';
-        header('Location: add_funds.php');
-        exit;
-    }
+    
 
     try {
         $pdo->beginTransaction();
@@ -28,6 +25,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array(':id' => $_SESSION['current_account'], ':owner_id' => $_SESSION['user_id']));
         $account = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$account) {
+            throw new Exception("Wallet doesn't exist");
+        }
+        $isTransactionStarted = true;
+        $amount = filter_input(INPUT_POST, 'amount', FILTER_VALIDATE_FLOAT);
+        if ($amount === false || $amount < 0) {
+            $_SESSION['errorMessage'] = 'Invalid amount.';
+            throw new Exception('Invalid amount.');
+            
+        }
+
+
         $account['balance'] = $account['balance'] + $amount;
         $sql = "UPDATE accounts set balance = :balance WHERE account_id=:id and owner_id=:owner_id";
         $stmt = $pdo->prepare($sql);
@@ -44,16 +53,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':receiver_id' => $_SESSION['current_account'],
             ':type' => 'Deposit',
             ':amount' => $amount,
-            ':currency' => 'Euro',
-            ':status' => 'Successful',
+            ':currency' => 'GBP',
+            ':status' => 'successful',
 
 
 
         ));
         $pdo->commit();
     } catch (Exception $e) {
-        $pdo->rollBack();
-        die("Transaction failed.");
+        if ($pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
+        if($isTransactionStarted){
+            failedTransaction($pdo, $_POST['chosen-account'], $recipientAcc['account_id'], $e->getMessage(), $_POST['amount'], 'transfer');
+        }
     }
 }
 ?>
