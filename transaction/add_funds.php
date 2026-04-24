@@ -28,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array(':id' => $_SESSION['current_account'], ':owner_id' => $_SESSION['user_id']));
         $account = $stmt->fetch(PDO::FETCH_ASSOC);
-        print_r($account);
         $account['balance'] = $account['balance'] + $amount;
         $sql = "UPDATE accounts set balance = :balance WHERE account_id=:id and owner_id=:owner_id";
         $stmt = $pdo->prepare($sql);

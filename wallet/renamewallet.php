@@ -7,7 +7,7 @@ if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
 $_SESSION['last_activity'] = time();
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    if(!csrfCheck()){
+    if(csrfCheck()){
         $sql = "SELECT account_id,account_name from accounts where account_id =:account_id and owner_id=:owner_id";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array(

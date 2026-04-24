@@ -89,7 +89,7 @@ if (
             ':type' => 'transfer',
             ':amount' => $amount,
             ':currency' => 'EUR',
-            ':status' => 'completed'
+            ':status' => 'successful'
 
 
 

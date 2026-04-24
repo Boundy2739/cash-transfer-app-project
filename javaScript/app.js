@@ -41,3 +41,33 @@ function closeModal(){
     modal_container.classList.remove('show');
 }
     
+/*Display input fields for editing user peronal details*/
+function enableEdit(field, submitBtn, editBtn, cancelBtn) {
+    const elements = document.getElementsByClassName(field);
+
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].classList.add('active');
+    }
+    document.getElementById(submitBtn).style.display = "inline-block";
+    document.getElementById(cancelBtn).style.display = "inline-block";
+    document.getElementById(editBtn).style.display = "none";
+}
+
+
+/*Hides input fields */
+function disableEdit(field, submitBtn, editBtn, cancelBtn) {
+    const elements = document.getElementsByClassName(field);
+
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].classList.remove('active');
+        console.log(1);
+        
+    }
+    document.getElementById(submitBtn).style.display = "none";
+    document.getElementById(cancelBtn).style.display = "none";
+    document.getElementById(editBtn).style.display = "inline-block";
+}
+
+function confirmChanges() {
+    return confirm("Are you sure you want to apply these changes?");
+}
