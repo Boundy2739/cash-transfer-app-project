@@ -48,9 +48,9 @@ input[type="submit"] {
 }
 
 #new-wallet-btn {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 input[type="submit"]:hover {
@@ -126,13 +126,20 @@ input[type="submit"]:hover {
     padding: 0px;
 }
 
-.user-options li {
+.user-options li, button {
     list-style-type: none;
     background-color: #e7f1ff;
     padding: 10px;
     margin: 10px;
     border-radius: 10px;
     text-decoration: none;
+}
+.user-options button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border: none;
+    
 }
 
 .options {
@@ -443,7 +450,7 @@ input[type="submit"]:hover {
 
 
 #transaction-details {
-    display: none;
+    
     position: fixed;
     top: 50%;
     left: 50%;

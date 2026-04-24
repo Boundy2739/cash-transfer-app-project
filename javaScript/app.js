@@ -21,32 +21,23 @@ function closePopup() {
 
 function showTransactionDetails(data){
     console.log("clicked");
-    console.log(data)
-    document.getElementById("transaction-details").style.display = "block";
     document.getElementById("transaction-status").innerText = "Successful";
     document.getElementById("transaction-amount").innerText = data.amount;
     document.getElementById("transaction-from").innerText = data.sender_firstname;
     document.getElementById("transaction-to").innerText = data.receiver_firstname;
-    popup.classList.remove("hidden");
-
-}
-function closeTransactionDetails(){
-    console.log("clicked");
-    document.getElementById("transaction-details").style.display = "none";
-    popup.classList.remove("hidden");
+    openModal();
+    
 
 }
 
 
-
-    const open = document.getElementById('new-wallet-btn');
+function openModal(){
+    
     const modal_container = document.getElementById("modal_container");
-    const close = document.getElementById('close-modal');
-
-    open.addEventListener('click', ()=>{
-        modal_container.classList.add('show');
-    })
-
-    close.addEventListener('click', ()=>{
-        modal_container.classList.remove('show');
-    })
+    modal_container.classList.add('show');
+}
+function closeModal(){
+    const modal_container = document.getElementById("modal_container");
+    modal_container.classList.remove('show');
+}
+    

@@ -44,8 +44,8 @@ require_once "../templates/head.php";
     <?php
     foreach ($rows as $row) {
         echo '<section class="transaction-record" onclick=\'showTransactionDetails(' . json_encode($row) . ')\'><div>';
-        
-            if (in_Array($row['sender_wallet_id'], $walletIds)) {
+
+        if (in_Array($row['sender_wallet_id'], $walletIds)) {
             echo '<p>' . htmlentities($row['receiver_firstname']) . '</p>';
         } elseif (in_Array($row['receiver_wallet_id'], $walletIds)) {
             echo '<p>' . htmlentities($row['sender_firstname']) . '</p>';
@@ -67,16 +67,17 @@ require_once "../templates/head.php";
     ?>
 
 </section>
-    
-    <div id="transaction-details" >
+<div class="modal-container" id="modal_container">
+    <div id="transaction-details">
         <p>Status: <span id="transaction-status"></span></p>
         <p>Amount: £<span id="transaction-amount"></span></p>
         <p>From: <span id="transaction-from"></span></p>
         <p>To: <span id="transaction-to"></span></p>
-       
 
-        <button onclick="closeTransactionDetails()" class="buttons">Close</button>
+
+        <button onclick="closeModal()" class="buttons">Close</button>
     </div>
+</div>
 <script src="../javaScript/app.js"></script>
 </body>
 

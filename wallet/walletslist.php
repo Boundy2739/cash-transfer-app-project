@@ -32,7 +32,7 @@ unset($_SESSION['current_account']);
         ?>
 
     </section>
-    <button id="new-wallet-btn" class="buttons">Add new wallet</button>
+    <div id="new-wallet-btn"><button id="open-modal" class="buttons" onclick="openModal()">Add new wallet</button></div>
     <div class="modal-container" id="modal_container">
         
             <form action="addnewwallets.php" method="post" class="wallet-name-form">
@@ -40,7 +40,7 @@ unset($_SESSION['current_account']);
                 <label>Wallet name:</label>
                 <input type="text" name="wallet-name" placeholder="Insert wallet name" required>
                 <button type="submit" class="buttons">Add wallet</button>
-                <button id="close-modal" class="cancel-buttons">Cancel</button>
+                <button id="close-modal" class="cancel-buttons" onclick="closeModal()">Cancel</button>
             </form>
         
     </div>

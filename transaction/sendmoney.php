@@ -6,7 +6,7 @@ if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     exit;
 }
 $_SESSION['last_activity'] = time();
-echo '<script src="../javaScript/app.js"></script>';
+
 /*Selects all the wallets where the owner's id matches the logged user id*/
 $sql = "SELECT * from accounts where owner_id = :id";
 $stmt = $pdo->prepare($sql);
@@ -43,11 +43,11 @@ if (
         /*Removes white spaces in the recipient's username submitted by the user*/
         $recipientUsername = str_replace(" ", "", $_POST['recipient-username']);
         /*Selects the recipient's id from the row that matches the username given by the user*/
-        $sql = "SELECT id from users where username=:username";
+        $sql = "SELECT id,firstname,lastname from users where username=:username";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':username' => $recipientUsername]);
         $recipientID =  $stmt->fetch(PDO::FETCH_ASSOC);
-        print_r($recipientID);
+        
 
         /*stops transaction if no matching usernames where found */
         if ($recipientID === false) {
@@ -95,14 +95,14 @@ if (
 
         ));
         $pdo->commit();
-        echo '<script src="../javaScript/app.js"></script>';
+        
         echo '<script>
         document.addEventListener("DOMContentLoaded", function() {
             showPopup(
                 "success",
                 ' . json_encode($amount) . ',
-                ' . json_encode($recipientUsername) . ',
-                ' . json_encode($recipientUsername) . '
+                ' . json_encode($recipientID['firstname']) . ',
+                ' . json_encode($recipientID['lastname']) . '
             );
         });
         </script>';
@@ -160,7 +160,7 @@ if (
             <button onclick="closePopup()">OK</button>
         </div>
     </div>
-    
+   <script src="../javaScript/app.js"></script>
 </body>
 
 </html>
