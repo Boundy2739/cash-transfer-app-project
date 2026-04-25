@@ -32,7 +32,6 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
 $sql = "SELECT id,email,password_hash from users where email = :email";
 
-// TODO IMPORTANT VALIDATE EMAIL FIRST
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':email' => $email]);
 $row = $stmt->fetch(PDO::FETCH_ASSOC);

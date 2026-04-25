@@ -1,4 +1,5 @@
 <?php 
+//inserts failed transaction into the transaction tables
 function failedTransaction($pdo,$sender,$receiver,$message,$amount,$type){
     if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
         redirect('index.php');

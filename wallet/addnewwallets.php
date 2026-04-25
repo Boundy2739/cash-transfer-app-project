@@ -12,16 +12,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         redirect('wallet/walletslist.php');
         }
     
+    // Get the number of wallets currently owned by the user
     $sql = "SELECT COUNT(*) from accounts where owner_id =:id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":id"=>$_SESSION['user_id']]);
     $numOfWallets = $stmt->fetchColumn();
-
+    
+    //The user will be blocked from adding more wallets if they have already 8
     if($numOfWallets >= 8 ){
         userError("You can have only up to 8 wallets");
         redirect('wallet/walletslist.php');
         
     }
+    //This sets the first wallet ever created as primary
     $isDefault = ($numOfWallets === 0) ? 1 : 0;
 
     $accountId = guidv4(); /*Creates an unique identifier for the wallet */

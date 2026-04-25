@@ -1,4 +1,5 @@
 <?php
+$title = "Add funds";
 require_once "../includes/init.php";
 require_once "failedtransaction.php";
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {

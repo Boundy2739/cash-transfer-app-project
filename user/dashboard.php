@@ -1,4 +1,5 @@
 <?php
+$title="Dashboard";
 require_once "../includes/init.php";
 if ($_SESSION['authorised'] !== TRUE) {
     redirect('index.php');
@@ -15,6 +16,7 @@ $_SESSION['last_activity'] = time();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     echo '<h1>Greetings ' . $user['firstname'] .' '. $user['lastname'] . ' ! </h1>';
     ?>
+    <!-- This is placeholder-->
     <section class="summary-section">
         <h2>Account summary</h2>
         <div>

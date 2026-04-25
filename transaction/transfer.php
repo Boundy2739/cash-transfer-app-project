@@ -1,4 +1,5 @@
 <?php
+$title = "Transefer between wallets";
 require_once "../includes/init.php";
 require_once "failedtransaction.php";
 if ($_SESSION['authorised'] !== TRUE || empty($_SESSION['current_account'])) {
@@ -67,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ":id" => $chosenAcc['account_id']
             ));
             $pdo->commit();
+            //success popup
             echo '<script>
                     document.addEventListener("DOMContentLoaded", function() {
                     showPopup(
@@ -84,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $pdo->rollBack();
             }
             if ($isTransactionStarted) {
+                //fail popup
                 echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                 showPopup(

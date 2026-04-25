@@ -44,6 +44,7 @@ if (isset($_SESSION['ip'], $_SESSION['user_agent'])) {
         exit;
     }
 }
+//The user can stay inactive for 10 minutes, afterwards they will logout
 $idleTimer = 600;
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $idleTimer) {
     session_unset();

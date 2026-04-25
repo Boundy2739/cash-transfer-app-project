@@ -1,4 +1,5 @@
 <?php
+$title = "Transactions history";
 require_once "../includes/init.php";
 
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== TRUE) {
@@ -7,10 +8,13 @@ if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== TRUE) {
     exit;
 }
 $_SESSION['last_activity'] = time();
+//Select and fetch all the wallets owned by the user
 $stmt = $pdo->prepare("SELECT account_id from accounts WHERE owner_id =:id ");
 $stmt->execute([":id" => $_SESSION['user_id']]);
 $wallets = $stmt->fetchall(PDO::FETCH_ASSOC);
+//Returns the ids of all the wallets found
 $walletIds = array_column($wallets, 'account_id');
+//creates an array of placeholders based on the numbers of ids fetched
 $placeholders = implode(',', array_fill(0, count($walletIds), '?'));
 
 
@@ -40,12 +44,15 @@ $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
 <h1>Viewing transactions</h1>
 <section class="transactions-container">
     <?php
+    //create a box that displays info about each transaction made by the user
     foreach ($rows as $row) {
         echo '<section class="transaction-record" onclick=\'showTransactionDetails(' . json_encode($row) . ')\'><div>';
-
+        // Displays receiver's name, if the user was the sender
         if (in_Array($row['sender_wallet_id'], $walletIds)) {
             echo '<p>' . htmlentities($row['receiver_firstname']) . '</p>';
-        } elseif (in_Array($row['receiver_wallet_id'], $walletIds)) {
+        } 
+        // Displays sender's name, if the user was the receiver
+        elseif (in_Array($row['receiver_wallet_id'], $walletIds)) {
             echo '<p>' . htmlentities($row['sender_firstname']) . '</p>';
         };
 
@@ -65,6 +72,7 @@ $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
     ?>
 
 </section>
+<!--Popup that shows a little bit more details about the transaction -->
 <div class="modal-container" id="modal_container">
     <div id="transaction-details">
         <p>Status: <span id="transaction-status"></span></p>

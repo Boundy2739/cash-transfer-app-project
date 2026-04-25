@@ -15,9 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     /*Checks if the user is trying to submit an empty form */
     if (!empty($_POST['new-pwd']) && !empty($_POST['confirm-pwd'])) {
         if (!preg_match('/^(?=.*\d)(?=.*[@#\-_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!\?]{8,20}$/', $_POST['new-pwd'])) {
-            $_SESSION['errorMessage'] = "Password doesn't meet requirements";
-            header('Location: newpassword.php');
-            exit;
+            userError("Password doesnt meet requirements");
+            redirect('user/newpassword.php');
         }
         /*Checks if the passwords given mathch */ elseif ($_POST['new-pwd'] != $_POST['confirm-pwd']) {
             $_SESSION['errorMessage'] = "Passwords don't match!";

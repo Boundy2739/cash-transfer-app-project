@@ -6,7 +6,9 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     header("Location: register.php");
     exit;
 }
+//The data submitted by the user is saved in the session, and restored in case they need to resubmit the form
 saveFormData();
+//checks if input fields were submitted empty
 if (
     empty($_POST["firstname"]) ||
     empty($_POST["surname"]) ||
@@ -26,11 +28,11 @@ if (
     userError("Fill the required fields");
     redirect("user/register.php");
 }
-
 if($_POST['pwd'] !== $_POST['confirmpwd']){
     userError("Passwords don't match");
     redirect("register.php");
 }
+//generate random id for the user
 $uuid = guidv4();
 $fname = $_POST['firstname'];
 $lname = $_POST['surname'];
@@ -44,7 +46,7 @@ $date = DateTime::createFromFormat('Y-m-d', $dob);
 $postcode = preg_replace('/[^a-zA-Z0-9\s]/', '', $_POST['postcode']);
 $postcode = preg_replace('/\s+/', ' ', trim($postcode));
 if (!preg_match('/^(?=.*\d)(?=.*[@#\-_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!\?]{8,20}$/', $_POST['pwd'])) {
-    userError('Invalid email'); /*This ensures that the password meets the requirements*/
+    userError('Password does not meet requirements'); /*This ensures that the password meets the requirements*/
     redirect("register.php");
 }
 
@@ -52,6 +54,7 @@ if (!preg_match('/^(?=.*\d)(?=.*[@#\-_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Z
 $password = password_hash($_POST['pwd'], PASSWORD_DEFAULT);/*Creates an hash of the password and store it*/
 $mname = $_POST['middlename'];
 $username = $_POST['username'];
+//furthemore validation on the inputs
 $isValidEmail = filter_var($email, FILTER_VALIDATE_EMAIL);
 $isUsernameValid = preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,20}$/', $username);;
 $isPhoneNumValid = preg_match('/^[0-9+\s()-]+$/', $phone);
@@ -107,7 +110,7 @@ if (!$isStreetNameValid) {
 
 
 
-
+//inserts the data in the database, and the creates account
 $sql = "INSERT INTO users (id,firstname,middlename,lastname,username,phone,email,password_hash,date_of_birth,address_street_name,address_house_number,city,postcode) 
                 VALUES (:id,:firstname,:middlename,:lastname,:username,:phone,:email,:password_hash,:date_of_birth,:address_street_name,:address_house_number,:city,:postcode)";
     $stmt = $pdo->prepare($sql);
@@ -127,7 +130,9 @@ $sql = "INSERT INTO users (id,firstname,middlename,lastname,username,phone,email
         ':password_hash' => $password,
 
 
-    ));
+    ));  
+    /*The form data stored in the session is deleted, 
+    since the user correctly submitted the form and the data is not needed anymore*/
     deleteFormData();
     redirect('index.php');
     exit;

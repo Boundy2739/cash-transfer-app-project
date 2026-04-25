@@ -1,4 +1,5 @@
 <?php
+$title = "Send money";
 require_once "../includes/init.php";
 require_once "failedtransaction.php";
 /*Ensures that the user is logged before accessing this page*/
@@ -17,9 +18,7 @@ $stmt->execute(array(
 ));
 $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
 if (
-    $_SERVER['REQUEST_METHOD'] === 'POST' &&
-    isset($_POST['csrf_token'], $_SESSION['csrf_token']) &&
-    hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])
+    $_SERVER['REQUEST_METHOD'] === 'POST' && csrfCheck()
 ) {
 
 
@@ -101,7 +100,7 @@ if (
 
         ));
         $pdo->commit();
-
+        //display success popup
         echo '<script>
         document.addEventListener("DOMContentLoaded", function() {
             showPopup(
@@ -119,6 +118,7 @@ if (
             $pdo->rollBack();
         }
         if ($isTransactionStarted) {
+            //display fail popup
             echo '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                 showPopup(

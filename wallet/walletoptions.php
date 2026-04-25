@@ -1,4 +1,5 @@
 <?php
+$title = "Wallets";
 require_once "../includes/init.php";
 if ($_SESSION['authorised'] !== TRUE) {
     header('Location: myaccount.php');

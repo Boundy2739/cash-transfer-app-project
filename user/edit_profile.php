@@ -1,15 +1,18 @@
 <?php
+$title = "Editing profile";
 require_once "../includes/init.php";
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== TRUE) {
     header('Location: myaccount.php');
     exit;
 }
 $_SESSION['last_activity'] = time();
+//selects the users details from the users table
 $sql = "SELECT firstname,middlename,lastname,email,phone,address_street_name,address_house_number,city,postcode 
 from users where id=:id";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':id' => $_SESSION['user_id']]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
+//the data fetched will be displayed to the user, it shows the user's current personal details
 if (!$user) {
     redirect('user/dashboard.php');
 }

@@ -1,4 +1,5 @@
 <?php
+$title = "My profile";
 require_once "../includes/init.php";
 if ($_SESSION['authorised'] !== TRUE) {
     redirect('index.php');

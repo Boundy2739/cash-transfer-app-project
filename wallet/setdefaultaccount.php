@@ -3,7 +3,7 @@ require_once "../includes/init.php";
 try{
 $_SESSION['last_activity'] = time();
 $pdo->beginTransaction();
-/*This selects the current defualt wallet owned by the user and set it to not default*/
+/*This selects the current defualt wallet owned by the user and set it to not default anymore*/
 $sql = "UPDATE accounts SET is_default =:is_default where is_default = 1 AND owner_id =:id";
 $stmt = $pdo->prepare($sql);
 

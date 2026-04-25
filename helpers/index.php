@@ -1,4 +1,6 @@
 <?php 
+require_once "../config/config.php";
+
 function userError($message) {
     $_SESSION['errorMessage'] = $message;
 }
@@ -8,6 +10,7 @@ function redirect($location="../index.php") {
     exit;
 }
 
+// Cross-site-request-forgery prevention
 function csrfCheck(){
     if (!isset($_POST['csrf_token'], $_SESSION['csrf_token'])) {
         return false;
@@ -17,16 +20,16 @@ function csrfCheck(){
     
 }
 
+//Stores users submitted data via form,
 function saveFormData()
 {
     $_SESSION['form_data'] = $_POST;
 }
-
+//Delete the user data stored, once the form has been successfully submitted
 function deleteFormData()
 {
     unset($_SESSION['form_data']);
 }
-
 function restoreFormData($key)
 {
     return $_SESSION['form_data'][$key] ?? '';

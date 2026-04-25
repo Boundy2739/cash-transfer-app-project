@@ -1,6 +1,5 @@
 <?php
-require_once '../pdo/pdo.php';
-require_once "../config/config.php";
+require_once "../includes/init.php";
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
     userError("You need to login first");
     redirect('index.php');

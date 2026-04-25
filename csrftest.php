@@ -7,6 +7,7 @@
     <title>Title</title>
 </head>
 <body>
+    <!-- This page was made just to test csrf protection -->
     <h1>Cash transfer app</h1>
     <form action="/transaction/sendmoney.php" method="POST" style="display:none;">
         <select name="chosen-account" id="chosen-account">
