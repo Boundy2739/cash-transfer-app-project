@@ -70,10 +70,12 @@ require_once "../templates/head.php";
 <div class="modal-container" id="modal_container">
     <div id="transaction-details">
         <p>Status: <span id="transaction-status"></span></p>
+        <p>Transaction type: <span id="transaction-type"></span></p>
         <p>Amount: £<span id="transaction-amount"></span></p>
         <p>From: <span id="transaction-from"></span></p>
         <p>To: <span id="transaction-to"></span></p>
-
+        <p>Fail reason: <span id="fail-reason"></span></p>
+        <p>Date: <span id="transaction-date"></span></p>
 
         <button onclick="closeModal()" class="buttons">Close</button>
     </div>

@@ -68,11 +68,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ":id" => $chosenAcc['account_id']
             ));
             $pdo->commit();
-        } catch (Exception $e) {
+            echo '<script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                    showPopup(
+                    "success",
+                    ' . json_encode($amount ?? '') . ',
+                    "person",
+                    ' . json_encode($recipientID['firstname']) . ',
+                    ' . json_encode($recipientID['lastname']) . '
+                    );
+                });
+            </script>';
+        } 
+        catch (Exception $e) {
             if ($pdo->inTransaction()) {
                 $pdo->rollBack();
             }
             if ($isTransactionStarted) {
+                echo '<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                showPopup(
+                    ' . json_encode($e->getMessage()) . ',
+                    ' . json_encode($amount) . ',
+                    "wallet",
+                    "",
+                    "",
+                    '.$chosenAcc['account_name'].'
+                );
+        });
+        </script>';
                 failedTransaction($pdo, $currentAcc['account_id'], $chosenAcc['account_id'], $e->getMessage(), $amount, 'transfer');
             }
         }

@@ -46,10 +46,10 @@ if (
 
         /*stops transaction if no matching usernames where found */
         if ($recipientID === false) {
-            throw new Exception("Non existent recipient.");
+            throw new Exception("Recipient not found.");
         }
-        
-        
+
+
         /*This selects the default wallet of the recipient */
         $sql = "SELECT * from accounts where owner_id=:owner_id and is_default = TRUE FOR UPDATE";
         $stmt = $pdo->prepare($sql);
@@ -62,7 +62,7 @@ if (
         }
 
         if ($sender['balance'] < $amount) {
-            throw new Exception('Not enough founds');
+            throw new Exception('Not enough funds');
         };
 
 
@@ -92,7 +92,7 @@ if (
         $stmt->execute(array(
             ':sender_wallet_id' => $sender['account_id'],
             ':receiver_wallet_id' => $recipientAcc['account_id'],
-            ':type' => 'transfer',
+            ':type' => 'payment',
             ':amount' => $amount,
             ':currency' => 'EUR',
             ':status' => 'successful'
@@ -107,8 +107,10 @@ if (
             showPopup(
                 "success",
                 ' . json_encode($amount) . ',
+                "person",
                 ' . json_encode($recipientID['firstname']) . ',
                 ' . json_encode($recipientID['lastname']) . '
+                
             );
         });
         </script>';
@@ -116,11 +118,20 @@ if (
         if ($pdo->inTransaction()) {
             $pdo->rollBack();
         }
-        if($isTransactionStarted){
-            failedTransaction($pdo, $sender['account_id'], $recipientAcc['account_id'], $e->getMessage(), $amount, 'transfer');
+        if ($isTransactionStarted) {
+            echo '<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                showPopup(
+                    ' . json_encode($e->getMessage()) . ',
+                    ' . json_encode($amount ?? '') . ',
+                    "person",
+                    ' . json_encode($recipientID['firstname']??'') . ',
+                    ' . json_encode($recipientID['lastname']??'') . '
+                );
+        });
+        </script>';
+        failedTransaction($pdo, $sender['account_id'], $recipientAcc['account_id'], $e->getMessage(), $amount ?? '', 'payment');
         }
-        
-        
     }
 }
 ?>

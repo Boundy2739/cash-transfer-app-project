@@ -1,17 +1,32 @@
 
-function showPopup(type, amount,receiverFname,receiverLname) {
+function showPopup(result, amount,destination,receiverFname,receiverLname,wallet) {
     const popup = document.getElementById("transaction-popup");
     const title = document.getElementById("popup-title");
     const message = document.getElementById("popup-message");
     popup.classList.remove("hidden");
-
-    if(type === 'success'){
+    console.log("test");
+    console.log(result)
+    if(result === "Not enough funds"){
+        console.log("founds");
+        message.innerHTML =`Your transfer of £${amount} has failed, you dont have enough balance`;
+    }
+    else if(result === "Invalid amount"){
+        console.log("founds");
+        message.innerHTML =`The transfer has failed, the amount entered is invalid`;
+    }
+    else if(result === "Recipient not found"){
+        console.log("founds");
+        message.innerHTML = `The transfer has failed, the recipient does not exists`;
+    }
+    else if (result === "success" && destination === "person"){
+        console.log("founds");
         title.innerHTML = "Transaction successfull";
         message.textContent = `Your transfer of £${amount} to ${receiverFname} ${receiverLname} was successful`;
     }
-
-    else{
-        message.innerHTML = 'Your transfer as failed';
+    else if (result === "success" && destination === "wallet"){
+        console.log("founds");
+        title.innerHTML = "Transaction successfull";
+        message.textContent = `Your transfer of £${amount} to ${wallet} wallet was successful`;
     }
 }
 
@@ -21,10 +36,29 @@ function closePopup() {
 
 function showTransactionDetails(data){
     console.log("clicked");
-    document.getElementById("transaction-status").innerText = "Successful";
-    document.getElementById("transaction-amount").innerText = data.amount;
-    document.getElementById("transaction-from").innerText = data.sender_firstname;
-    document.getElementById("transaction-to").innerText = data.receiver_firstname;
+    console.log(data);
+    console.log(data.status);
+    if (data.status === "successful"){
+        console.log("successful")
+        document.getElementById("transaction-status").innerText = "Transaction completed";
+        document.getElementById("transaction-type").innerText = data.type;
+        document.getElementById("transaction-amount").innerText = data.amount;
+        document.getElementById("transaction-from").innerText = data.sender_firstname;
+        document.getElementById("transaction-to").innerText = data.receiver_firstname;
+        document.getElementById("transaction-date").innerText = data.transaction_date;
+    }
+    if(data.status === "failed"){
+        console.log("fail")
+        document.getElementById("transaction-status").innerText = "Transaction failed";
+        document.getElementById("transaction-type").innerText = data.type;
+        document.getElementById("transaction-amount").innerText = data.amount;
+        document.getElementById("transaction-from").innerText = data.sender_firstname;
+        document.getElementById("transaction-to").innerText = data.receiver_firstname;
+        document.getElementById("fail-reason").innerText = data.fail_reason;
+        document.getElementById("transaction-date").innerText = data.transaction_date;
+        
+    }
+    console.log("nothing")
     openModal();
     
 
