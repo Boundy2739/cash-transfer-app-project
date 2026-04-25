@@ -2,15 +2,14 @@
 require_once '../pdo/pdo.php';
 require_once "../config/config.php";
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
-    header('Location: index.php');
-    exit;
+    userError("You need to login first");
+    redirect('index.php');
 }
 $_SESSION['last_activity'] = time();
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    if( !isset($_POST['csrf_token'], $_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])){
-        $_SESSION['errorMessage'] = 'Invalid request.';
-        header('Location: currentpassword.php');
-        exit;
+    if(!csrfCheck() ){
+        userError('Invalid request.');
+        redirect('user/currentpassword.php');
     }
     if (!empty($_POST['old-pwd'])) {
         /*Selects the row with the password hash of the logged user */
@@ -21,17 +20,17 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     
         /*Verifies that the password submitted matches the current password before changing */
         if (password_verify($_POST['old-pwd'], $password['password_hash'])) {
-            header('Location: newpassword.php');
+            redirect(' user/newpassword.php');
             exit;
         }  {
-            $_SESSION['errorMessage'] = 'Wrong password';
+           userError("Wrong password");
         }
     }
 
 }
 
 
-require_once "../templates/head.php";
+
 ?>
     <h1>Change password</h1>
     <form method="POST" action="">

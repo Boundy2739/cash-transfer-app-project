@@ -23,11 +23,11 @@ $stmt->execute(array(
 ));
 
 $pdo->commit();
-header('Location: accountslist.php');
-exit;
+redirect('wallet/walletslist.php');
 }
 catch(Exception $e){
-    die("Transaction failed");
+    userError("Unable to set primary wallet");
+    redirect('wallet/walletslist.php');
 }
 
 ?>

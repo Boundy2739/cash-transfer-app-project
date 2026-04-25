@@ -23,8 +23,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 ":id"=>$wallet['account_id']
             ));
 
-            header('Location: walletoptions.php?account='.$wallet['account_id'].'');
-            exit;
+            redirect('wallet/walletoptions.php?account='.$wallet['account_id'].'');
+           
         }
 
     }

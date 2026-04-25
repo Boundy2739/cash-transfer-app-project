@@ -2,17 +2,14 @@
 require_once "../includes/init.php";
 require_once "failedtransaction.php";
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
-    header('Location: myaccount.php');
-    exit;
+    redirect('index.php');
 }
 $_SESSION['last_activity'] = time();
 $isTransactionStarted = false;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (
-        !isset($_POST['csrf_token'], $_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])
-    ) {
-        $_SESSION['errorMessage'] = 'Invalid request.';
-        header('Location: add_funds.php');
+    if (!csrfCheck()) {
+        userError("Invalid request");
+        redirect('transaction/add_funds.php');
         exit;
     }
     

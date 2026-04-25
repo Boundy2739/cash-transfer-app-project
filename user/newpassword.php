@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 }
-require_once "../templates/head.php";
+
 ?>
     <h1>Change password</h1>
     <form action="" method="POST">

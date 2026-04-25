@@ -5,20 +5,18 @@ if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== TRUE) {
     exit;
 }
 $_SESSION['last_activity'] = time();
-$sql = "SELECT firstname,middlename,lastname,email,phone,address_street_name,address_house_number,city,postcode from users where id=:id";
+$sql = "SELECT firstname,middlename,lastname,email,phone,address_street_name,address_house_number,city,postcode 
+from users where id=:id";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':id' => $_SESSION['user_id']]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$user) {
-    header('Location: myaccount.php');
-    exit;
+    redirect('user/dashboard.php');
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (
-        !isset($_POST['csrf_token'], $_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])
-    ) {
-        header('Location: myaccount.php');
-        exit;
+    if (!csrfCheck()) {
+        redirect('index.php');
+        
     }
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
     $number = filter_input(INPUT_POST, 'phonenumber', FILTER_VALIDATE_INT);
@@ -78,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute($params);
     }
 }
-require_once "../templates/head.php";
 ?>
 
 <h1>Edit your profile</h1>
@@ -129,7 +126,7 @@ require_once "../templates/head.php";
         <input type="submit" value="apply changes" id="submit-address">
     </section>
 </form>
-<script src="../javaScript/app.js"></script>
+<script src="<?php echo BASE_URL; ?>javaScript/app.js"></script>
 </body>
 
 </html>

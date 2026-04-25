@@ -3,19 +3,14 @@ require_once "../includes/init.php";
 
 
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
-    header('Location: accountslist.php');
-    exit;
+    redirect('index.php');
 }
 $_SESSION['last_activity'] = time();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (
-        !isset($_POST['csrf_token'], $_SESSION['csrf_token']) ||
-        !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])
-    ) {
-        $_SESSION['errorMessage'] = 'Invalid request.';
-        header('Location: walletslist.php');
-        exit;
-    }
+    if (!csrfCheck()) {
+        userError("Invalid request");
+        redirect('wallet/walletslist.php');
+        }
     
     $sql = "SELECT COUNT(*) from accounts where owner_id =:id";
     $stmt = $pdo->prepare($sql);
@@ -23,9 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $numOfWallets = $stmt->fetchColumn();
 
     if($numOfWallets >= 8 ){
-        $_SESSION['errorMessage'] = 'You can have only up to 8 wallets.';
-        header('Location: walletslist.php');
-        exit;
+        userError("You can have only up to 8 wallets");
+        redirect('wallet/walletslist.php');
+        
     }
     $isDefault = ($numOfWallets === 0) ? 1 : 0;
 
@@ -41,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':status' => 'active',
         ':is_default' => $isDefault
     ));
-    header('Location: walletslist.php');
+    redirect('wallet/walletslist.php');
     exit;
 }
 ?>

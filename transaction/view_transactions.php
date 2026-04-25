@@ -2,7 +2,8 @@
 require_once "../includes/init.php";
 
 if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== TRUE) {
-    header('Location: index.php');
+    userError("You need to login first");
+    redirect('index.php');
     exit;
 }
 $_SESSION['last_activity'] = time();
@@ -34,9 +35,6 @@ ORDER BY t.transaction_date DESC;");
 $stmt->execute(array_merge($walletIds, $walletIds));
 
 $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
-
-
-require_once "../templates/head.php";
 ?>
 
 <h1>Viewing transactions</h1>
@@ -80,7 +78,7 @@ require_once "../templates/head.php";
         <button onclick="closeModal()" class="buttons">Close</button>
     </div>
 </div>
-<script src="../javaScript/app.js"></script>
+<script src="<?php echo BASE_URL; ?>javaScript/app.js"></script>
 </body>
 
 </html>

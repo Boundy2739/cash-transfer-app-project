@@ -41,8 +41,8 @@ $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
 <div class="user-options">
     <ul>
-        <li><a href="../transaction/add_funds.php" class="options">Add funds</a></li>
-        <li><a href="../transaction/transfer.php" class="options">Transfer</a></li>
+        <li><a href="<?php echo BASE_URL; ?>transaction/add_funds.php" class="options">Add funds</a></li>
+        <li><a href="<?php echo BASE_URL; ?>transaction/transfer.php" class="options">Transfer to another wallet</a></li>
         <?php
         /*Will display the option to set the wallet as default if it is not set yet */
         if ($result['is_default'] === 0) {

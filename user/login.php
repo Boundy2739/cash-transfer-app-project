@@ -3,15 +3,13 @@ require_once "../includes/init.php";
 require_once "../rate-limiter/ratelimiter.php";
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: index.php");
-    exit();
+    redirect("index.php");
 }
 
 $is_locked = is_locked($_SERVER['REMOTE_ADDR'], $pdo);
 if ($is_locked === true) {
-    $_SESSION['errorMessage'] = 'Too many attempts, retry later';
-    header("Location: index.php");
-    exit;
+    userError("Too many attempts retry later");
+    redirect("index.php");
 }
 if (
     empty($_POST["email"]) ||
@@ -19,17 +17,17 @@ if (
 
 
 ) {
-    $_SESSION['errorMessage'] = 'All fields required!';
-    header('Location: index.php');
-    exit;
+    userError("All fields are required");
+    redirect("index.php");
 }
 
 $email = trim($_POST['email']);
 $password = $_POST['password'];
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $_SESSION['errorMessage'] = 'Wrong email or password!';
-    header('Location: index.php');
-    exit;
+    rate_limiter($_SERVER['REMOTE_ADDR'], 5, $pdo);
+    userError("Wrong email or password");
+    redirect("index.php");
+    
 }
 
 $sql = "SELECT id,email,password_hash from users where email = :email";
@@ -47,11 +45,9 @@ if ($row && password_verify($password, $row['password_hash'])) {
     $_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
     $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
     reset_attempts($_SERVER['REMOTE_ADDR'], $pdo);
-    header('Location: dashboard.php');
-    exit;
+    redirect("user/dashboard.php");
 } else {
     rate_limiter($_SERVER['REMOTE_ADDR'], 5, $pdo);
-    $_SESSION['errorMessage'] = 'Wrong email or password!';
-    header('Location: ../index.php');
-    exit;
+    userError("Wrong email or password");
+    redirect("index.php");
 }

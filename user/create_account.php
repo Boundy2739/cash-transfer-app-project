@@ -4,7 +4,7 @@ require_once "../helpers/index.php";
 require_once '../pdo/pdo.php';
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     header("Location: register.php");
-    exit();
+    exit;
 }
 saveFormData();
 if (
@@ -23,9 +23,8 @@ if (
 
 
 ) {
-    $_SESSION['errorMessage'] = 'All fields are required';
-    header("Location: register.php");
-    exit;
+    userError("Fill the required fields");
+    redirect("user/register.php");
 }
 
 if($_POST['pwd'] !== $_POST['confirmpwd']){
@@ -130,6 +129,6 @@ $sql = "INSERT INTO users (id,firstname,middlename,lastname,username,phone,email
 
     ));
     deleteFormData();
-    header('Location: ../index.php');
+    redirect('index.php');
     exit;
 

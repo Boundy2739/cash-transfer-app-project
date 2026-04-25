@@ -1,8 +1,8 @@
 <?php 
 function failedTransaction($pdo,$sender,$receiver,$message,$amount,$type){
     if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
-        header('Location: ../index.php');
-        exit;
+        redirect('index.php');
+        
     }
     $sql ="INSERT INTO transactions (sender_wallet_id,receiver_wallet_id,type,amount,currency,status,fail_reason) 
     VALUES (:sender_wallet_id,:receiver_wallet_id,:type,:amount,:currency,:status,:fail_reason)";

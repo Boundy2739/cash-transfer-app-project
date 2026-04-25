@@ -4,7 +4,7 @@ function userError($message) {
 }
 
 function redirect($location="../index.php") {
-    header("Location: $location");
+    header("Location: ".BASE_URL . $location);
     exit;
 }
 

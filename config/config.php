@@ -10,7 +10,14 @@ session_set_cookie_params([
     'httponly' => true,
     'samesite' => 'Strict'
 ]);
+$isLocal = ($_SERVER['HTTP_HOST'] === 'localhost');
 
+// Base URL
+if ($isLocal) {
+    define('BASE_URL', 'http://localhost/cash-transfer-app/');
+} else {
+    define('BASE_URL', 'https://money-transfer-app.free.nf/');
+}
 session_start();
 
 if (!isset($_SESSION['last_regeneration'])) {
@@ -37,7 +44,7 @@ if (isset($_SESSION['ip'], $_SESSION['user_agent'])) {
         exit;
     }
 }
-$idleTimer = 90;
+$idleTimer = 600;
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $idleTimer) {
     session_unset();
     session_destroy();

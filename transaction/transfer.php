@@ -2,8 +2,7 @@
 require_once "../includes/init.php";
 require_once "failedtransaction.php";
 if ($_SESSION['authorised'] !== TRUE || empty($_SESSION['current_account'])) {
-    header('Location: walletoptions.php');
-    exit;
+    redirect('wallet/walletoptions.php');
 }
 $_SESSION['last_activity'] = time();
 $isTransactionStarted = false;
@@ -136,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="number" id="amount" name="amount" min="1" step="0.01" placeholder="Enter amount" required>
         <input type="submit" value="transfer money">
     </form>
-
+    <script src="<?php echo BASE_URL; ?>javaScript/app.js"></script>
 </body>
 
 </html>

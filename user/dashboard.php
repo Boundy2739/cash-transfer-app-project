@@ -1,8 +1,7 @@
 <?php
 require_once "../includes/init.php";
 if ($_SESSION['authorised'] !== TRUE) {
-    header('Location: index.php');
-    exit;
+    redirect('index.php');
 }
 $_SESSION['last_activity'] = time();
 
@@ -10,11 +9,11 @@ $_SESSION['last_activity'] = time();
 <?php
     
     /*This will echo an heading that greets the user*/
-    $sql = "SELECT firstname from users where id = :id";
+    $sql = "SELECT firstname, lastname from users where id = :id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':id' => $_SESSION['user_id']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    echo '<h1>Greetings ' . $user['firstname'] . ' ! </h1>';
+    echo '<h1>Greetings ' . $user['firstname'] .' '. $user['lastname'] . ' ! </h1>';
     ?>
     <section class="summary-section">
         <h2>Account summary</h2>

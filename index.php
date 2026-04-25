@@ -20,7 +20,7 @@ if(isset($_SESSION['authorised']) && $_SESSION['authorised'] === TRUE){
 <body>
     <h1>Cash transfer app</h1>
     <div>
-        <form action="user/login.php" method="post">
+        <form action="<?php echo BASE_URL; ?>user/login.php" method="post">
             <?php if(isset($_SESSION['errorMessage'])){
                 echo "<p  class='wrong-login'>".$_SESSION['errorMessage']."
               </p>";

@@ -584,3 +584,89 @@ input[type="submit"]:hover {
 }
 
 
+@media (max-width: 600px) {
+
+    /* General layout */
+    form,
+    .wallet-name-form,
+    .user-options,
+    .wallets-list,
+    .summary-section,
+    .activity-section,
+    .transactions-container {
+        width: 90%;
+        margin: 20px auto;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 20px;
+        margin-top: 20px;
+    }
+
+    /* Navigation bar */
+    .navigation-bar {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .navigation-bar a {
+        margin-left: 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Account header */
+    .account-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    /* Transactions */
+    .transaction-record {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    #amount-received-sent {
+        align-self: flex-end;
+    }
+
+    /* Tables */
+    .activity-table {
+        font-size: 12px;
+    }
+
+    .headers-row th,
+    .activity-row td {
+        padding: 8px;
+    }
+
+    /* Popup */
+    .popup-card {
+        width: 90%;
+        padding: 20px;
+    }
+
+    #transaction-details {
+        width: 90%;
+    }
+
+    /* Buttons */
+    .buttons,
+    .cancel-buttons {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+.optional {
+    color: #777;
+    font-size: 12px;
+    margin-left: 4px;
+}

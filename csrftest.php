@@ -13,9 +13,9 @@
             <option value="1f3a6142-6a3d-482b-a5ea-198d70b3e32b"></option>
             ?>
         </select>
-        <input type="hidden" id="recipient-username" name="recipient-username" placeholder="insert the recipient's" value="DespicableMe123">
+        <input type="hidden" id="recipient-username" name="recipient-username" placeholder="insert the recipient's" value="TestAccount323">
         <label for="amount">Amount</label>
-        <input type="number" id="amount" name="amount" min="1" step="0.01" placeholder="Enter amount" value="420">
+        <input type="number" id="amount" name="amount" min="1" step="0.01" placeholder="Enter amount" value="589.22">
     </form>
 </body>
 <script>
