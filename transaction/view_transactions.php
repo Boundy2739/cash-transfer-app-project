@@ -17,25 +17,32 @@ $walletIds = array_column($wallets, 'account_id');
 //creates an array of placeholders based on the numbers of ids fetched
 $placeholders = implode(',', array_fill(0, count($walletIds), '?'));
 
-
+/*This combines the wallet table and the user where the ids match, 
+then it combines the transaction table and the wallet table */
 $stmt = $pdo->prepare("SELECT 
-t.*,
+t.*,-- Select all transaction fields
+
+-- Sender's name (from users table via sender's account)
 u1.firstname AS sender_firstname,
 u1.lastname AS sender_lastname,
 u2.firstname AS receiver_firstname,
 u2.lastname AS receiver_lastname
 FROM transactions t
-
+-- Join sender's account (wallet) to the transaction
 JOIN accounts w1 ON t.sender_wallet_id = w1.account_id
+-- Join sender's user details using the account owner_id
 JOIN users u1 ON w1.owner_id = u1.id
 
 JOIN accounts w2 ON t.receiver_wallet_id = w2.account_id
 JOIN users u2 ON w2.owner_id = u2.id
-
+-- Filter: only include transactions where the sender OR receiver
+-- wallet is in the provided list of wallet IDs
 WHERE t.sender_wallet_id IN ($placeholders)
 OR t.receiver_wallet_id IN ($placeholders)
 
 ORDER BY t.transaction_date DESC;");
+
+
 $stmt->execute(array_merge($walletIds, $walletIds));
 
 $rows = $stmt->fetchall(PDO::FETCH_ASSOC);

@@ -41,7 +41,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         }
         ?>
         <input type="hidden" name="csrf_token" <?php echo 'value=' . htmlspecialchars($_SESSION['csrf_token']) . '' ?>>
-        <label for="old-pwd">Password: </label>
+        <label for="old-pwd">Password: <span class="requirement">(Must contanin 8-20 characters, at least 1 uppercase and lowercase, 1 number and 1 special charcter)</span></label>
         <input type="password" id="old-pwd" name="old-pwd" placeholder="Insert the current password">
         <input type="submit" value="confirm">
     </form>

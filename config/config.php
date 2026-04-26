@@ -19,7 +19,6 @@ if ($isLocal) {
     define('BASE_URL', 'https://money-transfer-app.free.nf/');
 }
 session_start();
-
 if (!isset($_SESSION['last_regeneration'])) {
     session_regenerate_id(true);
     $_SESSION['last_regeneration'] = time();
@@ -49,7 +48,7 @@ $idleTimer = 600;
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $idleTimer) {
     session_unset();
     session_destroy();
-    header('Location: ../index.php');
+    header('Location:'.BASE_URL.'index.php');
     exit;
 }
 

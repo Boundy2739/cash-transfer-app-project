@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         ?>
         <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
-        <label for="new-pwd">New password</label>
+        <label for="new-pwd">New password: <span class="requirement">(Must contanin 8-20 characters, at least 1 uppercase and lowercase, 1 number and 1 special charcter)</span></label>
         <input type="password" id="new-pwd" name="new-pwd" placeholder="Insert the new passowrd" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
         <label for="confirm-pwd">Confirm password</label>
         <input type="password" id="confirm-pwd" name="confirm-pwd" placeholder="Reinsert the new passowrd" required>

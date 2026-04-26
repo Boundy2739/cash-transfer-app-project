@@ -1,6 +1,5 @@
 <?php 
 require_once "../config/config.php";
-
 function userError($message) {
     $_SESSION['errorMessage'] = $message;
 }

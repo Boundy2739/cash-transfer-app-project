@@ -23,6 +23,9 @@ unset($_SESSION['current_account']);
 
     <div class="wallets-list">
         <?php
+        if(!$rows or count($rows) == 0){
+            echo '<h2>You need to create a wallet to send money, or store it</h2>';
+        }
         //show list of wallets
         foreach ($rows as $row) {
             echo '<section class="user-accounts">';

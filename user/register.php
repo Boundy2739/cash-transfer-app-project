@@ -1,5 +1,4 @@
 <?php 
-session_start();
 require_once '../helpers/index.php';
 ?>
 <!DOCTYPE html>
@@ -30,7 +29,7 @@ require_once '../helpers/index.php';
         <input type="text" id="middlename" name="middlename" value="<?php echo htmlentities(restoreFormData('middlename' ?? ''))?>">
         <label for="surname">Surname</label>
         <input type="text" id="surname" name="surname" value="<?php echo htmlentities(restoreFormData('surname' ?? ''))?>">
-        <label for="username">Username</label>
+        <label for="username">Username <span class="requirement">(Must contanin between 5 and 20 characters, at least 1 uppercase letter, 1 lowercase letter and 1 number)</span></label>
         <input type="text" id="username" name="username" value="<?php echo htmlentities(restoreFormData('username' ?? ''))?>">
         <label for="phonenumber">Phone number</label>
         <input type="tel" id="phonenumber" name="phonenumber" value="<?php echo htmlentities(restoreFormData('phonenumber' ?? ''))?>">
@@ -46,7 +45,7 @@ require_once '../helpers/index.php';
         <input type="text" id="city" name="city" value="<?php echo htmlentities(restoreFormData('city' ?? ''))?>">
         <label for="postcode">Postcode <span class="optional">(Optional)</span></label>
         <input type="text" id="postcode" name="postcode" value="<?php echo htmlentities(restoreFormData('postcode' ?? ''))?>">
-        <label for="pwd">Password</label>
+        <label for="pwd">Password <span class="requirement">(Must contanin 8-20 characters, at least 1 uppercase and lowercase, 1 number and 1 special charcter)</span></label>
         <input type="password" id="pwd" name="pwd" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
         <label for="confirmpwd">Confirm password</label>
         <input type="password" id="confirmpwd" name="confirmpwd">

@@ -56,7 +56,7 @@ $mname = $_POST['middlename'];
 $username = $_POST['username'];
 //furthemore validation on the inputs
 $isValidEmail = filter_var($email, FILTER_VALIDATE_EMAIL);
-$isUsernameValid = preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,20}$/', $username);;
+$isUsernameValid = preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{5,20}$/', $username);;
 $isPhoneNumValid = preg_match('/^[0-9+\s()-]+$/', $phone);
 $isHouseNumValid = preg_match('/^[0-9a-zA-Z\s\-\/,]+$/', $houseNumber); 
 $isFNameValid = preg_match('/^[a-zA-Z\s\'-]+$/', $fname);
@@ -105,6 +105,22 @@ if (!$isDateValid) {
 }
 if (!$isStreetNameValid) {
     userError('Invalid street name');
+    redirect("register.php");
+}
+$stmt = $pdo->prepare("SELECT email from users where email =:email");
+$stmt->execute([":email"=>$email]);
+$result = $stmt->fetch(PDO::FETCH_ASSOC);
+if($result){
+    userError('The email is already taken');
+    redirect("register.php");
+}
+
+
+$stmt = $pdo->prepare("SELECT username from users where username =:username");
+$stmt->execute([":username"=>$username]);
+$result = $stmt->fetch(PDO::FETCH_ASSOC);
+if($result){
+    userError('The username is already taken');
     redirect("register.php");
 }
 
