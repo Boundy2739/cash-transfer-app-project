@@ -4,27 +4,26 @@ function showPopup(result, amount,destination,receiverFname,receiverLname,wallet
     const title = document.getElementById("popup-title");
     const message = document.getElementById("popup-message");
     popup.classList.remove("hidden");
-    console.log("test");
-    console.log(result)
+
     if(result === "Not enough funds"){
-        console.log("founds");
+    
         message.innerHTML =`Your transfer of £${amount} has failed, you dont have enough balance`;
     }
     else if(result === "Invalid amount"){
-        console.log("founds");
+        
         message.innerHTML =`The transfer has failed, the amount entered is invalid`;
     }
     else if(result === "Recipient not found"){
-        console.log("founds");
+       
         message.innerHTML = `The transfer has failed, the recipient does not exists`;
     }
     else if (result === "success" && destination === "person"){
-        console.log("founds");
+        
         title.innerHTML = "Transaction successfull";
         message.textContent = `Your transfer of £${amount} to ${receiverFname} ${receiverLname} was successful`;
     }
     else if (result === "success" && destination === "wallet"){
-        console.log("founds");
+       
         title.innerHTML = "Transaction successfull";
         message.textContent = `Your transfer of £${amount} to ${wallet} wallet was successful`;
     }

@@ -72,9 +72,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     showPopup(
                     "success",
                     ' . json_encode($amount ?? '') . ',
-                    "person",
-                    ' . json_encode($recipientID['firstname']) . ',
-                    ' . json_encode($recipientID['lastname']) . '
+                    "wallet",
+                    "",
+                    "",
+                    '.json_encode($chosenAcc['account_name']).'
+
                     );
                 });
             </script>';
