@@ -3,10 +3,7 @@ $title = "Send money";
 require_once "../includes/init.php";
 require_once "failedtransaction.php";
 /*Ensures that the user is logged before accessing this page*/
-if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
-    header('Location: ../index.php');
-    exit;
-}
+userAuth();
 $_SESSION['last_activity'] = time();
 $recipientAcc['account_id'] = null;
 $isTransactionStarted = false;

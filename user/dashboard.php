@@ -1,9 +1,7 @@
 <?php
 $title="Dashboard";
 require_once "../includes/init.php";
-if ($_SESSION['authorised'] !== TRUE) {
-    redirect('index.php');
-}
+userAuth();
 $_SESSION['last_activity'] = time();
 
 ?>

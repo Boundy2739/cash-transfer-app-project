@@ -1,10 +1,7 @@
 <?php
 $title = "Editing profile";
 require_once "../includes/init.php";
-if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== TRUE) {
-    header('Location: myaccount.php');
-    exit;
-}
+userAuth();
 $_SESSION['last_activity'] = time();
 //selects the users details from the users table
 $sql = "SELECT firstname,middlename,lastname,email,phone,address_street_name,address_house_number,city,postcode 

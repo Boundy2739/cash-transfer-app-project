@@ -2,9 +2,7 @@
 $title = "Add funds";
 require_once "../includes/init.php";
 require_once "failedtransaction.php";
-if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
-    redirect('index.php');
-}
+userAuth();
 $_SESSION['last_activity'] = time();
 $isTransactionStarted = false;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

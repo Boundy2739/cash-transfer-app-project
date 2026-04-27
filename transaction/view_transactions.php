@@ -2,11 +2,7 @@
 $title = "Transactions history";
 require_once "../includes/init.php";
 
-if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== TRUE) {
-    userError("You need to login first");
-    redirect('index.php');
-    exit;
-}
+userAuth();
 $_SESSION['last_activity'] = time();
 //Select and fetch all the wallets owned by the user
 $stmt = $pdo->prepare("SELECT account_id from accounts WHERE owner_id =:id ");

@@ -1,22 +1,31 @@
-<?php 
+<?php
 require_once "../config/config.php";
-function userError($message) {
+function userError($message)
+{
     $_SESSION['errorMessage'] = $message;
 }
 
-function redirect($location="../index.php") {
-    header("Location: ".BASE_URL . $location);
+function redirect($location = "../index.php")
+{
+    header("Location: " . BASE_URL . $location);
     exit;
 }
-
+function userAuth()
+{
+    if (isset($_SESSION['authorised']) && $_SESSION['authorised'] === TRUE) {
+        return true;
+    }
+    userError("You need to login first");
+    redirect("index.php");
+}
 // Cross-site-request-forgery prevention
-function csrfCheck(){
+function csrfCheck()
+{
     if (!isset($_POST['csrf_token'], $_SESSION['csrf_token'])) {
         return false;
     }
 
     return hash_equals($_SESSION['csrf_token'], $_POST['csrf_token']);
-    
 }
 
 //Stores users submitted data via form,
@@ -35,7 +44,8 @@ function restoreFormData($key)
 }
 
 
-function guidv4($data = null) {
+function guidv4($data = null)
+{
     // Generate 16 bytes (128 bits) of random data or use the data passed into the function.
     $data = $data ?? random_bytes(16);
     assert(strlen($data) == 16);

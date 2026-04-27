@@ -1,9 +1,7 @@
 <?php
 $title = "Wallets";
 require_once "../includes/init.php";
-if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
-    redirect('index.php');
-}
+userAuth();
 $_SESSION['last_activity'] = time();
 //selects all the wallets owned by the user
 $sql = "SELECT owner_id,account_name,balance,account_id from accounts where owner_id = :owner_id";

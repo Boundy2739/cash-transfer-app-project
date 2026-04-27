@@ -1,10 +1,7 @@
 <?php
 $title = "Wallets";
 require_once "../includes/init.php";
-if ($_SESSION['authorised'] !== TRUE) {
-    header('Location: myaccount.php');
-    exit;
-}
+userAuth();
 $_SESSION['last_activity'] = time();
 /*Selects the wallet where both the wallet id and owner id match respectively the ID in the URL and the id of the logged user
 this is to prevent the user from accessing someone elses wallet by changing the URL*/

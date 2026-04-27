@@ -1,5 +1,6 @@
 <?php
 require_once "../includes/init.php";
+userAuth();
 try{
 $_SESSION['last_activity'] = time();
 $pdo->beginTransaction();

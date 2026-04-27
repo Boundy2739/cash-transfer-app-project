@@ -1,9 +1,6 @@
 <?php
 require_once "../includes/init.php";
-if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
-    header('Location: accountslist.php');
-    exit;
-}
+userAuth();
 $_SESSION['last_activity'] = time();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_POST['csrf_token'], $_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {

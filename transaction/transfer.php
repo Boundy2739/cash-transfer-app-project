@@ -2,9 +2,7 @@
 $title = "Transefer between wallets";
 require_once "../includes/init.php";
 require_once "failedtransaction.php";
-if ($_SESSION['authorised'] !== TRUE || empty($_SESSION['current_account'])) {
-    redirect('wallet/walletoptions.php');
-}
+userAuth();
 $_SESSION['last_activity'] = time();
 $isTransactionStarted = false;
 /*This selects all the rows where the wallet's owner id mathces the id of the logged in user */

@@ -1,9 +1,6 @@
 <?php
 require_once "../includes/init.php";
-if (!isset($_SESSION['authorised']) || $_SESSION['authorised'] !== true) {
-    userError("You need to login first");
-    redirect('index.php');
-}
+userAuth();
 $_SESSION['last_activity'] = time();
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if(!csrfCheck() ){
