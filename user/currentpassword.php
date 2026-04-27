@@ -16,7 +16,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     
         /*Verifies that the password submitted matches the current password before changing */
         if (password_verify($_POST['old-pwd'], $password['password_hash'])) {
-            redirect(' user/newpassword.php');
+            redirect('user/newpassword.php');
             exit;
         }  {
            userError("Wrong password");
